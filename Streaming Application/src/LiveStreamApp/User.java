@@ -41,4 +41,9 @@ public class User {
         }
 
     }
+    User(String username,String firstname,String lastname){
+        this.username=username;
+        this.lastname=lastname;
+        this.username=username;
+    }
 }

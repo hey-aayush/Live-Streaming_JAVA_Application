@@ -6,6 +6,8 @@ public class DatabaseConnection {
     public Connection databaseLink;
 
     public Connection getConnection() {
+
+        //hide this and look for connection pooling...
         String databaseName = "LiveStream";
         String databaseUser = "root";
         String databasePassword = "@Pragya2007";

@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
@@ -152,16 +154,33 @@
          </children></AnchorPane>
       <AnchorPane fx:id="homePage" layoutX="10.0" layoutY="10.0" prefHeight="517.0" prefWidth="652.0" style="-fx-background-color: #ccccff;">
          <children>
-            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="234.0" layoutY="146.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="66.0" fitWidth="80.0" layoutX="547.0" layoutY="8.0" opacity="0.47" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../res/HomeIcon.png" />
                </image>
             </ImageView>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="261.0" layoutY="338.0" prefHeight="30.0" prefWidth="97.0" text="HomePage">
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="529.0" layoutY="76.0" prefHeight="30.0" prefWidth="102.0" text="HomePage">
                <font>
                   <Font size="17.0" />
                </font>
             </Label>
+            <ImageView fitHeight="42.0" fitWidth="40.0" layoutX="59.0" layoutY="39.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../res/Search.png" />
+               </image>
+            </ImageView>
+            <TextField fx:id="searchBar" alignment="CENTER" layoutX="136.0" layoutY="41.0" prefHeight="35.0" prefWidth="378.0" promptText="Search Others.." style="-fx-background-color: #f0feff;">
+               <font>
+                  <Font name="Chilanka Regular" size="14.0" />
+               </font>
+            </TextField>
+            <TableView fx:id="searchTable" layoutX="136.0" layoutY="76.0" prefHeight="200.0" prefWidth="378.0" style="-fx-background-color: transparent;">
+              <columns>
+                <TableColumn fx:id="firstNameCol" prefWidth="110.0" text="FirstName" />
+                <TableColumn fx:id="lastNameCol" prefWidth="133.0" text="Last Name" />
+                  <TableColumn fx:id="userNameCol" prefWidth="134.0" text="User Name" />
+              </columns>
+            </TableView>
          </children></AnchorPane>
    </children>
 </AnchorPane>

@@ -1,4 +1,6 @@
 package LiveStreamApp;
+
+// all Imports
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;

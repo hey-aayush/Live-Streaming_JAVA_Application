@@ -1,20 +1,22 @@
 package LiveStreamApp;
+
+// All imports
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import java.awt.*;
-
 
 public class ProfileController {
 
     @FXML
-    private TextField UserNameTextField,firstNameTextField,lastNameTextField;
+    private TextField UserNameTextField,firstNameTextField,lastNameTextField,searchBar;
 
     @FXML
     private ImageView home_btn,profile_btn,channels_btn,settings_btn,exit;
@@ -24,6 +26,13 @@ public class ProfileController {
 
     @FXML
     private Button editButtonProfile,updateButtonProfile;
+
+    @FXML
+    private TableView<User> searchTable;
+
+    @FXML
+    private  TableColumn<User, String> firstNameCol,lastNameCol,userNameCol;
+
 
     private int curr_page = 1;
 
@@ -43,6 +52,7 @@ public class ProfileController {
         }
     }
 
+    //Switching Tabs ..
     public void handleButtonAction(MouseEvent event){
         if (event.getTarget()==exit) {
             Stage ProfileStage = (Stage) exit.getScene().getWindow();
