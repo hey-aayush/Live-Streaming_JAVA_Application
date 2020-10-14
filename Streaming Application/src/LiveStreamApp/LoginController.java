@@ -16,7 +16,6 @@ import javafx.stage.StageStyle;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
 public class LoginController {
 
@@ -118,36 +117,35 @@ public class LoginController {
             //Need to close it use Transparent Background.
             primaryStage.close();
 
-            Stage ProfileStage = new Stage();
-            ProfileStage.initStyle(StageStyle.TRANSPARENT);
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Profile.fxml"));
-            Parent ProfileWindow = (Parent) loader.load();
+            Stage BaseStage = new Stage();
+            BaseStage.initStyle(StageStyle.TRANSPARENT);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("BaseStage.fxml"));
+            Parent BaseWindow = (Parent) loader.load();
             Image appIcon = new Image("res/icon.png");
-            ProfileStage.getIcons().add(appIcon);
-            ProfileStage.setTitle("Live Stream");
-            ProfileController setprofile = loader.getController();
-            User user = new User(usernametextfield.getText());
-            setprofile.setUser(user);
-            Scene profilescene = new Scene(ProfileWindow, 676, 611);
-            profilescene.setFill(Color.TRANSPARENT);
-            ProfileStage.setTitle("Profile");
+            BaseStage.getIcons().add(appIcon);
+            BaseStage.setTitle("Live Stream");
+            BaseStageController BaseController  = loader.getController();
+            BaseController.setUser(usernametextfield.getText());
+            Scene Basescene = new Scene(BaseWindow, 700, 650);
+            Basescene.setFill(Color.TRANSPARENT);
+            BaseStage.setTitle("Profile");
 
-            ProfileWindow.setOnMousePressed(new EventHandler<MouseEvent>() {
+            BaseWindow.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
                     xOffset = event.getSceneX();
                     yOffset = event.getSceneY();
                 }
             });
-            ProfileWindow.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            BaseWindow.setOnMouseDragged(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    ProfileStage.setX(event.getScreenX() - xOffset);
-                    ProfileStage.setY(event.getScreenY() - yOffset);
+                    BaseStage.setX(event.getScreenX() - xOffset);
+                    BaseStage.setY(event.getScreenY() - yOffset);
                 }
             });
-            ProfileStage.setScene(profilescene);
-            ProfileStage.show();
+            BaseStage.setScene(Basescene);
+            BaseStage.show();
         }
         catch(Exception E){
             E.printStackTrace();

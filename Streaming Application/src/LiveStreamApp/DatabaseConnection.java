@@ -2,6 +2,9 @@ package LiveStreamApp;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+//watch DAO concepts
+//set methods for each function smaje.....
+
 public class DatabaseConnection {
     public Connection databaseLink;
 
