@@ -1,6 +1,7 @@
 package LiveStreamApp;
 
 import javafx.beans.property.Property;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -21,7 +22,7 @@ public class HomePageController {
     static User homeUser;
 
     @FXML
-    private TextField searchBar;
+    public TextField searchBar;
 
     @FXML
     private ImageView search_btn;
@@ -36,10 +37,10 @@ public class HomePageController {
     @FXML
     private TableColumn<OtherUsers,String> userNameCol;
     @FXML
-    private TableColumn<OtherUsers, Button> actioncol;
+    private TableColumn<OtherUsers, String> actioncol;
 
-    public void setUser(User user){
-        homeUser = user;
+    public void setUser(String username){
+        homeUser = new User(username);
         searchBar.setText(homeUser.username);
     }
 
@@ -56,7 +57,7 @@ public class HomePageController {
             statement.setString(1,"%"+search+"%");
             statement.setString(2,homeUser.username);
             ResultSet queryResult = statement.executeQuery();
-            ObservableList<OtherUsers> otherUsersList = UserDao.getOtherUserObjects(queryResult,homeUser.contactlist);
+            ObservableList<OtherUsers> otherUsersList = UserDao.getOtherUserObjects(queryResult,homeUser);
             return otherUsersList;
 
         }catch (Exception E){
@@ -70,7 +71,7 @@ public class HomePageController {
         firstNameCol.setCellValueFactory(cellData->cellData.getValue().getfirstnameProperty());
         lastNameCol.setCellValueFactory(cellData->cellData.getValue().getlastnameProperty());
         userNameCol.setCellValueFactory(cellData->cellData.getValue().getusernameProperty());
-        actioncol.setCellValueFactory(new PropertyValueFactory<OtherUsers,Button>("button"));
+        actioncol.setCellValueFactory(cellData->cellData.getValue().getButtonProperty());
     }
 
     private void populateTable(ObservableList<OtherUsers> otherUsersObservableList){
@@ -78,8 +79,32 @@ public class HomePageController {
     }
 
     public void searchBtnAction(MouseEvent event) throws Exception{
+        initialize();
         ObservableList<OtherUsers> otherUsersList= searchUsers();
         populateTable(otherUsersList);
+        System.out.println("Populated");
+    }
+
+    public void clickedRow(MouseEvent event)throws Exception{
+        OtherUsers otherUsers = searchTable.getSelectionModel().getSelectedItem();
+        if (otherUsers!=null) {
+            if (otherUsers.isContact) {
+                otherUsers.cancelSQLRequest();
+                otherUsers.setButton("Cancel Request");
+            } else {
+                otherUsers.SendSQLRequest();
+                otherUsers.setButton("Send Request");
+            }
+
+            search();
+        }
+    }
+
+    public void search() throws Exception{
+        initialize();
+        ObservableList<OtherUsers> otherUsersLists= searchUsers();
+        populateTable(otherUsersLists);
+        System.out.println("Populated");
     }
 
 }

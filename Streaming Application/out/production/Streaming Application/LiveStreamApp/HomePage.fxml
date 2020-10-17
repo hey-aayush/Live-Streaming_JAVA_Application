@@ -33,7 +33,7 @@
                   <Font name="Chilanka Regular" size="14.0" />
                </font>
             </TextField>
-            <TableView fx:id="searchTable" layoutX="85.0" layoutY="148.0" prefHeight="200.0" prefWidth="540.0" style="-fx-background-color: transparent;">
+            <TableView fx:id="searchTable" layoutX="85.0" layoutY="148.0" onMousePressed="#clickedRow" prefHeight="200.0" prefWidth="540.0" style="-fx-background-color: transparent;">
                <columns>
                   <TableColumn fx:id="firstNameCol" prefWidth="110.0" text="FirstName" />
                   <TableColumn fx:id="lastNameCol" prefWidth="133.0" text="Last Name" />

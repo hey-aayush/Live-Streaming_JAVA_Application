@@ -42,7 +42,7 @@ public class BaseStageController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("HomePage.fxml"));
                 Pane view = (Pane) loader.load();
                 HomePageController HomePageController = loader.getController();
-                HomePageController.setUser(user);
+                HomePageController.setUser(user.getUserName());
 
                 TabPane.getChildren().removeAll();
                 TabPane.getChildren().setAll(view);

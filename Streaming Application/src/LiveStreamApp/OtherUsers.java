@@ -7,23 +7,29 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
 
-public class OtherUsers {
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class OtherUsers extends HomePageController {
+    private int homeUserId;
     private IntegerProperty userId;
     private StringProperty firstName;
     private StringProperty lastName;
     private StringProperty userName;
-    private Button button;
+    private StringProperty button;
+    public Boolean isContact;
 
     public OtherUsers(){
         this.userId = new SimpleIntegerProperty();
         this.firstName = new SimpleStringProperty();
         this.lastName = new SimpleStringProperty();
         this.userName = new SimpleStringProperty();
-        this.button = new Button("Send Request");
-        this.button.setOnAction(sendRequest);
-
+        this.button = new SimpleStringProperty();
     }
 // for userId :
     public int getUserId(){
@@ -74,35 +80,82 @@ public class OtherUsers {
         return lastName;
     }
 
-    public void setButton(Button button) {
-        this.button = button;
+    public void setButton(String value) {
+        this.button.set(value);
     }
 
-    public Button getButton() {
+    public StringProperty getButtonProperty() {
         return button;
     }
-    EventHandler<ActionEvent> sendRequest = new EventHandler<ActionEvent>() {
-        public void handle(ActionEvent e)
-        {
-            //SQL  statements
-            System.out.println("Clicked");
-        }
-    };
 
-    EventHandler<ActionEvent> CancelRequest = new EventHandler<ActionEvent>() {
-        public void handle(ActionEvent e)
-        {
-            //SQL  statements
-            System.out.println("Clicked");
+    public String getButton() {
+        return button.getValue();
+    }
+
+    public int getHomeUserId(){
+        return this.homeUserId;
+    }
+    public void setHomeUserId(int id){
+        this.homeUserId =id ;
+    }
+
+    public void SendSQLRequest(){
+
+        DatabaseConnection connection = new DatabaseConnection();
+        Connection connectDB = connection.getConnection();
+
+        String requestQuery = "insert into follow_request_table (sender_user_id,reciever_user_id,curr_status) values("+this.getHomeUserId()+","+this.getUserId()+",'active');";
+        System.out.println(this.getHomeUserId());
+
+        try {
+            Statement statement = connectDB.createStatement();
+            int count = statement.executeUpdate(requestQuery);
+            System.out.println(count);
+            super.homeUser.contactlist=super.homeUser.fetchContact();
+
+            //super.search();
+            //System.out.println(this.user_id);
+        }catch (Exception E){
+            E.printStackTrace();
         }
-    };
+
+
+    }
+
+
+    public void cancelSQLRequest(){
+
+        DatabaseConnection connection = new DatabaseConnection();
+        Connection connectDB = connection.getConnection();
+
+        String requestQuery = "update follow_request_table set curr_status = 'inactive' where sender_user_id = "+this.getHomeUserId()+" and reciever_user_id="+this.getUserId()+";";
+        System.out.println(this.getHomeUserId());
+
+        try {
+            Statement statement = connectDB.createStatement();
+            int count = statement.executeUpdate(requestQuery);
+            System.out.println(count);
+            super.homeUser.contactlist=super.homeUser.fetchContact();
+            //System.out.println(this.user_id);
+        }catch (Exception E){
+            E.printStackTrace();
+        }
+
+
+    }
 
     public void setbutton(ObservableList<OtherUsers> contactlist){
-     for(OtherUsers otherUsers:contactlist){
-         if (otherUsers.getUserId()==this.getUserId()){
-             this.button = new Button("Cancel Resquest");
-             this.button.setOnAction(CancelRequest);
+
+        this.isContact =false;
+        this.setButton("Send Request");
+
+         for(OtherUsers otherUsers:contactlist){
+             if (otherUsers.getUserId()==this.getUserId()){
+                 this.isContact = true;
+                 this.setButton("Cancel Request");
+
+             }
          }
-     }
+
     }
 }

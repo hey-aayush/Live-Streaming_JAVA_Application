@@ -72,7 +72,7 @@ public class User  {
         DatabaseConnection connection = new DatabaseConnection();
         Connection connectDB = connection.getConnection();
 
-        String searchQuery = "select users_account_details.username,users_account_details.user_id,users_account_details.firstname,users_account_details.lastname from users_account_details join follow_request_table where (follow_request_table.sender_user_id = users_account_details.user_id  and follow_request_table.reciever_user_id =?) or (follow_request_table.reciever_user_id = users_account_details.user_id  and follow_request_table.sender_user_id =?);";
+        String searchQuery = "select users_account_details.username,users_account_details.user_id,users_account_details.firstname,users_account_details.lastname from users_account_details join follow_request_table where (follow_request_table.sender_user_id = users_account_details.user_id  and follow_request_table.reciever_user_id =? and follow_request_table.curr_status = 'active') or (follow_request_table.reciever_user_id = users_account_details.user_id  and follow_request_table.sender_user_id =? and follow_request_table.curr_status = 'active');";
         // Limit to length of search result---
         try {
             PreparedStatement statement = connectDB.prepareStatement(searchQuery);
