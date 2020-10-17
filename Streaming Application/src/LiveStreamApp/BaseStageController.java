@@ -80,6 +80,9 @@ public class BaseStageController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("ChatPage.fxml"));
                 Pane view = (Pane) loader.load();
                 ChatPageController chatPageController = loader.getController();
+                chatPageController.setUser(user.getUserName());
+                //chatPageController.fetchContact();
+                System.out.println(user.getUser_id());
                 Thread chatThread = new Thread(new ThreadController(chatPageController));
                 chatThread.start();
                 //ye thread ko close krao exit p..... Exit function m

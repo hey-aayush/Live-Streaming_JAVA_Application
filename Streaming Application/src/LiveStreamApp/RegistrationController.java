@@ -77,7 +77,7 @@ public class RegistrationController {
             registrationmessage.setText("*Username already Exits");
             return false;
         }
-        String registeruser = "insert ignore into LiveStream_user_account (firstname,lastname,username,password) values ('"+firstname+"','"+lastname+"','"+username+"','"+password+"');";
+        String registeruser = "insert ignore into users_account_details (firstname,lastname,username,password) values ('"+firstname+"','"+lastname+"','"+username+"','"+password+"');";
 
         try {
             Statement registrationupdate = connectDB.createStatement();
@@ -97,7 +97,7 @@ public class RegistrationController {
     }
 
     public boolean dublicatecheck(String username,Connection connectionDB){
-        String dublicatecheckquery = "select count(*) from LiveStream_user_account where username = '"+username+"'";
+        String dublicatecheckquery = "select count(*) from users_account_details where username = '"+username+"'";
         try{
             Statement dublicatestatement = connectionDB.createStatement();
             ResultSet resultSet = dublicatestatement.executeQuery(dublicatecheckquery);

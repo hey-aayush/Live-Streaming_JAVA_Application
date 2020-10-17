@@ -42,7 +42,7 @@ public class LoginController {
         //Making A Connection
         DatabaseConnection connection = new DatabaseConnection();
         Connection connectDB = connection.getConnection();
-        String verifyLoginQuery = "select count(1) from LiveStream_user_account where username = ? and password = ?";
+        String verifyLoginQuery = "select count(1) from users_account_details where username = ? and password = ?";
         //Stop SQL injections like Pass = WrongPws'+'OR 1=1....
         try {
             PreparedStatement statement = connectDB.prepareStatement(verifyLoginQuery);

@@ -1,0 +1,8 @@
+1.
+https://stackoverflow.com/questions/44028055/creating-a-autocomplete-search-form-in-javafx
+2.
+javafx listveiwst
+3. add changeListeners 
+https://www.drdobbs.com/jvm/simple-searching-in-java/232700121
+
+

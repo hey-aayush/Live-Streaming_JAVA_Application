@@ -11,7 +11,7 @@ public class DatabaseConnection {
     public Connection getConnection() {
 
         //hide this and look for connection pooling...
-        String databaseName = "LiveStream";
+        String databaseName = "test";
         String databaseUser = "root";
         String databasePassword = "@Pragya2007";
         String url = "jdbc:mysql://localhost/"+databaseName;

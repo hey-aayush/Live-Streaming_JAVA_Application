@@ -1,10 +1,13 @@
 package LiveStreamApp;
 
+import javafx.beans.property.Property;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
@@ -32,6 +35,8 @@ public class HomePageController {
     private TableColumn<OtherUsers,String> lastNameCol;
     @FXML
     private TableColumn<OtherUsers,String> userNameCol;
+    @FXML
+    private TableColumn<OtherUsers, Button> actioncol;
 
     public void setUser(User user){
         homeUser = user;
@@ -44,14 +49,14 @@ public class HomePageController {
         DatabaseConnection connection = new DatabaseConnection();
         Connection connectDB = connection.getConnection();
 
-        String searchQuery = "select * from LiveStream_user_account where username like ? && username not in (?);";
+        String searchQuery = "select * from users_account_details where username like ? && username not in (?);";
         // Limit to length of search result---
         try {
             PreparedStatement statement = connectDB.prepareStatement(searchQuery);
             statement.setString(1,"%"+search+"%");
             statement.setString(2,homeUser.username);
             ResultSet queryResult = statement.executeQuery();
-            ObservableList<OtherUsers> otherUsersList = UserDao.getOtherUserObjects(queryResult);
+            ObservableList<OtherUsers> otherUsersList = UserDao.getOtherUserObjects(queryResult,homeUser.contactlist);
             return otherUsersList;
 
         }catch (Exception E){
@@ -65,6 +70,7 @@ public class HomePageController {
         firstNameCol.setCellValueFactory(cellData->cellData.getValue().getfirstnameProperty());
         lastNameCol.setCellValueFactory(cellData->cellData.getValue().getlastnameProperty());
         userNameCol.setCellValueFactory(cellData->cellData.getValue().getusernameProperty());
+        actioncol.setCellValueFactory(new PropertyValueFactory<OtherUsers,Button>("button"));
     }
 
     private void populateTable(ObservableList<OtherUsers> otherUsersObservableList){
