@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="555.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LiveStreamApp.ProfilePageController">
+   <children>
+      <AnchorPane fx:id="profile" prefHeight="555.0" prefWidth="700.0" style="-fx-background-color: #ccccff;">
+         <children>
+            <ImageView fitHeight="66.0" fitWidth="80.0" layoutX="552.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../res/Profile.png" />
+               </image>
+            </ImageView>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="239.0" layoutY="34.0" prefHeight="26.0" prefWidth="186.0" text="Profile Section" underline="true">
+               <font>
+                  <Font size="22.0" />
+               </font>
+            </Label>
+            <Label layoutX="113.0" layoutY="129.0" text="First Name :">
+               <font>
+                  <Font name="Chilanka Regular" size="19.0" />
+               </font>
+            </Label>
+            <Label layoutX="113.0" layoutY="201.0" text="Last Name :">
+               <font>
+                  <Font name="Chilanka Regular" size="19.0" />
+               </font>
+            </Label>
+            <Label layoutX="113.0" layoutY="276.0" text="User Name :">
+               <font>
+                  <Font name="Chilanka Regular" size="19.0" />
+               </font>
+            </Label>
+            <Button fx:id="editButtonProfile" layoutX="205.0" layoutY="373.0" mnemonicParsing="false" onAction="#setEditButtonProfile" prefHeight="35.0" prefWidth="78.0" style="-fx-background-color: blue;" text="Edit" textFill="#070707">
+               <font>
+                  <Font name="Chilanka Regular" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="updateButtonProfile" layoutX="205.0" layoutY="373.0" mnemonicParsing="false" onAction="#setEditButtonProfile" prefHeight="32.0" prefWidth="78.0" style="-fx-background-color: blue;" text="Update" textFill="#070707" visible="false">
+               <font>
+                  <Font name="Chilanka Regular" size="12.0" />
+               </font>
+            </Button>
+            <TextField fx:id="firstNameTextField" editable="false" layoutX="304.0" layoutY="130.0" prefHeight="32.0" prefWidth="194.0" style="-fx-background-color: #ccccff;">
+               <font>
+                  <Font name="Chilanka Regular" size="16.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="lastNameTextField" editable="false" layoutX="304.0" layoutY="202.0" prefHeight="32.0" prefWidth="194.0" style="-fx-background-color: #ccccff;">
+               <font>
+                  <Font name="Chilanka Regular" size="16.0" />
+               </font>
+            </TextField>
+            <TextField fx:id="UserNameTextField" editable="false" layoutX="304.0" layoutY="277.0" prefHeight="30.0" prefWidth="194.0" style="-fx-background-color: #ccccff;">
+               <font>
+                  <Font name="Chilanka Regular" size="16.0" />
+               </font>
+            </TextField>
+            <Button layoutX="383.0" layoutY="373.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="125.0" style="-fx-background-color: green;" text="Change Password" textFill="#070707">
+               <font>
+                  <Font name="Chilanka Regular" size="10.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

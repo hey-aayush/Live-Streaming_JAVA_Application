@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<AnchorPane prefHeight="575.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LiveStreamApp.ChatPageController">
+   <children>
+      <BorderPane>
+         <center>
+            <AnchorPane fx:id="chatSection" prefHeight="555.0" prefWidth="700.0" style="-fx-background-color: #ccccff;">
+               <children>
+                  <ImageView fx:id="search_btn" fitHeight="42.0" fitWidth="63.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../res/icons8-messages-50.png" />
+                     </image>
+                  </ImageView>
+                  <TextArea fx:id="ChatTextArea" layoutX="204.0" layoutY="56.0" prefHeight="430.0" prefWidth="473.0" />
+                  <TextField fx:id="MsgField" layoutX="204.0" layoutY="505.0" prefHeight="36.0" prefWidth="413.0" />
+                  <ImageView fx:id="sendBtn" fitHeight="47.0" fitWidth="51.0" layoutX="630.0" layoutY="500.0" onMousePressed="#sendMessage" pickOnBounds="true" preserveRatio="true" rotate="90.0">
+                     <image>
+                        <Image url="@../res/icons8-email-send-64.png" />
+                     </image>
+                  </ImageView>
+                  <TableView fx:id="contactTable" layoutX="14.0" layoutY="56.0" prefHeight="431.0" prefWidth="172.0">
+                     <columns>
+                        <TableColumn fx:id="Contacts" prefWidth="169.0" text="Contacts" />
+                     </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>
