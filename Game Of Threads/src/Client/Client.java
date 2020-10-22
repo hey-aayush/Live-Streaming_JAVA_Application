@@ -22,7 +22,7 @@ import java.net.Socket;
 
 public class Client implements Runnable{
 
-    Socket socketClient;
+    static Socket socketClient;
 
     public static ObjectInputStream objectInputStream;
     public static ObjectOutputStream objectOutputStream;
@@ -45,6 +45,7 @@ public class Client implements Runnable{
 
           //Creaing client
            socketClient = new Socket("localhost", 5781);
+           System.out.println(socketClient+ "----");
           objectOutputStream = new ObjectOutputStream(socketClient.getOutputStream());
           objectInputStream = new ObjectInputStream(socketClient.getInputStream());
 
@@ -57,19 +58,19 @@ public class Client implements Runnable{
   }
 
 
-
-
     @Override
     public void run() {
+        System.out.println("===== " + socketClient);
       while (socketClient != null && socketClient.isConnected()){
           try {
              Object ref = objectInputStream.readObject();
-
+             System.out.println("Received");
 
              if(ref instanceof TFReply){
                  LoginController lc = new LoginController();
                  TFReply tfReply = (TFReply)ref;
                  if(tfReply.getObj() instanceof RegisterData){
+                     System.out.println(lc.getController());
                      Platform.runLater(new Runnable() {
                          @Override
                          public void run() {

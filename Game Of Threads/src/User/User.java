@@ -2,13 +2,13 @@ package User;
 
 import Database.DatabaseConnection;
 import javafx.collections.ObservableList;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class User {
+
     private int user_id;
     private String username;
     private String firstname;
@@ -19,7 +19,6 @@ public class User {
     public ObservableList<OtherUsers> getContactlist() {
         return contactlist;
     }
-
     public void setContactlist(ObservableList<OtherUsers> contactlist) {
         this.contactlist = contactlist;
     }
@@ -78,14 +77,14 @@ public class User {
         DatabaseConnection connection = DatabaseConnection.getInstance();
         Connection connectDB = connection.getConnection();
 
-        String verifyLogin = "select user_id,firstname,lastname from users_account_details where username = '" + username + "';";
+        String verifyLogin = "select userId,firstName,lastName from user where userName = '" + username + "';";
         try {
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(verifyLogin);
             queryResult.next();
-            this.user_id = queryResult.getInt("user_id");
-            this.firstname = queryResult.getString("firstname");
-            this.lastname = queryResult.getString("lastname");
+            this.user_id = queryResult.getInt("userId");
+            this.firstname = queryResult.getString("firstName");
+            this.lastname = queryResult.getString("lastName");
             this.username = username;
             this.contactlist = fetchContact();
             //System.out.println(this.user_id);
@@ -105,7 +104,7 @@ public class User {
         DatabaseConnection connection = DatabaseConnection.getInstance();
         Connection connectDB = connection.getConnection();
 
-        String searchQuery = "select users_account_details.username,users_account_details.user_id,users_account_details.firstname,users_account_details.lastname from users_account_details join follow_request_table where (follow_request_table.sender_user_id = users_account_details.user_id  and follow_request_table.reciever_user_id =? and follow_request_table.curr_status = 'active') or (follow_request_table.reciever_user_id = users_account_details.user_id  and follow_request_table.sender_user_id =? and follow_request_table.curr_status = 'active');";
+        String searchQuery = "select user.userName,user.userId,user.firstName,user.lastName from user join follow_request_table where (follow_request_table.sender_user_id = users_account_details.user_id  and follow_request_table.reciever_user_id =? and follow_request_table.curr_status = 'active') or (follow_request_table.reciever_user_id = users_account_details.user_id  and follow_request_table.sender_user_id =? and follow_request_table.curr_status = 'active');";
         // Limit to length of search result---
         try {
             PreparedStatement statement = connectDB.prepareStatement(searchQuery);

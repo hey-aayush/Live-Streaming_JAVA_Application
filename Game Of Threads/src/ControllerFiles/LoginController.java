@@ -36,7 +36,7 @@ public class LoginController {
         this.controller = controller;
     }
 
-    private RegistrationController controller;
+    private static RegistrationController controller;
 
     static ObjectOutputStream objectOutputStream = Client.objectOutputStream;
     static ObjectInputStream objectInputStream = Client.objectInputStream;
@@ -63,8 +63,11 @@ public class LoginController {
         LoginData data = new LoginData();
         data.setUserName(usernametextfield.getText());
         data.setPassword(userpasswordfield.getText());
-        objectOutputStream.writeObject(data);
-        objectOutputStream.flush();
+        if(objectOutputStream != null){
+            objectOutputStream.writeObject(data);
+            objectOutputStream.flush();
+        }
+
 
     }
 
@@ -89,11 +92,12 @@ public class LoginController {
     public void createAccountForm(Stage primaryStage) {
 
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/registration.fxml"));
             //Loading the FXML file
             Parent registrationWindow = loader.load();
             //Access the controller by calling getController() on the FXMLLoader instance.
              controller = (RegistrationController) loader.getController();
+             System.out.println("regcontroller" + getController());
             primaryStage.setTitle("Live Streaming");
             registrationWindow.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
@@ -123,7 +127,7 @@ public class LoginController {
 
             Stage BaseStage = new Stage();
             BaseStage.initStyle(StageStyle.TRANSPARENT);
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("BaseStage.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/BaseStage.fxml"));
             Parent BaseWindow = (Parent) loader.load();
             Image appIcon = new Image("res/icon.png");
             BaseStage.getIcons().add(appIcon);
@@ -162,7 +166,6 @@ public class LoginController {
             loginmessagelabel.setTextFill(Color.GREEN);
             loginmessagelabel.setText("Login Successfull");
             enterloginscene((Stage) loginbutton.getScene().getWindow());
-
         }
         else{
             loginmessagelabel.setTextFill(Color.RED);

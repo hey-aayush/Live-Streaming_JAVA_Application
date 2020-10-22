@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ClientGuiController implements Initializable {
-    public String friend, user = "alok";
+    public String friend, user = "aayush";
     public DatabaseConnection connection = new DatabaseConnection();
     Connection con = connection.getConnection();
 
@@ -80,7 +80,7 @@ public class ClientGuiController implements Initializable {
         fList.add("alok");
         fList.add("saurabh");
         fList.add("aayush");
-        search.setText("alok");
+        search.setText("aayush");
     }
 
     public void openChats(MouseEvent mouseEvent) throws Exception{

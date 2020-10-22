@@ -31,7 +31,7 @@ public class Main extends Application {
         this.controller = controller;
     }
 
-    private  LoginController controller;
+    private  static LoginController controller;
     //Value of x,y relative to Scene required to drag window
     private double xOffset = 0;
     private double yOffset = 0;
@@ -70,10 +70,12 @@ public class Main extends Application {
         primaryStage.show();
     }
     public static void main(String[] args) {
-       launch(args);
         System.out.println("hello");
         Client client = Client.getInstance();
         client.createSocket();
+        System.out.println("hi");
+       launch(args);
+
 
 
     }

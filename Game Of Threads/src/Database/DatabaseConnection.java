@@ -22,7 +22,7 @@ public class DatabaseConnection {
     public Connection getConnection() {
 
         //hide this and look for connection pooling...
-        String databaseName = "mydb";
+        String databaseName = "gameofthreads";
         String databaseUser = "root";
         String databasePassword = "sk@715037";
         String url = "jdbc:mysql://localhost/"+databaseName;

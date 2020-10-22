@@ -45,7 +45,7 @@ public class Client extends Application {
             Socket socketClient = new Socket("localhost", 5781);
             //Outputstream
             Message firstMessage = new Message();
-            firstMessage.setSendername("alok");
+            firstMessage.setSendername("aayush");
             firstMessage.setReceiverName("xyz");
             firstMessage.setContent("Hi");
             firstMessage.setStatus(0);

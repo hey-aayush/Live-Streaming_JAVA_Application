@@ -40,6 +40,7 @@ public class ClientHandler implements Runnable{
 
             //Adding clients in clients vector
             System.out.println(o);
+            System.out.println("Connected ....");
 
             while (socket.isConnected()){
                 Object object = in.readObject();
@@ -48,9 +49,11 @@ public class ClientHandler implements Runnable{
                    Registration registration = new Registration();
                    boolean reply = registration.insertUser(registerData);
                    TFReply tfReply = TFReply.getInstance();
+                   System.out.println(reply);
                    tfReply.setReply(reply);
                    tfReply.setObj(registerData);
                    o.writeObject(tfReply);
+                   System.out.println("done");
                 }else
                     if(object instanceof LoginData){
                         LoginData loginData = (LoginData)object;

@@ -49,7 +49,7 @@ public class RegistrationController {
     public void closeButtonAction(Event event){
         Stage primaryStage = (Stage) closebutton.getScene().getWindow();
         try {
-            Parent loginWindow = FXMLLoader.load(getClass().getResource("login.fxml"));
+            Parent loginWindow = FXMLLoader.load(getClass().getResource("../FXMLFiles/login.fxml"));
             primaryStage.setTitle("Live Streaming");
             primaryStage.setScene(new Scene(loginWindow, 524, 529));
         }
@@ -58,7 +58,7 @@ public class RegistrationController {
         }
     }
 
-    public void registerbuttonAction(Event event) {
+    public void registerbuttonAction(Event event) throws IOException {
         registrationmessage.setText("");
         if (!setpasswordfield.getText().equals(confirmpasswordfield.getText())){
             confirmpasswordmessage.setTextFill(Color.RED);
@@ -72,6 +72,7 @@ public class RegistrationController {
             registrationmessage.setTextFill(Color.GREEN);
             registrationmessage.setText("*User Registered Successfully. Please Login");
         }*/
+        registerUser();
     }
 
     public void registerUser() throws IOException {
@@ -89,14 +90,20 @@ public class RegistrationController {
         data.setLastName(lastname);
         data.setUserName(username);
         data.setPassword(password);
+        System.out.println(objectOutputStream);
+        System.out.println("hello1");
+        if(objectOutputStream != null){
+            System.out.println("hello1");
+            objectOutputStream.writeObject(data);
+            objectOutputStream.flush();
+            System.out.println("hello");
+        }
 
-        objectOutputStream.writeObject(data);
-        objectOutputStream.flush();
     }
 
 
     public void appendReply(TFReply tfReply) {
-        if(tfReply.getReply()){
+        if(tfReply.getReply() == true){
             registrationmessage.setTextFill(Color.GREEN);
             registrationmessage.setText("*User Registered Successfully. Please Login");
         }

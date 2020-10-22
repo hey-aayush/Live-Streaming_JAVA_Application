@@ -29,8 +29,11 @@ public class Server implements Runnable{
 
             //Adding clients in clients vector
             System.out.println(o);
-
-            Message firstMessage = (Message)in.readObject();
+            Object ref = in.readObject();
+            System.out.println(" ==1==== " + ref+ "9999");
+            Message firstMessage = new Message();
+            if(ref instanceof Message)
+             firstMessage = (Message)ref;
 
             listOfClient.put(firstMessage.getSendername(), o);
             System.out.println(listOfClient.get(firstMessage.getSendername()));
@@ -38,6 +41,7 @@ public class Server implements Runnable{
 
             while(socket.isConnected()){
                 //Reading message from client
+                System.out.println(in.readObject().getClass());
                 Message msg = (Message) in.readObject();
                 System.out.println("Message Received: "+msg.getSendername() + msg.getReceiverName() + msg.getContent());
                 String userName = msg.getSendername();
