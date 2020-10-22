@@ -22,7 +22,7 @@ public class BaseStageController {
     private User user;
 
     @FXML
-    private ImageView home_btn,profile_btn,chat_btn,channels_btn,settings_btn,exit;
+    private ImageView home_btn,profile_btn,chat_btn,stream_btn,channels_btn,settings_btn,exit;
     @FXML
     private AnchorPane TabPane;
 
@@ -90,7 +90,30 @@ public class BaseStageController {
             }catch (Exception e){
                 e.printStackTrace();
             }
-        }else if (event.getTarget()==settings_btn) {
+        }else if (event.getTarget()==channels_btn) {
+            try{
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/ChannelSection.fxml"));
+                Pane view = (Pane) loader.load();
+                TabPane.getChildren().removeAll();
+                TabPane.getChildren().setAll(view);
+
+            }catch (Exception E){
+                E.printStackTrace();
+            }
+            //ye thread ko close krao exit p..... Exit function m
+            //chatThread.interrupt();
+        }
+        else if (event.getTarget()==stream_btn) {
+            try{
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/StreammerSection.fxml"));
+                Pane view = (Pane) loader.load();
+                TabPane.getChildren().removeAll();
+                TabPane.getChildren().setAll(view);
+            }catch (Exception E){
+                E.printStackTrace();
+            }
+        }
+        else if (event.getTarget()==settings_btn) {
             //settings button
         }
     }
