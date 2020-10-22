@@ -1,5 +1,7 @@
 package ControllerFiles;
 
+import Database.DatabaseConnection;
+import User.User;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -11,11 +13,12 @@ import javafx.scene.input.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import User.*;
 
 
 public class HomePageController {
 
-    static User homeUser;
+    public static User homeUser;
 
     @FXML
     private TextField searchBar;
@@ -35,13 +38,13 @@ public class HomePageController {
 
     public void setUser(User user){
         homeUser = user;
-        searchBar.setText(homeUser.username);
+        searchBar.setText(homeUser.getUserName());
     }
 
     public ObservableList<OtherUsers> searchUsers(){
         String search = searchBar.getText();
 
-        DatabaseConnection connection = new DatabaseConnection();
+        DatabaseConnection connection = DatabaseConnection.getInstance();
         Connection connectDB = connection.getConnection();
 
         String searchQuery = "select * from LiveStream_user_account where username like ? && username not in (?);";
@@ -49,9 +52,9 @@ public class HomePageController {
         try {
             PreparedStatement statement = connectDB.prepareStatement(searchQuery);
             statement.setString(1,"%"+search+"%");
-            statement.setString(2,homeUser.username);
+            statement.setString(2,homeUser.getUserName());
             ResultSet queryResult = statement.executeQuery();
-            ObservableList<OtherUsers> otherUsersList = UserDao.getOtherUserObjects(queryResult);
+            ObservableList<OtherUsers> otherUsersList = UserDao.getOtherUserObjects(queryResult, homeUser);
             return otherUsersList;
 
         }catch (Exception E){

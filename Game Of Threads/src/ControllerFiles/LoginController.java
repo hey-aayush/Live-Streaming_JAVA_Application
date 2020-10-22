@@ -1,7 +1,11 @@
 package ControllerFiles;
 
 //All imports
+import Client.*;
 import Database.DatabaseConnection;
+import Server.Registration;
+import Server.TFReply;
+import com.mysql.cj.log.Log;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,12 +18,28 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.stage.StageStyle;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class LoginController {
-    public RegistrationController controller;
+
+    public RegistrationController getController() {
+        return controller;
+    }
+
+    public void setController(RegistrationController controller) {
+        this.controller = controller;
+    }
+
+    private RegistrationController controller;
+
+    static ObjectOutputStream objectOutputStream = Client.objectOutputStream;
+    static ObjectInputStream objectInputStream = Client.objectInputStream;
 
     //var for x,y for dragging.
     private double xOffset = 0;
@@ -39,38 +59,16 @@ public class LoginController {
     private PasswordField userpasswordfield;
 
     //Function to verify credentials.
-    public void validdateLogin(){
+    public void validdateLogin() throws IOException {
+        LoginData data = new LoginData();
+        data.setUserName(usernametextfield.getText());
+        data.setPassword(userpasswordfield.getText());
+        objectOutputStream.writeObject(data);
+        objectOutputStream.flush();
 
-        //Making A Connection
-        DatabaseConnection connection = DatabaseConnection.getInstance();
-        Connection connectDB = connection.getConnection();
-        String verifyLoginQuery = "select count(1) from LiveStream_user_account where username = ? and password = ?";
-        //Stop SQL injections like Pass = WrongPws'+'OR 1=1....
-        try {
-            PreparedStatement statement = connectDB.prepareStatement(verifyLoginQuery);
-            statement.setString(1,usernametextfield.getText());
-            statement.setString(2,userpasswordfield.getText());
-            ResultSet queryResult = statement.executeQuery();
-            if(queryResult.next()){
-                //Query found in DataBase
-                if (queryResult.getInt(1)==1){
-                    loginmessagelabel.setTextFill(Color.GREEN);
-                    loginmessagelabel.setText("Login Successfull");
-                    enterloginscene((Stage) loginbutton.getScene().getWindow());
-                }//Not Found so invalid credentials
-                else{
-                    loginmessagelabel.setTextFill(Color.RED);
-                    loginmessagelabel.setText("Enter valid Credentials");
-                }
-            }
-            connectDB.close();
-
-        }catch (Exception E){
-            E.printStackTrace();
-        }
     }
 
-    public void loginbuttonAction(ActionEvent event){
+    public void loginbuttonAction(ActionEvent event) throws IOException {
         if(usernametextfield.getText().isBlank()|| userpasswordfield.getText().isBlank()){
             loginmessagelabel.setText("Enter valid Credentials");
         }else{
@@ -91,14 +89,11 @@ public class LoginController {
     public void createAccountForm(Stage primaryStage) {
 
         try{
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles.registration.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("sample.fxml"));
             //Loading the FXML file
             Parent registrationWindow = loader.load();
-
-
             //Access the controller by calling getController() on the FXMLLoader instance.
-            controller = (RegistrationController) loader.getController();
-
+             controller = (RegistrationController) loader.getController();
             primaryStage.setTitle("Live Streaming");
             registrationWindow.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
@@ -124,8 +119,8 @@ public class LoginController {
     public void enterloginscene(Stage primaryStage){
         try{
             //Need to close it use Transparent Background.
-
             primaryStage.close();
+
             Stage BaseStage = new Stage();
             BaseStage.initStyle(StageStyle.TRANSPARENT);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("BaseStage.fxml"));
@@ -160,5 +155,18 @@ public class LoginController {
             E.printStackTrace();
         }
 
+    }
+
+    public void appendReply(TFReply tfReply) {
+        if (tfReply.getReply()){
+            loginmessagelabel.setTextFill(Color.GREEN);
+            loginmessagelabel.setText("Login Successfull");
+            enterloginscene((Stage) loginbutton.getScene().getWindow());
+
+        }
+        else{
+            loginmessagelabel.setTextFill(Color.RED);
+            loginmessagelabel.setText("Enter valid Credentials");
+        }
     }
 }

@@ -55,7 +55,7 @@
                                 <SepiaTone level="0.0" />
                             </effect>
                         </Button>
-                        <Button fx:id="loginbutton" layoutX="104.0" layoutY="352.0" mnemonicParsing="false" onAction="#loginbuttonAction" prefHeight="29.0" prefWidth="96.0" style="-fx-background-color: #9535f4;" text="Login" textFill="#f5e6e6">
+                        <Button fx:id="loginbutton" layoutX="104.0" layoutY="361.0" mnemonicParsing="false" onAction="#loginbuttonAction" prefHeight="29.0" prefWidth="96.0" style="-fx-background-color: #9535f4;" text="Login" textFill="#f5e6e6">
                             <font>
                                 <Font name="Chilanka Regular" size="13.0" />
                             </font>
