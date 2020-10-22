@@ -1,5 +1,7 @@
 package Client;
 
+import ControllerFiles.LoginController;
+import ControllerFiles.RegistrationController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +14,24 @@ import javafx.stage.StageStyle;
 
 public class Main extends Application {
 
+    public static Main singleInstance = null;
+   // private Main(){}
+
+    public static Main getInstance(){
+        if(singleInstance == null)
+            singleInstance = new Main();
+        return  singleInstance;
+    }
+
+    public LoginController getController() {
+        return controller;
+    }
+
+    public void setController(LoginController controller) {
+        this.controller = controller;
+    }
+
+    private  LoginController controller;
     //Value of x,y relative to Scene required to drag window
     private double xOffset = 0;
     private double yOffset = 0;
@@ -19,7 +39,11 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         //creating Login Window and Scene (undecorated)
-        Parent root = FXMLLoader.load(getClass().getResource("FXMLFiles.login.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/login.fxml"));
+        //Loading the FXML file
+        Parent root = loader.load();
+        //Access the controller by calling getController() on the FXMLLoader instance.
+        controller = (LoginController) loader.getController();
         Image appIcon = new Image("res/icon.png");
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.getIcons().add(appIcon);
@@ -46,9 +70,11 @@ public class Main extends Application {
         primaryStage.show();
     }
     public static void main(String[] args) {
+       launch(args);
+        System.out.println("hello");
         Client client = Client.getInstance();
         client.createSocket();
-        launch(args);
+
 
     }
 }

@@ -61,21 +61,36 @@ public class Client implements Runnable{
 
     @Override
     public void run() {
-      while (socketClient.isConnected()){
+      while (socketClient != null && socketClient.isConnected()){
           try {
              Object ref = objectInputStream.readObject();
-              LoginController lc = new LoginController();
+
 
              if(ref instanceof TFReply){
+                 LoginController lc = new LoginController();
                  TFReply tfReply = (TFReply)ref;
-                 Platform.runLater(new Runnable() {
-                     @Override
-                     public void run() {
-                       lc.controller.appendReply(tfReply);
+                 if(tfReply.getObj() instanceof RegisterData){
+                     Platform.runLater(new Runnable() {
+                         @Override
+                         public void run() {
+                             lc.getController().appendReply(tfReply);
+                         }
+                     });
+                 }
+                 else
+                     if(tfReply.getObj() instanceof LoginData){
+                         Main main = Main.getInstance();
+                         Platform.runLater(new Runnable() {
+                             @Override
+                             public void run() {
+                                 main.getController().appendReply(tfReply);
+                             }
+                         });
                      }
-                 })
+
 
              }
+
           } catch (IOException e) {
               e.printStackTrace();
           } catch (ClassNotFoundException e) {

@@ -1,5 +1,6 @@
 package ControllerFiles;
 
+import User.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.image.ImageView;
@@ -79,8 +80,8 @@ public class BaseStageController {
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("ChatPage.fxml"));
                 Pane view = (Pane) loader.load();
-                ChatPageController chatPageController = loader.getController();
-                Thread chatThread = new Thread(new ThreadController(chatPageController));
+              //  ChatPageController chatPageController = loader.getController();
+               // Thread chatThread = new Thread(new ThreadController(chatPageController));
                 chatThread.start();
                 //ye thread ko close krao exit p..... Exit function m
                 TabPane.getChildren().removeAll();
@@ -90,9 +91,7 @@ public class BaseStageController {
                 e.printStackTrace();
             }
         }else if (event.getTarget()==settings_btn) {
-            ReturnView retrnView = new ReturnView();
-            Pane view = retrnView.getPage("HomePage.fxml");
-            TabPane.getChildren().setAll(view);
+            //settings button
         }
     }
 }

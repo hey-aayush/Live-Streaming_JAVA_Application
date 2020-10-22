@@ -1,7 +1,9 @@
 package Server;
 
+import Client.LoginData;
 import Client.RegisterData;
 import Database.DatabaseConnection;
+import com.mysql.cj.log.Log;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -45,10 +47,20 @@ public class ClientHandler implements Runnable{
                     RegisterData registerData = (RegisterData)object;
                    Registration registration = new Registration();
                    boolean reply = registration.insertUser(registerData);
-                   TFReply tfReply = new TFReply();
+                   TFReply tfReply = TFReply.getInstance();
                    tfReply.setReply(reply);
+                   tfReply.setObj(registerData);
                    o.writeObject(tfReply);
-                }
+                }else
+                    if(object instanceof LoginData){
+                        LoginData loginData = (LoginData)object;
+                        Login login = new Login();
+                        boolean reply = login.validateLogin(loginData.getUserName(), loginData.getPassword());
+                        TFReply tfReply = TFReply.getInstance();
+                        tfReply.setReply(reply);
+                        tfReply.setObj(loginData);
+                        o.writeObject(tfReply);
+                    }
             }
 
         }catch(Exception e){}

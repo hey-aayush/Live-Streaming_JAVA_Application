@@ -96,6 +96,13 @@ public class RegistrationController {
 
 
     public void appendReply(TFReply tfReply) {
-        if(tfReply.getReply());
+        if(tfReply.getReply()){
+            registrationmessage.setTextFill(Color.GREEN);
+            registrationmessage.setText("*User Registered Successfully. Please Login");
+        }
+        else{
+            registrationmessage.setTextFill(Color.RED);
+            registrationmessage.setText("Registration failed");
+        }
     }
 }
