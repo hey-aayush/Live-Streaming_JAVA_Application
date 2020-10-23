@@ -47,12 +47,12 @@ public class HomePageController {
         DatabaseConnection connection = DatabaseConnection.getInstance();
         Connection connectDB = connection.getConnection();
 
-        String searchQuery = "select * from LiveStream_user_account where username like ? && username not in (?);";
+        String searchQuery = "select * from user where username like ?;";
         // Limit to length of search result---
         try {
             PreparedStatement statement = connectDB.prepareStatement(searchQuery);
             statement.setString(1,"%"+search+"%");
-            statement.setString(2,homeUser.getUserName());
+            //statement.setString(2,homeUser.getUserName());
             ResultSet queryResult = statement.executeQuery();
             ObservableList<OtherUsers> otherUsersList = UserDao.getOtherUserObjects(queryResult, homeUser);
             return otherUsersList;

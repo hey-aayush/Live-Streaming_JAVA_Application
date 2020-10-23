@@ -47,15 +47,15 @@
                             </font>
                         </Label>
                         <PasswordField fx:id="userpasswordfield" layoutX="140.0" layoutY="286.0" prefHeight="26.0" prefWidth="132.0" promptText="Password" />
-                        <Button fx:id="registerbutton" layoutX="104.0" layoutY="400.0" mnemonicParsing="false" onAction="#RegisterButtonAction" prefHeight="29.0" prefWidth="96.0" style="-fx-background-color: #fff;" text="Register here" textFill="#9535f4">
+                        <Button fx:id="registerbutton" layoutX="109.0" layoutY="412.0" mnemonicParsing="false" onAction="#RegisterButtonAction" prefHeight="31.0" prefWidth="98.0" style="-fx-background-color: #fff; -fx-border-color: #9535f4;" text="Register " textFill="#9535f4">
                             <font>
-                                <Font name="Chilanka Regular" size="13.0" />
+                                <Font name="System Bold" size="13.0" />
                             </font>
                             <effect>
                                 <SepiaTone level="0.0" />
                             </effect>
                         </Button>
-                        <Button fx:id="loginbutton" layoutX="104.0" layoutY="361.0" mnemonicParsing="false" onAction="#loginbuttonAction" prefHeight="29.0" prefWidth="96.0" style="-fx-background-color: #9535f4;" text="Login" textFill="#f5e6e6">
+                        <Button fx:id="loginbutton" layoutX="110.0" layoutY="361.0" mnemonicParsing="false" onAction="#loginbuttonAction" prefHeight="29.0" prefWidth="96.0" style="-fx-background-color: #9535f4; -fx-border-color: #9535f4;" text="Login" textFill="WHITE">
                             <font>
                                 <Font name="Chilanka Regular" size="13.0" />
                             </font>

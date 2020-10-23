@@ -36,11 +36,11 @@ public class UserDao {
                 OtherUsers otherUser = new OtherUsers();
                 //ek constructor m bna dena
                 otherUser.setHomeUserId(homeuser.getUser_id());
-                otherUser.setUserId(rsSet.getInt("user_id"));
-                otherUser.setFirstName(rsSet.getString("firstname"));
-                otherUser.setlastName(rsSet.getString("lastname"));
-                otherUser.setUserName(rsSet.getString("username"));
-                otherUser.setbutton(homeuser.getContactlist());
+                otherUser.setUserId(rsSet.getInt("userId"));
+                otherUser.setFirstName(rsSet.getString("firstName"));
+                otherUser.setlastName(rsSet.getString("lastName"));
+                otherUser.setUserName(rsSet.getString("userName"));
+                //otherUser.setbutton(homeuser.getContactlist());
                 //System.out.println(otherUser.getUserName());
                 otheruserslist.add(otherUser);
             }

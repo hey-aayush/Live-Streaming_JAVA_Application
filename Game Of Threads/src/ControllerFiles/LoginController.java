@@ -27,6 +27,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class LoginController {
+    public BaseStageController baseStageController;
 
     public RegistrationController getController() {
         return controller;
@@ -51,6 +52,7 @@ public class LoginController {
 
     @FXML
     private Label loginmessagelabel;
+
 
     @FXML
     private TextField usernametextfield;
@@ -96,8 +98,8 @@ public class LoginController {
             //Loading the FXML file
             Parent registrationWindow = loader.load();
             //Access the controller by calling getController() on the FXMLLoader instance.
-             controller = (RegistrationController) loader.getController();
-             System.out.println("regcontroller" + getController());
+            controller = (RegistrationController) loader.getController();
+            System.out.println("regcontroller" + getController());
             primaryStage.setTitle("Live Streaming");
             registrationWindow.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
@@ -124,16 +126,23 @@ public class LoginController {
         try{
             //Need to close it use Transparent Background.
             primaryStage.close();
+            /*Stage BaseStage = new Stage();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/searchPage.fxml"));
+            Parent BaseWindow = loader.load();
+            Scene scene = new Scene(BaseWindow, 700, 650);
 
+            BaseStage.setScene(scene);
+            BaseStage.show();
+*/
             Stage BaseStage = new Stage();
             BaseStage.initStyle(StageStyle.TRANSPARENT);
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/BaseStage.fxml"));
-            Parent BaseWindow = (Parent) loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/baseStage.fxml"));
+            Parent BaseWindow = loader.load();
             Image appIcon = new Image("res/icon.png");
             BaseStage.getIcons().add(appIcon);
             BaseStage.setTitle("Live Stream");
-            BaseStageController BaseController  = loader.getController();
-            BaseController.setUser(usernametextfield.getText());
+            baseStageController  = (BaseStageController)loader.getController();
+            baseStageController.setUser(usernametextfield.getText());
             Scene Basescene = new Scene(BaseWindow, 700, 650);
             Basescene.setFill(Color.TRANSPARENT);
             BaseStage.setTitle("Profile");
