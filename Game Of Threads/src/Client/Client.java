@@ -1,19 +1,15 @@
 package Client;
 
+import ControllerFiles.BaseStageController;
+import ControllerFiles.ChatPageController;
 import ControllerFiles.LoginController;
 import ControllerFiles.RegistrationController;
-import Server.TFReply;
+import Message.Message;
+import Server.*;
 import com.sun.javafx.tk.AppletWindow;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -48,7 +44,10 @@ public class Client implements Runnable{
            System.out.println(socketClient+ "----");
           objectOutputStream = new ObjectOutputStream(socketClient.getOutputStream());
           objectInputStream = new ObjectInputStream(socketClient.getInputStream());
-
+          //Sending firstMessage to server
+          Message firstMessage = new Message();
+          firstMessage.setSendername("saurabh");
+          objectOutputStream.writeObject(firstMessage);
           Thread t= new Thread(new Client());
           t.start();
 
@@ -91,6 +90,62 @@ public class Client implements Runnable{
 
 
              }
+             else
+                 if(ref instanceof SearchReply){
+                     System.out.println("message aa gaya");
+                     SearchReply searchReply = (SearchReply)ref;
+                     BaseStageController bs = new BaseStageController();
+                     Platform.runLater(new Runnable() {
+                         @Override
+                         public void run() {
+                             bs.getSearchPageController().appendReply(searchReply);
+                         }
+                     });
+                 }
+                 else
+                     if(ref instanceof MsgReply){
+                         MsgReply msgReply = (MsgReply)ref;
+                         Platform.runLater(new Runnable() {
+                             @Override
+                             public void run() {
+                                BaseStageController.chatPageController.appendConversationReply(msgReply);
+                             }
+                         });
+                     }
+                     else
+                         if(ref instanceof NewMsgReply){
+                             NewMsgReply newMsgReply = (NewMsgReply)ref;
+                             Platform.runLater(new Runnable() {
+                                 @Override
+                                 public void run() {
+                                     BaseStageController.chatPageController.appendNewMsgs(newMsgReply);
+                                 }
+                             });
+                         }
+                         else
+                             if(ref instanceof Message){
+                                 Message message = (Message)ref;
+                                 Platform.runLater(new Runnable() {
+                                     @Override
+                                     public void run() {
+                                         try {
+                                             BaseStageController.chatPageController.appendMessage(message);
+                                         } catch (IOException e) {
+                                             e.printStackTrace();
+                                         }
+                                     }
+                                 });
+                             }
+                             else if(ref instanceof SearchFriendReply){
+                                 SearchFriendReply sfr = (SearchFriendReply)ref;
+                                 Platform.runLater(new Runnable() {
+                                     @Override
+                                     public void run() {
+                                         BaseStageController.chatPageController.appendFriendList(sfr);
+                                     }
+                                 });
+
+                             }
 
           } catch (IOException e) {
               e.printStackTrace();

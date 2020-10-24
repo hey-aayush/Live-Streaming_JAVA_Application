@@ -12,7 +12,7 @@ public class Login {
     Connection connectDB = connection.getConnection();
 
     public boolean validateLogin(String userName, String password){
-        String verifyLoginQuery = "select count(1) from user where username = ? and password = ?";
+        String verifyLoginQuery = "select count(1) from users_account_details where username = ? and password = ?";
         //Stop SQL injections like Pass = WrongPws'+'OR 1=1....
         try {
             PreparedStatement statement = connectDB.prepareStatement(verifyLoginQuery);

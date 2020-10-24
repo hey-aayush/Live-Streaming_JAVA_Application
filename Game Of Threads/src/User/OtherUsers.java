@@ -108,7 +108,7 @@ public class OtherUsers extends HomePageController {
             Statement statement = connectDB.createStatement();
             int count = statement.executeUpdate(requestQuery);
             System.out.println(count);
-            super.homeUser.setContactlist(super.homeUser.fetchContact());
+          super.homeUser.setContactlist(super.homeUser.fetchContact());
 
             //super.search();
             //System.out.println(this.user_id);

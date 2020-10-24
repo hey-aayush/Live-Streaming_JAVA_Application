@@ -1,6 +1,6 @@
 package Client;
 
-import java.io.Serial;
+import java.io.*;
 import java.io.Serializable;
 
 public class LoginData implements Serializable {

@@ -1,6 +1,8 @@
 package Client;
 
+import ControllerFiles.BaseStageController;
 import ControllerFiles.ChannelSectionController;
+import ControllerFiles.StreammerSectionController;
 import User.User;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
@@ -14,12 +16,11 @@ public class ScreenStreamThread implements Runnable{
     static boolean terminate =false;
     static Robot screenshot;
     static Rectangle  capture;
-    static User user;
 
-    public ScreenStreamThread(User user){
+    public ScreenStreamThread(){
 
         this.terminate =false;
-        this.user=user;
+
 
         try {
             screenshot= new Robot();
@@ -36,10 +37,11 @@ public class ScreenStreamThread implements Runnable{
     public void run(){
         while((grabbedImage = screenshot.createScreenCapture(capture))!=null  & !terminate){
             final Image mainimage = SwingFXUtils.toFXImage(grabbedImage, null);
-            ChannelSectionController.imageProperty.set(mainimage);
+            StreammerSectionController.imageProperty.set(mainimage);
+            System.out.println(BaseStageController.user.getFirstName());
             grabbedImage.flush();
         }
         System.out.println("Stream Ended");
-        ChannelSectionController.imageProperty.set(null);
+        StreammerSectionController.imageProperty.set(null);
     }
 }

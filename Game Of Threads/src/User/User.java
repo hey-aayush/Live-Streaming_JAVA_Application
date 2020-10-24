@@ -2,12 +2,17 @@ package User;
 
 import Database.DatabaseConnection;
 import javafx.collections.ObservableList;
+
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class User {
+public class User implements Serializable {
+    public User(){
+
+    }
 
     private int user_id;
     private String username;
@@ -39,15 +44,15 @@ public class User {
     private double yOffset = 0;
 
     public int getUser_id() {
-        return this.user_id;
+        return user_id;
     }
 
     public String getUserName() {
-        return this.username;
+        return username;
     }
 
     public String getFirstName() {
-        return this.firstname;
+        return firstname;
     }
 
     public String getLastName() {
@@ -77,7 +82,7 @@ public class User {
         DatabaseConnection connection = DatabaseConnection.getInstance();
         Connection connectDB = connection.getConnection();
 
-        String verifyLogin = "select userId,firstName,lastName from user where userName = '" + username + "';";
+        String verifyLogin = "select userId,firstName,lastName from users_account_details where userName = '" + username + "';";
         try {
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(verifyLogin);
@@ -86,7 +91,7 @@ public class User {
             this.firstname = queryResult.getString("firstName");
             this.lastname = queryResult.getString("lastName");
             this.username = username;
-            this.contactlist = fetchContact();
+          //  this.contactlist = fetchContact();
             //System.out.println(this.user_id);
         } catch (Exception E) {
             E.printStackTrace();

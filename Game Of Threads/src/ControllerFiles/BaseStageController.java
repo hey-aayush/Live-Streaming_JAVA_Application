@@ -3,11 +3,13 @@ package ControllerFiles;
 import User.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import jdk.dynalink.beans.StaticClass;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -16,13 +18,30 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 
 public class BaseStageController {
+
+
+    public static SearchPageController searchPageController;
+    public static ChatPageController chatPageController;
+
+    public SearchPageController getSearchPageController() {
+        return searchPageController;
+    }
+
+    public void setSearchPageController(SearchPageController searchPageController) {
+        this.searchPageController = searchPageController;
+    }
+
     static BufferedReader reader;
     static BufferedWriter writer;
 
-    private User user;
+    public static User user;
+
+    public User getUser() {
+        return user;
+    }
 
     @FXML
-    private ImageView home_btn,profile_btn,chat_btn,stream_btn,channels_btn,settings_btn,exit;
+    private ImageView home_btn,profile_btn,chat_btn,channel_btn,stream_btn,settings_btn,exit;
     @FXML
     private AnchorPane TabPane;
 
@@ -40,10 +59,14 @@ public class BaseStageController {
             //chatThread.interrupt();
         }else if (event.getTarget()==home_btn) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("HomePage.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/searchPage.fxml"));
+                //Loading the FXML file
                 Pane view = (Pane) loader.load();
-                HomePageController HomePageController = loader.getController();
-                HomePageController.setUser(user);
+                //Access the controller by calling getController() on the FXMLLoader instance.
+                searchPageController = (SearchPageController) loader.getController();
+
+               // HomePageController HomePageController = loader.getController();
+              //  HomePageController.setUser(user);
 
                 TabPane.getChildren().removeAll();
                 TabPane.getChildren().setAll(view);
@@ -54,7 +77,7 @@ public class BaseStageController {
         }else if (event.getTarget()==profile_btn) {
 
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("ProfilePage.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/ProfilePage.fxml"));
                 Pane view = (Pane) loader.load();
                 ProfilePageController profilePageController = loader.getController();
                 profilePageController.setUser(user);
@@ -80,17 +103,15 @@ public class BaseStageController {
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("ChatPage.fxml"));
                 Pane view = (Pane) loader.load();
-              //  ChatPageController chatPageController = loader.getController();
-               // Thread chatThread = new Thread(new ThreadController(chatPageController));
-                chatThread.start();
-                //ye thread ko close krao exit p..... Exit function m
+                 chatPageController = (ChatPageController)loader.getController();
                 TabPane.getChildren().removeAll();
                 TabPane.getChildren().setAll(view);
 
             }catch (Exception e){
                 e.printStackTrace();
             }
-        }else if (event.getTarget()==channels_btn) {
+        }
+        else if (event.getTarget()==channel_btn) {
             try{
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/ChannelSection.fxml"));
                 Pane view = (Pane) loader.load();
@@ -112,8 +133,7 @@ public class BaseStageController {
             }catch (Exception E){
                 E.printStackTrace();
             }
-        }
-        else if (event.getTarget()==settings_btn) {
+        }else if (event.getTarget()==settings_btn) {
             //settings button
         }
     }
