@@ -118,7 +118,6 @@ public class ClientHandler implements Runnable{
                                 SendMessage sendMessage = new SendMessage();
                                 sendMessage.sendMsg(message, socket,in, o);
 
-
                             }
                             else if(object instanceof FriendData){
                                 FriendData friendData = (FriendData)object;
