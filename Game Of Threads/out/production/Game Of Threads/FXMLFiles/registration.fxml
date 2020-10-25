@@ -17,7 +17,6 @@
                   <Image url="@../res/001-profile.png" />
                </image>
             </ImageView>
-              <Button fx:id="closebutton" layoutX="575.0" layoutY="34.0" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="26.0" prefWidth="29.0" style="-fx-background-color: #9535f4;" text="X" textFill="WHITE" />
             </children>
         </AnchorPane>
         <Label layoutX="99.0" layoutY="154.0" text="First Name" textFill="#9535f4">
@@ -50,16 +49,24 @@
         <TextField fx:id="usernametextfield" layoutX="197.0" layoutY="250.0" prefHeight="25.0" prefWidth="321.0" promptText="Username" />
         <PasswordField fx:id="setpasswordfield" layoutX="197.0" layoutY="300.0" prefHeight="26.0" prefWidth="321.0" promptText="Password" />
         <PasswordField fx:id="confirmpasswordfield" layoutX="197.0" layoutY="347.0" prefHeight="26.0" prefWidth="321.0" promptText="Confirm Password" />
-        <Button fx:id="registerbutton" layoutX="205.0" layoutY="428.0" mnemonicParsing="false" onAction="#registerbuttonAction" prefHeight="26.0" prefWidth="218.0" style="-fx-background-color: #9535f4;" text="Register" textFill="WHITE" />
+        <Button fx:id="registerbutton" layoutX="288.0" layoutY="421.0" mnemonicParsing="false" onAction="#registerbuttonAction" prefHeight="29.0" prefWidth="115.0" style="-fx-background-color: #9535f4;" text="Register" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font></Button>
         <Label fx:id="confirmpasswordmessage" layoutX="197.0" layoutY="383.0" prefHeight="25.0" prefWidth="321.0" textFill="#db0d0d">
             <font>
                 <Font name="Chilanka Regular" size="14.0" />
             </font>
         </Label>
-        <Label fx:id="registrationmessage" alignment="CENTER" contentDisplay="CENTER" layoutX="32.0" layoutY="119.0" prefHeight="0.0" prefWidth="343.0" textFill="#0cdd36">
+        <Label fx:id="registrationmessage" alignment="CENTER" contentDisplay="CENTER" layoutX="137.0" layoutY="120.0" prefHeight="0.0" prefWidth="343.0" textFill="#0cdd36">
             <font>
                 <Font name="Chilanka Regular" size="14.0" />
             </font>
         </Label>
+        <Button fx:id="closebutton" layoutX="288.0" layoutY="470.0" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="26.0" prefWidth="115.0" style="-fx-background-color: #fff; -fx-border-color: #9535f4;" text="Login" textFill="#9535f4">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Button>
     </children>
 </AnchorPane>

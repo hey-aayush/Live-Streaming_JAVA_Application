@@ -5,7 +5,6 @@ import Message.*;
 import Server.MsgReply;
 import Server.NewMsgReply;
 import Server.SearchFriendReply;
-import User.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,26 +13,23 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 import java.io.*;
 import java.net.URL;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.*;
 
 public class ChatPageController implements Initializable {
     static String whosionchat;
-    public String friend, user = new BaseStageController().getUser().getUserName();
+    public String friend, user = "a";
     DatabaseConnection connection = DatabaseConnection.getInstance();
     Connection con = connection.getConnection();
 
-    ArrayList<String> fList = new ArrayList<String>();
+
     HashMap<String, String> hashMap = new HashMap<String, String>();
     HashMap<String, Integer> frinedNewMsgs = new HashMap<String, Integer>();
 
-    ObservableList<String> friendList = FXCollections.observableArrayList();
+    public static ObservableList<String> friendList = FXCollections.observableArrayList();
 
     //ListView for friends
     @FXML
@@ -58,17 +54,31 @@ public class ChatPageController implements Initializable {
 
         //msgListView.getItems().add(message + "\r\n");
         String u = message.getSendername();
-        hashMap.replace(u,hashMap.get(u) + "\n" + message);
-        ifAction(u);
-        if(whosionchat == message.getSendername())
-           msgtxtArea.appendText("\n" + message);
+        hashMap.replace(u,hashMap.get(u)  + message);
+
+        if(whosionchat != null && whosionchat.equals(message.getSendername().trim())){
+            msgtxtArea.appendText("\n" + message);
+            hashMap.replace(u, hashMap.get(u) + message);
+            ifAction(u);
+            System.out.println("phase1");
+        }
+
         else if(!hashMap.containsKey(u)) {
-            hashMap.put(u, "");
-            friendListview.getItems().add(0, u);
-            frinedNewMsgs.put(u, frinedNewMsgs.get(u) + 1);
+            System.out.println("-----------");
+            hashMap.put(u, message + "");
+            friendList.add(0, u);
+            friendListview.setItems(friendList);
+            friendListview.setCellFactory(param -> new Cell());
+            //frinedNewMsgs.put(u, frinedNewMsgs.get(u) + 1);
+            ifAction(u);
+            System.out.println("Phase 2");
+
         }
         else{
+            System.out.println("phase3");
                 frinedNewMsgs.put(u, frinedNewMsgs.get(u) + 1 );
+            ifAction(u);
+                System.out.println("phase 4");
             }
         System.out.println(message);
 
@@ -90,12 +100,20 @@ public class ChatPageController implements Initializable {
         objectOutputStream.writeObject(msg);
         objectOutputStream.flush();
         textArea.setText("");
+        msgtxtArea.appendText(msg.getSendername() + "\n" + msg.getReceiverName() + "\n"+ msg.getContent() + "\n");
+        hashMap.replace(friend,hashMap.get(friend.trim()) + msg.getSendername() + "\n" + msg.getReceiverName() + "\n"+ msg.getContent() + "\n" );
         ifAction(friend);
 
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) throws NullPointerException{
+        friendList.clear();
+
+        //Remove karna hai isse
+        friendListview.setItems(friendList);
+        System.out.println("ye initalize wala hai");
+        friendListview.setCellFactory(param -> new Cell());
         FriendData friendData = new FriendData();
         friendData.setUserName(user);
         try {
@@ -104,7 +122,6 @@ public class ChatPageController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         NewMsgData newMsgData = new NewMsgData();
         newMsgData.setFriendName(user);
@@ -119,20 +136,29 @@ public class ChatPageController implements Initializable {
 
     public void openChats(MouseEvent mouseEvent) throws Exception{
 
-        friend = friendListview.getSelectionModel().getSelectedItem();
+        friend = friendListview.getSelectionModel().getSelectedItem().trim();
         whosionchat = friend;
+        msgtxtArea.setText("");
 
+        SetSeenData setSeenData = new SetSeenData();
+        setSeenData.setUserName(user);
+        setSeenData.setFriendName(friend);
+        setSeenData.setMsgStatus(MsgStatus.SEEN);
+        objectOutputStream.writeObject(setSeenData);
+        objectOutputStream.flush();
+        System.out.println("set seen send");
 
-                msgtxtArea.setText("");
 
         String getMsg = hashMap.get(friend);
         if(getMsg == null){
+            System.out.println("database chala hai");
             MsgData msgData = new MsgData();
             msgData.setUserName(user);
             msgData.setFriendName(friend);
             objectOutputStream.writeObject(msgData);
             objectOutputStream.flush();
         }else {
+               System.out.println("locally chala hai");
               msgtxtArea.setText(hashMap.get(friend));
         }
 
@@ -140,6 +166,8 @@ public class ChatPageController implements Initializable {
 
     public void appendConversationReply(MsgReply msgReply) {
         msgtxtArea.setText(msgReply.getMsgs());
+        hashMap.put(msgReply.getFriend(), msgReply.getMsgs());
+
     }
 
 
@@ -147,21 +175,24 @@ public class ChatPageController implements Initializable {
        for(int i=0; i<newMsgReply.getNewMsgList().size(); i++){
            String u = newMsgReply.getNewMsgList().get(i).getSendername();
            if(hashMap.containsKey(u)){
-               frinedNewMsgs.replace(u, frinedNewMsgs.get(u) + 1);
+             //  frinedNewMsgs.replace(u, frinedNewMsgs.get(u) + 1);
            }
            else
            {
                hashMap.put(u,"");
                friendListview.getItems().add(0,u);
-               frinedNewMsgs.replace(u, frinedNewMsgs.get(u) +1);
+               friendListview.setCellFactory(param -> new Cell());
+               //frinedNewMsgs.replace(u, frinedNewMsgs.get(u) +1);
            }
-           ifAction(u);
+          // ifAction(u);
        }
     }
 
     public void appendFriendList(SearchFriendReply sfr) {
+        System.out.println("friendlist aa gayi");
         for(int i=0; i<sfr.getFriendList().size(); i++){
             friendList.add(sfr.getFriendList().get(i));
+            System.out.println(2);
         }
         friendListview.setItems(friendList);
         friendListview.setCellFactory(param -> new Cell());
@@ -182,7 +213,7 @@ public class ChatPageController implements Initializable {
             setGraphic(null);
 
             if(name != null && !empty){
-                System.out.println(name +  "===----");
+                //System.out.println(name +  "===----");
                 label.setText(name+ " ");
                 label2.setText(new ChatPageController().frinedNewMsgs.get(name) + "");
                 setGraphic(hBox);

@@ -4,16 +4,11 @@ import Client.*;
 import Database.DatabaseConnection;
 import Message.Message;
 import User.User;
-import com.mysql.cj.log.Log;
-import javafx.beans.Observable;
-import javafx.collections.ObservableList;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -22,7 +17,7 @@ public class ClientHandler implements Runnable{
     DatabaseConnection connection = DatabaseConnection.getInstance();
     Connection con = connection.getConnection();
 
-    public static HashMap<String, ObjectOutputStream> clientList = new HashMap<String, ObjectOutputStream>();
+    static HashMap<String, ObjectOutputStream> listOfClient = new HashMap<String, ObjectOutputStream>();
 
     public Socket getSocket() {
         return socket;
@@ -37,20 +32,22 @@ public class ClientHandler implements Runnable{
     ClientHandler(Socket socket){
         this.socket = socket;
     }
-    ObjectOutputStream o;
-    ObjectInputStream in;
+
 
     public void run(){
         try{
-             in= new ObjectInputStream(socket.getInputStream());
-          o = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream in= new ObjectInputStream(socket.getInputStream());
+            ObjectOutputStream o = new ObjectOutputStream(socket.getOutputStream());
 
             Message firstMessage = (Message)in.readObject();
-            if(clientList.containsKey(firstMessage.getSendername())){
+            /*if(clientList.containsKey(firstMessage.getSendername())){
                 clientList.replace(firstMessage.getSendername(), o);
             }
-            else
-            clientList.put(firstMessage.getSendername(), o);
+            else*/
+            listOfClient.put(firstMessage.getSendername(), o);
+
+            System.out.println(firstMessage.getContent());
+            System.out.println(listOfClient.get(firstMessage.getSendername()));
 
 
 
@@ -58,11 +55,15 @@ public class ClientHandler implements Runnable{
             System.out.println(o);
             System.out.println("Connected ....");
 
-            while (socket.isConnected()){
+            while (true){
                 Object object = in.readObject();
+                System.out.println(object);
+
                 if(object instanceof RegisterData){
+
                     RegisterData registerData = (RegisterData)object;
                    Registration registration = new Registration();
+
                    boolean reply = registration.insertUser(registerData);
                    TFReply tfReply = TFReply.getInstance();
                    System.out.println(reply);
@@ -75,6 +76,7 @@ public class ClientHandler implements Runnable{
                     if(object instanceof LoginData){
                         LoginData loginData = (LoginData)object;
                         Login login = new Login();
+                        System.out.println(listOfClient.get(loginData.getUserName())+"kkkkkkkkk" + listOfClient.get(loginData.getUserName()));
                         boolean reply = login.validateLogin(loginData.getUserName(), loginData.getPassword());
                         TFReply tfReply = TFReply.getInstance();
                         tfReply.setReply(reply);
@@ -84,13 +86,20 @@ public class ClientHandler implements Runnable{
                     }
                     else
                         if(object instanceof SearchData){
+                            System.out.println("qurey aa gayi");
                             SearchData searchData = (SearchData)object;
                             Search search = new Search();
                             Vector<User> vector = search.getSearch(searchData.getUserName());
+                            System.out.println("----");
                             SearchReply searchReply = new SearchReply();
                             searchReply.setVector(vector);
-                            o.writeObject(searchReply);
-                            o.flush();
+                            System.out.println(searchReply);
+                            if(searchReply.getVector().size() != 0) {
+                                o.writeObject(searchReply);
+                                System.out.println("ye reply hai" + searchReply.getVector().get(0));
+                                o.flush();
+                            }
+                            System.out.println("all done");
                         }
                         else
                             if(object instanceof MsgData){
@@ -99,6 +108,7 @@ public class ClientHandler implements Runnable{
                                 String reply = msgs.getMsgs(msgData.getUserName(), msgData.getFriendName());
                                 MsgReply msgReply = new MsgReply();
                                 msgReply.setMsgs(reply);
+                                msgReply.setFriend(msgData.getFriendName());
                                 o.writeObject(msgReply);
                                 System.out.println("msgDone");
                                 o.flush();
@@ -116,19 +126,40 @@ public class ClientHandler implements Runnable{
                             else if(object instanceof Message){
                                 Message message = (Message)object;
                                 SendMessage sendMessage = new SendMessage();
+                                System.out.println(listOfClient.get(message.getReceiverName()) + "got it" + message.getReceiverName().trim());
                                 sendMessage.sendMsg(message, socket,in, o);
 
 
                             }
                             else if(object instanceof FriendData){
+                                System.out.println("friend query aa gayi hai");
                                 FriendData friendData = (FriendData)object;
                                 SearchFriend sf = new SearchFriend();
                                 Vector<String > v = sf.getFriendsList(friendData.getUserName());
                                 SearchFriendReply sfr = new SearchFriendReply();
                                 sfr.setFriendList(v);
-                                o.writeObject(sfr);
-                                o.flush();
+                                System.out.println("start searching");
+                                if(v.size() != 0){
+                                    o.writeObject(sfr);
+                                    o.flush();
+                                    System.out.println(sfr.getFriendList().get(0));
+                                }
+                                System.out.println("all done");
+
                             }
+                            else if(object instanceof SetSeenData){
+                                 SetSeenData setSeenData = (SetSeenData)object;
+                                 SetSeen setSeen = new SetSeen();
+                                 setSeen.setSeenMsgs(setSeenData.getUserName(), setSeenData.getFriendName());
+
+                            }
+                            else if(object instanceof AddFriendData){
+                                  AddFriendData data = (AddFriendData)object;
+                                  AddFriend addFriend = new AddFriend();
+                                  addFriend.addFriend(data.getUserName(),data.getFriendName());
+
+                            }
+
             }
 
         }catch(Exception e){}
