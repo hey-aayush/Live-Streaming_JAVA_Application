@@ -1,9 +1,5 @@
-package Server;
+package Streamer;
 
-import Streamer.StreamingAddress;
-import Streamer.StreamingConstants;
-
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 public class StreamAddressAssigner {
@@ -17,7 +13,7 @@ public class StreamAddressAssigner {
     }
 
     public StreamingAddress getStreamingAddress(){
-        port++;
+        //port++;
         return new StreamingAddress(inetAddress, port, StreamingConstants.FOR_STREAMING);
     }
 }

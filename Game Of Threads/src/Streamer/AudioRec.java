@@ -2,38 +2,41 @@ package Streamer;
 
 import javax.sound.sampled.*;
 import java.io.*;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.SocketException;
+import java.net.*;
 
 //Audio Receiver End
-
 public class AudioRec implements Runnable {
 
     private final int SIZE = 10500;
-    private DatagramSocket serverSocket;
+    private MulticastSocket audioReceivingSocket;
     private byte[] receiveData;
     private AudioInputStream inputStream;
     private SourceDataLine sourceLine;
     private Synchronizer synchronizer;
+    private StreamingAddress streamingAddress;
 
 
-    public AudioRec(Synchronizer synchronizer) throws SocketException {
-        serverSocket = new DatagramSocket(9786);
+    public AudioRec(Synchronizer synchronizer, StreamingAddress streamingAddress) throws IOException {
+
         receiveData = new byte[SIZE];
         this.synchronizer = synchronizer;
+        this.streamingAddress = streamingAddress;
+        audioReceivingSocket = new MulticastSocket(9278);
+        audioReceivingSocket.joinGroup(new InetSocketAddress(streamingAddress.getAddress(), 9278), null);
+
+
+
+
     }
 
     @Override
     public void run() {
 
-
-
         while (true) {
 
             DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
             try {
-                serverSocket.receive(receivePacket);
+                audioReceivingSocket.receive(receivePacket);
             } catch (IOException ioException) {
                 ioException.printStackTrace();
             }
@@ -69,12 +72,10 @@ public class AudioRec implements Runnable {
                     if(object instanceof AudioPacket)
                     {
                         audioPacket = (AudioPacket)object;
-                        System.out.println("Audio Packet received!");
                         System.out.println(audioPacket.getTimestamp());
                     }
                     else
                     {
-                        System.out.println("Not an audio packet!");
                         continue;
                     }
                 }
@@ -101,7 +102,6 @@ public class AudioRec implements Runnable {
 
             } catch (Exception e) {
                 System.out.println(e);
-                System.exit(0);
             }
         }
     }

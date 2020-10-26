@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class AudioSen implements Runnable {
 
@@ -16,8 +17,10 @@ public class AudioSen implements Runnable {
     final int SIZE = 10000;
     Encoder encoder;
     byte tempBuffer[];
+    StreamingAddress streamingAddress;
+    InetAddress ip;
 
-    public AudioSen() throws LineUnavailableException {
+    public AudioSen(StreamingAddress streamingAddress) throws LineUnavailableException, UnknownHostException {
         audioFormat = getAudioFormat();
         DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
 
@@ -26,6 +29,9 @@ public class AudioSen implements Runnable {
         targetDataLine.start();
         tempBuffer = new byte[SIZE];
         encoder = new Encoder(new Dimension(640, 480));
+        this.streamingAddress = streamingAddress;
+        ip = InetAddress.getByName(streamingAddress.getAddress());
+
     }
 
     public static AudioFormat getAudioFormat() {
@@ -40,8 +46,8 @@ public class AudioSen implements Runnable {
     @Override
     public void run() {
         try {
-            DatagramSocket clientSocket = new DatagramSocket(8786);
-            InetAddress IPAddress = InetAddress.getByName("127.0.0.1");
+            DatagramSocket clientSocket = new DatagramSocket();
+
             while (true) {
                 int cnt = targetDataLine.read(tempBuffer, 0, tempBuffer.length);
                 long time = System.currentTimeMillis();
@@ -49,7 +55,6 @@ public class AudioSen implements Runnable {
 
                     //New line added
                     AudioPacket audioPacket = new AudioPacket(tempBuffer, time);
-
 
                     //Conversion
                     byte []sendData;
@@ -69,16 +74,12 @@ public class AudioSen implements Runnable {
                         }
                     }
 
-                    System.out.println("Lenth of audio bytes: " + sendData.length);
-
-                    DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, 9786);
+                    DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, ip, 9278);
                     clientSocket.send(sendPacket);
-                    System.out.println("Audio sent!");
                 }
             }
         } catch (Exception e) {
-            System.out.println("CaptureThread::run()" + e);
-            System.exit(0);
+            e.printStackTrace();
         }
     }
 }

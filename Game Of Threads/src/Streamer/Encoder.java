@@ -82,7 +82,7 @@ public class Encoder {
                 byte []data = new byte[byteBuffer.remaining()];
                 byteBuffer.get(data);
 
-                System.out.println("Length of encoded bytes :" + data.length);
+                //System.out.println("Length of encoded bytes :" + data.length);
 
                 if (iPacket.isKeyPacket()) {
 
