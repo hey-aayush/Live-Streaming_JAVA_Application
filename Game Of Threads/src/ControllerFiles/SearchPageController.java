@@ -20,8 +20,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SearchPageController implements Initializable {
-    ObjectInputStream objectInputStream = Client.objectInputStream;
-    ObjectOutputStream objectOutputStream = Client.objectOutputStream;
+    static ObjectInputStream objectInputStream = Client.objectInputStream;
+    static ObjectOutputStream objectOutputStream = Client.objectOutputStream;
 
     @FXML
     private ListView<User> searchList;
@@ -35,7 +35,7 @@ public class SearchPageController implements Initializable {
 
 
     public void onClicked(MouseEvent mouseEvent) {
-       System.out.println(searchList.getSelectionModel().getSelectedItem().getUserName());
+       System.out.println(searchList.getSelectionModel().getSelectedItem().getUserName().trim());
     }
 
     public void onSearch(ActionEvent event) throws IOException {
@@ -45,6 +45,7 @@ public class SearchPageController implements Initializable {
        data.setUserName(searchName);
        objectOutputStream.writeObject(data);
        objectOutputStream.flush();
+       System.out.println("qyery send");
     }
 
     public void appendReply(SearchReply searchReply) {
@@ -52,20 +53,37 @@ public class SearchPageController implements Initializable {
         for(int i=0; i<searchReply.getVector().size(); i++){
             User usr = searchReply.getVector().get(i);
             observableList.add(usr);
+            System.out.println(usr.getUserName());
+
         }
         //System.out.println(observableList.get(0));
         searchList.setItems(observableList);
-        searchList.setCellFactory(param -> new Cell());
+        searchList.setCellFactory(param -> new Cells());
     }
 
-    static class Cell extends ListCell<User> {
+    static class Cells extends ListCell<User> {
         VBox vBox= new VBox();
         Label label = new Label();
         Label label2 = new Label();
+        Button button = new Button("Add as a friend");
 
-        public Cell(){
+        public Cells(){
             super();
-            vBox.getChildren().addAll(label,label2 );
+            vBox.getChildren().addAll(label,label2,button );
+            button.setOnAction(e -> {
+                ChatPageController.friendList.add(label.getText().trim());
+                AddFriendData addFriendData = new AddFriendData();
+                addFriendData.setUserName("w");
+                addFriendData.setFriendName(label.getText().trim());
+                try {
+                    SearchPageController.objectOutputStream.writeObject(addFriendData);
+                    SearchPageController.objectOutputStream.flush();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+
+
+            });
         }
         public void updateItem(User name, boolean empty){
             super.updateItem(name, empty);
@@ -76,6 +94,7 @@ public class SearchPageController implements Initializable {
                 System.out.println(name.getUserName() +  "===----");
                 label.setText(name.getUserName() + " ");
                 label2.setText(name.getFirstName() + "" + name.getLastName());
+
                 setGraphic(vBox);
             }
         }

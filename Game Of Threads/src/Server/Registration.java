@@ -15,7 +15,7 @@ public class Registration {
 
     public boolean dublicatecheck(String username, Connection connectionDB){
 
-        String dublicatecheckquery = "select count(*) from users_account_details where username = '"+username+"'";
+        String dublicatecheckquery = "select count(*) from user where username = '"+username+"'";
         try{
             Statement dublicatestatement = connectionDB.createStatement();
             ResultSet resultSet = dublicatestatement.executeQuery(dublicatecheckquery);
@@ -43,7 +43,7 @@ public class Registration {
             return false;
         }
         System.out.println("HI registration working");
-        String registeruser = "insert ignore into users_account_details (firstName,lastName,userName,password) values ('"+firstname+"','"+lastname+"','"+username+"','"+password+"');";
+        String registeruser = "insert ignore into user (firstName,lastName,userName,password) values ('"+firstname+"','"+lastname+"','"+username+"','"+password+"');";
 
         try {
             Statement registrationupdate = connectDB.createStatement();

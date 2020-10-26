@@ -11,10 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import jdk.dynalink.beans.StaticClass;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.Socket;
 
 public class BaseStageController {
@@ -22,6 +19,8 @@ public class BaseStageController {
 
     public static SearchPageController searchPageController;
     public static ChatPageController chatPageController;
+    public static StreammerSectionController streammerSectionController;
+    public static ChannelSectionController channelSectionController;
 
     public SearchPageController getSearchPageController() {
         return searchPageController;
@@ -34,7 +33,7 @@ public class BaseStageController {
     static BufferedReader reader;
     static BufferedWriter writer;
 
-    public static User user;
+    private User user;
 
     public User getUser() {
         return user;
@@ -51,7 +50,7 @@ public class BaseStageController {
         this.user = new User(username);
     }
 
-    public void handleButtonAction(MouseEvent event){
+    public void handleButtonAction(MouseEvent event) throws IOException {
         if (event.getTarget()==exit) {
             Stage BaseStage = (Stage) exit.getScene().getWindow();
             BaseStage.close();
@@ -89,32 +88,22 @@ public class BaseStageController {
                 e.printStackTrace();
             }
         }else if (event.getTarget()==chat_btn) {
-            try {
-                try{
-                    //Creaing client
-                    Socket socketClient = new Socket("localhost", 5436);
-                    //Outputstream
-                    writer = new BufferedWriter(new OutputStreamWriter(socketClient.getOutputStream()));
-                    //InputStream
-                    reader = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("ChatPage.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/chatPage.fxml"));
                 Pane view = (Pane) loader.load();
                  chatPageController = (ChatPageController)loader.getController();
                 TabPane.getChildren().removeAll();
                 TabPane.getChildren().setAll(view);
 
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+
         }
         else if (event.getTarget()==channel_btn) {
             try{
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/ChannelSection.fxml"));
                 Pane view = (Pane) loader.load();
+
+                channelSectionController = (ChannelSectionController)loader.getController();
+
                 TabPane.getChildren().removeAll();
                 TabPane.getChildren().setAll(view);
 
@@ -128,6 +117,10 @@ public class BaseStageController {
             try{
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/StreammerSection.fxml"));
                 Pane view = (Pane) loader.load();
+
+                streammerSectionController = (StreammerSectionController)loader.getController();
+                streammerSectionController.setUser(user);
+
                 TabPane.getChildren().removeAll();
                 TabPane.getChildren().setAll(view);
             }catch (Exception E){

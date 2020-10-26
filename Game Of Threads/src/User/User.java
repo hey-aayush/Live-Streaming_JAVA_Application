@@ -82,7 +82,7 @@ public class User implements Serializable {
         DatabaseConnection connection = DatabaseConnection.getInstance();
         Connection connectDB = connection.getConnection();
 
-        String verifyLogin = "select userId,firstName,lastName from users_account_details where userName = '" + username + "';";
+        String verifyLogin = "select userId,firstName,lastName from user where userName = '" + username + "';";
         try {
             Statement statement = connectDB.createStatement();
             ResultSet queryResult = statement.executeQuery(verifyLogin);

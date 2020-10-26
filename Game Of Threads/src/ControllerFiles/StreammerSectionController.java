@@ -1,8 +1,14 @@
 package ControllerFiles;
 
 import Client.CameraStreamThread;
+import Client.Client;
 import Client.ScreenStreamThread;
+import Streamer.StreamRequest;
+import Streamer.StreamingAddress;
+import Streamer.StreamingConstants;
+import User.User;
 import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamResolution;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import javafx.beans.property.ObjectProperty;
@@ -17,10 +23,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class StreammerSectionController implements Initializable {
+
+    static User user;
+    private StreamingAddress streamingAddress = null;
+
+    ObjectOutputStream objectOutputStream = Client.objectOutputStream;
 
     @FXML
     private ImageView VideoFeed;
@@ -39,6 +52,20 @@ public class StreammerSectionController implements Initializable {
 
     enum StreamSource{
         WebCamera,ScreenShare;
+    }
+
+    public void setUser(User user){
+        this.user=user;
+    }
+
+    public void setStreamingAddress(StreamingAddress streamingAddress){
+
+        System.out.println("In StreamerController: " + streamingAddress.getAddress() + ", " + streamingAddress.getPort());
+       // if(streamingAddress==null) {
+            this.streamingAddress = streamingAddress;
+            System.out.println("In inner StreamerController: " + this.streamingAddress.getAddress() + ", " + this.streamingAddress.getPort());
+
+        //}
     }
 
     private class SourceInfo{
@@ -103,23 +130,35 @@ public class StreammerSectionController implements Initializable {
 
     }
 
-    public void StartStream(StreammerSectionController.SourceInfo sourceInfo) {
+    public void StartStream(StreammerSectionController.SourceInfo sourceInfo) throws IOException {
+
+        if(streamingAddress==null)
+        {
+           objectOutputStream.writeObject(new StreamRequest(user.getUserName(), StreamingConstants.REQUEST_STREAMING_GROUP));
+           objectOutputStream.flush();
+           return;
+        }
+
         StreamSource streamSource = sourceInfo.getStreamSource();
         if( streamSource == StreamSource.WebCamera){
-            cameraStreamThread = new CameraStreamThread(Webcam.getDefault());
+
+            Webcam webcam = Webcam.getDefault();
+            webcam.setViewSize(WebcamResolution.VGA.getSize());
+
+            cameraStreamThread = new CameraStreamThread(webcam,user, streamingAddress);
             streamThread = new Thread(cameraStreamThread);
             streamThread.start();
         }else if (streamSource == StreamSource.ScreenShare){
-            screenStreamThread = new ScreenStreamThread();
+            screenStreamThread = new ScreenStreamThread(user);
             streamThread = new Thread(screenStreamThread);
             streamThread.start();
         }
     }
 
-    public void StartButtonAction(ActionEvent event){
+    public void StartButtonAction(ActionEvent event) throws IOException {
         StartStream(StreamOptions.getSelectionModel().getSelectedItem());
         System.out.println(StreamOptions.getSelectionModel().getSelectedItem().srcName);
-        StartButton.setDisable(true);
+        //StartButton.setDisable(true);
         StreamOptions.setDisable(true);
         StopButton.setDisable(false);
         StopButton.setDisableVisualFocus(true);

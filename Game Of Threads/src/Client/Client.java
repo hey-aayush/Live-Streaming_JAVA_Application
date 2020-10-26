@@ -6,6 +6,8 @@ import ControllerFiles.LoginController;
 import ControllerFiles.RegistrationController;
 import Message.Message;
 import Server.*;
+import Streamer.StreamingAddress;
+import Streamer.StreamingConstants;
 import com.sun.javafx.tk.AppletWindow;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -46,7 +48,8 @@ public class Client implements Runnable{
           objectInputStream = new ObjectInputStream(socketClient.getInputStream());
           //Sending firstMessage to server
           Message firstMessage = new Message();
-          firstMessage.setSendername("saurabh");
+          firstMessage.setSendername("w");
+          firstMessage.setContent("first message");
           objectOutputStream.writeObject(firstMessage);
           Thread t= new Thread(new Client());
           t.start();
@@ -145,6 +148,23 @@ public class Client implements Runnable{
                                      }
                                  });
 
+                             }
+                             // Allocating streaming address
+                             else if(ref instanceof StreamingAddress){
+
+                                 StreamingAddress streamingAddress = (StreamingAddress)ref;
+
+                                 System.out.println("In client class: " + streamingAddress.getAddress() + ", " + streamingAddress.getPort());
+
+                                 Platform.runLater(new Runnable() {
+                                     @Override
+                                     public void run() {
+
+                                         if(streamingAddress.getAddressUse()== StreamingConstants.FOR_STREAMING) {
+                                             BaseStageController.streammerSectionController.setStreamingAddress(streamingAddress);
+                                         }
+                                     }
+                                 });
                              }
 
           } catch (IOException e) {
