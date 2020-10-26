@@ -19,6 +19,7 @@ public class AudioSen implements Runnable {
     byte tempBuffer[];
     StreamingAddress streamingAddress;
     InetAddress ip;
+    boolean terminate;
 
     public AudioSen(StreamingAddress streamingAddress) throws LineUnavailableException, UnknownHostException {
         audioFormat = getAudioFormat();
@@ -31,7 +32,7 @@ public class AudioSen implements Runnable {
         encoder = new Encoder(new Dimension(640, 480));
         this.streamingAddress = streamingAddress;
         ip = InetAddress.getByName(streamingAddress.getAddress());
-
+        terminate = false;
     }
 
     public static AudioFormat getAudioFormat() {
@@ -43,12 +44,17 @@ public class AudioSen implements Runnable {
         return new AudioFormat(sampleRate, sampleInbits, channels, signed, bigEndian);
     }
 
+    public void terminateAudioSen(){
+        System.out.println("Terminating audio sender!!");
+        this.terminate = false;
+    }
+
     @Override
     public void run() {
         try {
             DatagramSocket clientSocket = new DatagramSocket();
 
-            while (true) {
+            while (!terminate) {
                 int cnt = targetDataLine.read(tempBuffer, 0, tempBuffer.length);
                 long time = System.currentTimeMillis();
                 if (cnt > 0) {

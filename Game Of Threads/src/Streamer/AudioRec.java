@@ -14,6 +14,7 @@ public class AudioRec implements Runnable {
     private SourceDataLine sourceLine;
     private Synchronizer synchronizer;
     private StreamingAddress streamingAddress;
+    boolean terminate;
 
 
     public AudioRec(Synchronizer synchronizer, StreamingAddress streamingAddress) throws IOException {
@@ -23,16 +24,19 @@ public class AudioRec implements Runnable {
         this.streamingAddress = streamingAddress;
         audioReceivingSocket = new MulticastSocket(9278);
         audioReceivingSocket.joinGroup(new InetSocketAddress(streamingAddress.getAddress(), 9278), null);
+        terminate = false;
 
+    }
 
-
-
+    public void terminateAudioRec(){
+        System.out.println("Terminating audio receiver!!");
+        this.terminate = true;
     }
 
     @Override
     public void run() {
 
-        while (true) {
+    while (!terminate) {
 
             DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
             try {

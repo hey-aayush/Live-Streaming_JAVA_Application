@@ -30,6 +30,9 @@ public class CameraStreamThread implements Runnable{
     private InetAddress ip;
     private int port;
     private Image image;
+    static AudioSen audioSen;
+    static Synchronizer synchronizer;
+    static AudioRec audioRec;
 
 
     public CameraStreamThread(Webcam webcam, User user, StreamingAddress streamingAddress) throws IOException {
@@ -51,6 +54,9 @@ public class CameraStreamThread implements Runnable{
 
     public void terminateStream(){
         this.terminate=true;
+        audioSen.terminateAudioSen();
+        audioRec.terminateAudioRec();
+        synchronizer.terminateSynchronizer();
     }
 
     public void run(){
@@ -69,10 +75,19 @@ public class CameraStreamThread implements Runnable{
         }).start();
 
         try {
-            new Thread(new AudioSen(streamingAddress)).start();
-        } catch (LineUnavailableException | UnknownHostException e) {
+            audioSen = new AudioSen(streamingAddress);
+            new Thread(audioSen).start();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        } catch (UnknownHostException e) {
             e.printStackTrace();
         }
+
+//        try {
+//            new Thread(new AudioSen(streamingAddress)).start();
+//        } catch (LineUnavailableException | UnknownHostException e) {
+//            e.printStackTrace();
+//        }
 
         while((grabbedImage = webcam.getImage())!=null  & !terminate){
 
@@ -135,10 +150,10 @@ public class CameraStreamThread implements Runnable{
     private void previewVideo() throws Exception {
 
 
-        Synchronizer synchronizer = new Synchronizer();
-
+        synchronizer = new Synchronizer();
         new Thread(synchronizer).start();
-        new Thread(new AudioRec(synchronizer, streamingAddress)).start();
+        audioRec = new AudioRec(synchronizer, streamingAddress);
+        new Thread(audioRec).start();
 
         while(!terminate){
 

@@ -19,6 +19,7 @@ public class Synchronizer implements Runnable {
     private Decoder decoder;
     SourceDataLine sourceLine;
     long time;
+    boolean terminate = false;
 
     //Don't know why
     private WritableImage image;
@@ -29,7 +30,7 @@ public class Synchronizer implements Runnable {
         this.frameQueue = new LinkedList<>();
         this.audioQueue = new LinkedList<>();
         image = null;
-
+        terminate = false;
     }
 
     public synchronized void addVideoPacket(VideoPacket videoPacket){
@@ -44,6 +45,10 @@ public class Synchronizer implements Runnable {
         this.sourceLine = sourceLine;
     }
 
+    public void terminateSynchronizer(){
+        this.terminate = true;
+        System.out.println("Terminating synchronizer!");
+    }
 
     @Override
     public void run() {
@@ -55,7 +60,7 @@ public class Synchronizer implements Runnable {
 
         System.out.println("Started atleast!!");
 
-        while(true) {
+        while(!terminate) {
 
             if(getAudioQueueSize()>0){
 
