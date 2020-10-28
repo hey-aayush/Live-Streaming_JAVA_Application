@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="555.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerFiles.ChannelSectionController">
+   <children>
+      <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #ccc;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="263.0" layoutY="15.0" text="Channel Section" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
+            <JFXButton fx:id="Disconnectbtn" layoutX="462.0" layoutY="509.0" onAction="#DisconnectButtonAction" style="-fx-background-color: #a60c0c; -fx-background-radius: 100px;" text="Disconnect" textFill="WHITE" />
+            <JFXButton fx:id="Connectbtn" layoutX="214.0" layoutY="509.0" onAction="#ConnectButtonAction" style="-fx-background-color: green; -fx-background-radius: 100px;" text="Connect" textFill="WHITE" />
+            <ImageView fitHeight="47.0" fitWidth="59.0" layoutX="180.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../res/icons8-youtube-live-48.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="275.0" layoutY="203.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../res/icons8-social-network-64.png" />
+               </image>
+            </ImageView>
+            <AnchorPane fx:id="LiveFeed" layoutX="74.0" layoutY="73.0" prefHeight="392.0" prefWidth="560.0" visible="false">
+               <children>
+                  <ImageView fx:id="streammingVideo" fitHeight="392.0" fitWidth="560.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="SearchView" layoutX="74.0" layoutY="73.0" prefHeight="392.0" prefWidth="560.0">
+               <children>
+                  <JFXButton fx:id="ChannelSearchBtn" layoutX="468.0" layoutY="21.0" onAction="#ChannelSearchBtnAction" style="-fx-background-color: lightblue; -fx-border-color: darkBlue;" text="Search" />
+                  <JFXListView fx:id="SearchListView" layoutX="58.0" layoutY="61.0" onMousePressed="#onClicked" prefHeight="309.0" prefWidth="460.0" style="-fx-background-color: transparent;" />
+                  <TextField fx:id="channelSearchField" alignment="CENTER" layoutX="100.0" layoutY="23.0" prefHeight="28.0" prefWidth="338.0" promptText="Searh Other Channel" />
+               </children>
+            </AnchorPane>
+            <Button fx:id="muteBtn" alignment="CENTER" layoutX="313.0" layoutY="509.0" mnemonicParsing="false" onAction="#muteAction" style="-fx-background-color: lightblue;" text="Mute" textAlignment="CENTER" />
+            <Button fx:id="unmuteBtn" alignment="CENTER" layoutX="374.0" layoutY="509.0" mnemonicParsing="false" onAction="#unmuteAction" style="-fx-background-color: lightblue;" text="Unmute" textAlignment="CENTER" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
