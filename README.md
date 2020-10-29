@@ -31,6 +31,8 @@ a) Webcam-capture : Taking images from web-cam
 
 b) Javafx : Building Graphical User Interface.
 
+c) Xuggler : for Encoding and Decoding.
+
 ## File Structure
 
 Here's how Packages and Class are Designed.
