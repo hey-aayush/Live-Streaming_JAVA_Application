@@ -17,12 +17,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -51,10 +51,53 @@ public class ChannelSectionController implements Initializable {
     private TextField channelSearchField;
 
     @FXML
-    private JFXListView<String> SearchListView;
+    private JFXListView<OtherChannels> SearchListView;
 
 
     public static ObjectProperty<Image> imageProperty = new SimpleObjectProperty<Image>();
+
+    static class Cell extends ListCell<OtherChannels>{
+        HBox hBox = new HBox();
+        Button joinbtn = new Button("Join");
+        Button subbtn = new Button("Subscribe");
+        Label channelDescription = new Label("ChannelDescription");
+        Pane pane = new Pane();
+        Image profile = new Image("./res/001-profile.png",30,30,false,false);
+        ImageView img = new ImageView(profile);
+
+
+        public Cell(){
+            super();
+            hBox.getChildren().addAll(img,channelDescription,pane,joinbtn,subbtn);
+            hBox.setHgrow(pane, Priority.ALWAYS);
+            joinbtn.setOnAction(e->{
+                System.out.println(getItem().getChannelId());
+                BaseStageController.channelSectionController.viewChannel();
+            });
+            subbtn.setOnAction(e->{
+                System.out.println("Subcribe Channel");
+
+            });
+        }
+
+        public void updateItem(OtherChannels otherChannels,boolean empty){
+            super.updateItem(otherChannels,empty);
+            setText(null);
+            setGraphic(null);
+            if (otherChannels!=null && !empty){
+                channelDescription.setText("Name :"+otherChannels.getChannelName()+" NoSub: "+otherChannels.getNoSubscribers()+" ");
+                //Add Status Fields in OtherChannel
+                img.setImage(profile);
+                hBox.setAlignment(Pos.CENTER);
+                setGraphic(hBox);
+            }
+        }
+    }
+
+    public void viewChannel(){
+        LiveFeed.setVisible(true);
+        SearchView.setVisible(false);
+    }
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -74,10 +117,8 @@ public class ChannelSectionController implements Initializable {
     }
 
     public void updateList(){
-        SearchListView.setItems(SearchChannelList);
-        for(String name:SearchChannelList){
-            System.out.println("Updated :"+name);
-        }
+        SearchListView.setItems(SearchOtherChannelList);
+        SearchListView.setCellFactory(param -> new Cell());
     }
 
     public void ChannelSearchBtnAction(ActionEvent Event){

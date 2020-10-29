@@ -6,7 +6,7 @@ public class OtherChannels implements Serializable {
     private int ChannelId;
     private String channelName;
     private int noSubscribers;
-
+    //Add Status Fields in OtherChannel
 
     public int getNoSubscribers() {
         return noSubscribers;
