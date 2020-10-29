@@ -1,7 +1,7 @@
 package Client.ControllerFiles;
 
 import Client.CameraStreamThread;
-import Client.Client;
+import Client.ClientThread;
 import Client.ScreenStreamThread;
 import Streamer.StreamRequest;
 import Streamer.StreamingAddress;
@@ -36,7 +36,7 @@ public class StreammerSectionController implements Initializable {
 
     private BaseStageController baseStageController;
 
-    ObjectOutputStream objectOutputStream = Client.objectOutputStream;
+    ObjectOutputStream objectOutputStream = ClientThread.objectOutputStream;
 
     @FXML
     private ImageView VideoFeed;

@@ -51,7 +51,7 @@ public class ChatPageController implements Initializable {
     @FXML
     private TextField search;
 
-    ObjectOutputStream objectOutputStream = Client.objectOutputStream;
+    ObjectOutputStream objectOutputStream = ClientThread.objectOutputStream;
 
     public void appendMessage(Message message) throws IOException{
 

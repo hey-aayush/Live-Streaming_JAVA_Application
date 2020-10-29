@@ -1,186 +1,78 @@
 package Client;
 
-import Application.*;
-import Client.ControllerFiles.*;
-import Message.Message;
-import Server.*;
-import Server.Response.SearchChannelResponse;
-import Streamer.StreamingAddress;
-import Streamer.StreamingConstants;
-import javafx.application.Platform;
+import Client.ControllerFiles.LoginController;
+import javafx.application.Application;
+import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+public class Client extends Application {
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.util.List;
+    public static Client singleInstance = null;
+    // private Main(){}
 
-public class Client implements Runnable{
-
-    static Socket socketClient;
-
-    public static ObjectInputStream objectInputStream;
-    public static ObjectOutputStream objectOutputStream;
-
-    private static Client singleClient;
-
-    private Client(){
-
-    }
-    //For making Client class as a Singleton class
     public static Client getInstance(){
-        if(singleClient == null)
-            singleClient = new Client();
-        return singleClient;
+        if(singleInstance == null)
+            singleInstance = new Client();
+        return  singleInstance;
     }
 
+    public LoginController getController() {
+        return controller;
+    }
 
-  public void createSocket() {
-      try {
+    public void setController(LoginController controller) {
+        this.controller = controller;
+    }
 
-          //Creaing client
-           socketClient = new Socket("localhost", 5781);
-           System.out.println(socketClient+ "----");
-          objectOutputStream = new ObjectOutputStream(socketClient.getOutputStream());
-          objectInputStream = new ObjectInputStream(socketClient.getInputStream());
-          //Sending firstMessage to server
-          Message firstMessage = new Message();
-          firstMessage.setSendername("w");
-          firstMessage.setContent("first message");
-          objectOutputStream.writeObject(firstMessage);
-          Thread t= new Thread(new Client());
-          t.start();
-
-      }catch (Exception e){
-          e.printStackTrace();
-      }
-  }
-
+    private  static LoginController controller;
+    //Value of x,y relative to Scene required to drag window
+    private double xOffset = 0;
+    private double yOffset = 0;
 
     @Override
-    public void run() {
-        System.out.println("===== " + socketClient);
-      while (socketClient != null && socketClient.isConnected()){
-          try {
-             Object ref = objectInputStream.readObject();
-             System.out.println("Received");
+    public void start(Stage primaryStage) throws Exception{
+        //creating Login Window and Scene (undecorated)
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/login.fxml"));
+        //Loading the FXML file
+        Parent root = loader.load();
+        //Access the controller by calling getController() on the FXMLLoader instance.
+        controller = (LoginController) loader.getController();
+        Image appIcon = new Image("res/icon.png");
+        primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.getIcons().add(appIcon);
+        primaryStage.setTitle("Live Streaming");
 
-             if(ref instanceof TFReply){
-                 LoginController lc = new LoginController();
-                 TFReply tfReply = (TFReply)ref;
-                 if(tfReply.getObj() instanceof RegisterData){
-                     System.out.println(lc.getController());
-                     Platform.runLater(new Runnable() {
-                         @Override
-                         public void run() {
-                             lc.getController().appendReply(tfReply);
-                         }
-                     });
-                 }
-                 else
-                     if(tfReply.getObj() instanceof LoginData){
-                         Main main = Main.getInstance();
-                         Platform.runLater(new Runnable() {
-                             @Override
-                             public void run() {
-                                 main.getController().appendReply(tfReply);
-                             }
-                         });
-                     }
-
-
-             }
-             else
-                 if(ref instanceof SearchReply){
-                     System.out.println("message aa gaya");
-                     SearchReply searchReply = (SearchReply)ref;
-                     BaseStageController bs = new BaseStageController();
-                     Platform.runLater(new Runnable() {
-                         @Override
-                         public void run() {
-                             bs.getSearchPageController().appendReply(searchReply);
-                         }
-                     });
-                 }
-                 else
-                     if(ref instanceof MsgReply){
-                         MsgReply msgReply = (MsgReply)ref;
-                         Platform.runLater(new Runnable() {
-                             @Override
-                             public void run() {
-                                BaseStageController.chatPageController.appendConversationReply(msgReply);
-                             }
-                         });
-                     }
-                     else
-                         if(ref instanceof NewMsgReply){
-                             NewMsgReply newMsgReply = (NewMsgReply)ref;
-                             Platform.runLater(new Runnable() {
-                                 @Override
-                                 public void run() {
-                                     BaseStageController.chatPageController.appendNewMsgs(newMsgReply);
-                                 }
-                             });
-                         }
-                         else
-                             if(ref instanceof Message){
-                                 Message message = (Message)ref;
-                                 Platform.runLater(new Runnable() {
-                                     @Override
-                                     public void run() {
-                                         try {
-                                             BaseStageController.chatPageController.appendMessage(message);
-                                         } catch (IOException e) {
-                                             e.printStackTrace();
-                                         }
-                                     }
-                                 });
-                             }
-                             else if(ref instanceof SearchFriendReply){
-                                 SearchFriendReply sfr = (SearchFriendReply)ref;
-                                 Platform.runLater(new Runnable() {
-                                     @Override
-                                     public void run() {
-                                         BaseStageController.chatPageController.appendFriendList(sfr);
-                                     }
-                                 });
-
-                             }
-                             // Allocating streaming address
-                             else if(ref instanceof StreamingAddress){
-
-                                 StreamingAddress streamingAddress = (StreamingAddress)ref;
-
-                                 System.out.println("In client class: " + streamingAddress.getAddress() + ", " + streamingAddress.getPort());
-
-                                 Platform.runLater(new Runnable() {
-                                     @Override
-                                     public void run() {
-
-                                         if(streamingAddress.getAddressUse()== StreamingConstants.FOR_STREAMING) {
-                                             BaseStageController.streammerSectionController.setStreamingAddress(streamingAddress);
-                                         }
-                                     }
-                                 });
-                             }else if(ref instanceof SearchChannelResponse){
-                                 SearchChannelResponse searchChannelResponse = (SearchChannelResponse) ref;
-                                 List<OtherChannels> searchedChannelList = searchChannelResponse.getsearchChannelList();
-
-                                 for(OtherChannels otherChannel : searchedChannelList){
-                                     System.out.println("Added :"+otherChannel.getChannelName());
-                                     BaseStageController.channelSectionController.SearchOtherChannelList.add(otherChannel);
-                                     BaseStageController.channelSectionController.SearchChannelList.add(otherChannel.getChannelName());
-                                 }
-                                 BaseStageController.channelSectionController.updateList();
-
-                             }
-
-          } catch (IOException e) {
-              e.printStackTrace();
-          } catch (ClassNotFoundException e) {
-              e.printStackTrace();
-          }
-      }
+        //Adding Dragging Function
+        root.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                xOffset = event.getSceneX();
+                yOffset = event.getSceneY();
+            }
+        });
+        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                primaryStage.setX(event.getScreenX() - xOffset);
+                primaryStage.setY(event.getScreenY() - yOffset);
+            }
+        });
+        //Setting Scene
+        primaryStage.setScene(new Scene(root, 524, 529));
+        //Showing Window
+        primaryStage.show();
+    }
+    public static void main(String[] args) {
+        System.out.println("hello");
+        ClientThread clientThread = ClientThread.getInstance();
+        clientThread.createSocket();
+        System.out.println("hi");
+        launch(args);
     }
 }

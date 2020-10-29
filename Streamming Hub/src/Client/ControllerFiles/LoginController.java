@@ -33,8 +33,8 @@ public class LoginController {
 
     private static RegistrationController controller;
 
-    static ObjectOutputStream objectOutputStream = Client.objectOutputStream;
-    static ObjectInputStream objectInputStream = Client.objectInputStream;
+    static ObjectOutputStream objectOutputStream = ClientThread.objectOutputStream;
+    static ObjectInputStream objectInputStream = ClientThread.objectInputStream;
 
     //var for x,y for dragging.
     private double xOffset = 0;

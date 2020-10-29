@@ -2,6 +2,7 @@ package Client.ControllerFiles;
 
 import Application.HomeUser;
 import Application.OtherChannels;
+import Client.ClientThread;
 import Client.Query.SearchChannelQuery;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
@@ -122,7 +123,7 @@ public class ChannelSectionController implements Initializable {
         SearchChannelQuery searchChannelQuery = new SearchChannelQuery(searchedChannel);
         try {
             System.out.println("Searched :" + searchChannelQuery.getQueryChannel());
-            Client.Client.objectOutputStream.writeObject(searchChannelQuery);
+            ClientThread.objectOutputStream.writeObject(searchChannelQuery);
         } catch (IOException e) {
             e.printStackTrace();
         }

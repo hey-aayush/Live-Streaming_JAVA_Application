@@ -21,8 +21,8 @@ import java.sql.Connection;
 
 public class RegistrationController {
 
-    static ObjectOutputStream objectOutputStream = Client.objectOutputStream;
-    static ObjectInputStream objectInputStream = Client.objectInputStream;
+    static ObjectOutputStream objectOutputStream = ClientThread.objectOutputStream;
+    static ObjectInputStream objectInputStream = ClientThread.objectInputStream;
 
     @FXML
     private Button closebutton;

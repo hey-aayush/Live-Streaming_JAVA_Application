@@ -19,8 +19,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SearchPageController implements Initializable {
-    static ObjectInputStream objectInputStream = Client.objectInputStream;
-    static ObjectOutputStream objectOutputStream = Client.objectOutputStream;
+    static ObjectInputStream objectInputStream = ClientThread.objectInputStream;
+    static ObjectOutputStream objectOutputStream = ClientThread.objectOutputStream;
 
     @FXML
     private ListView<User> searchList;
