@@ -3,6 +3,7 @@ package ControllerFiles;
 import User.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -41,6 +42,7 @@ public class BaseStageController {
 
     @FXML
     private ImageView home_btn,profile_btn,chat_btn,channel_btn,stream_btn,settings_btn,exit;
+
     @FXML
     private AnchorPane TabPane;
 
@@ -48,6 +50,21 @@ public class BaseStageController {
 
     public void setUser(String username) {
         this.user = new User(username);
+    }
+
+    public void changeToProfile(User user){
+
+        try{
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/profilePage.fxml"));
+            Pane view = (Pane) loader.load();
+            ProfilePageController profilePageController = loader.getController();
+            profilePageController.setUser(user);
+
+            TabPane.getChildren().removeAll();
+            TabPane.getChildren().setAll(view);
+        }catch (Exception exception){
+            exception.printStackTrace();
+        }
     }
 
     public void handleButtonAction(MouseEvent event) throws IOException {
@@ -77,8 +94,8 @@ public class BaseStageController {
         }else if (event.getTarget()==profile_btn) {
 
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/ProfilePage.fxml"));
-                Pane view = (Pane) loader.load();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/profilePage.fxml"));
+                Pane view = (Pane)loader.load();
                 ProfilePageController profilePageController = loader.getController();
                 profilePageController.setUser(user);
 
@@ -123,6 +140,7 @@ public class BaseStageController {
 
                 streammerSectionController = (StreammerSectionController)loader.getController();
                 streammerSectionController.setUser(user);
+                streammerSectionController.setBaseStageController(this);
 
                 TabPane.getChildren().removeAll();
                 TabPane.getChildren().setAll(view);

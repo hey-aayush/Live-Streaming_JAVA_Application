@@ -19,10 +19,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -33,6 +35,8 @@ public class StreammerSectionController implements Initializable {
 
     static User user;
     private StreamingAddress streamingAddress = null;
+
+    private BaseStageController baseStageController;
 
     ObjectOutputStream objectOutputStream = Client.objectOutputStream;
 
@@ -61,6 +65,10 @@ public class StreammerSectionController implements Initializable {
 
     public void setUser(User user){
         this.user=user;
+    }
+
+    public void setBaseStageController(BaseStageController baseStageController){
+        this.baseStageController=baseStageController;
     }
 
     public void setStreamingAddress(StreamingAddress streamingAddress){
@@ -184,7 +192,23 @@ public class StreammerSectionController implements Initializable {
     public void requestRoomAction(ActionEvent event){
         //Resquest For Room
         System.out.println("Room Requested");
+        baseStageController.changeToProfile(user);
     }
+
+//    public void changeToProfile(User user) {
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/ProfilePage.fxml"));
+//        Pane view = null;
+//        try {
+//            view = (Pane) loader.load();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        ProfilePageController profilePageController = loader.getController();
+//        profilePageController.setUser(user);
+//
+//        BaseStageController.TabPane.getChildren().removeAll();
+//        BaseStageController.TabPane.getChildren().setAll(view);
+//    }
 
     public void muteAction(ActionEvent event){
         //mute
