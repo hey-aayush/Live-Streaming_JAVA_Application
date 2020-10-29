@@ -1,4 +1,4 @@
-package ControllerFiles;
+package Client.ControllerFiles;
 
 import Client.CameraStreamThread;
 import Client.Client;
@@ -19,12 +19,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -196,7 +194,7 @@ public class StreammerSectionController implements Initializable {
     }
 
 //    public void changeToProfile(User user) {
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/ProfilePage.fxml"));
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("../Client.FXMLFiles/ProfilePage.fxml"));
 //        Pane view = null;
 //        try {
 //            view = (Pane) loader.load();

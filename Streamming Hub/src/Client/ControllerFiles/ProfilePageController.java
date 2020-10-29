@@ -1,4 +1,4 @@
-package ControllerFiles;
+package Client.ControllerFiles;
 
 import User.User;
 import javafx.event.ActionEvent;

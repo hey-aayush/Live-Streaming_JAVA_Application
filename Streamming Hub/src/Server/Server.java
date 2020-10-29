@@ -1,6 +1,6 @@
 package Server;
 
-import Database.DatabaseConnection;
+import Server.Database.DatabaseConnection;
 
 import java.net.ServerSocket;
 import java.net.Socket;

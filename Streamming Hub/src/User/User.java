@@ -1,6 +1,6 @@
 package User;
 
-import Database.DatabaseConnection;
+import Server.Database.DatabaseConnection;
 import javafx.collections.ObservableList;
 
 import java.io.Serializable;

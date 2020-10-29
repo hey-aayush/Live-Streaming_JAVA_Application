@@ -1,11 +1,9 @@
 package Server.Response;
 
 import Application.OtherChannels;
-import Database.DatabaseConnection;
+import Server.Database.DatabaseConnection;
 import Client.Query.SearchChannelQuery;
 import Server.ClientHandler;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.List;

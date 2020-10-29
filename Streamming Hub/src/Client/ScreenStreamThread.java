@@ -1,7 +1,6 @@
 package Client;
 
-import ControllerFiles.ChannelSectionController;
-import ControllerFiles.StreammerSectionController;
+import Client.ControllerFiles.StreammerSectionController;
 import User.User;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;

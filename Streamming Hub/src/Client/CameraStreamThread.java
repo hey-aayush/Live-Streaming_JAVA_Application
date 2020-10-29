@@ -1,11 +1,9 @@
 package Client;
 
-import ControllerFiles.ChannelSectionController;
-import ControllerFiles.StreammerSectionController;
+import Client.ControllerFiles.StreammerSectionController;
 import Streamer.*;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamResolution;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import User.User;
 

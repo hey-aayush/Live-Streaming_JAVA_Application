@@ -1,18 +1,13 @@
-package ControllerFiles;
+package Client.ControllerFiles;
 
 import Application.HomeUser;
 import Application.OtherChannels;
-import Client.AddFriendData;
 import Client.Query.SearchChannelQuery;
-import User.User;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
-import com.jfoenix.controls.JFXTextField;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -62,7 +57,7 @@ public class ChannelSectionController implements Initializable {
         Button subbtn = new Button("Subscribe");
         Label channelDescription = new Label("ChannelDescription");
         Pane pane = new Pane();
-        Image profile = new Image("./res/001-profile.png",30,30,false,false);
+        Image profile = new Image("res/001-profile.png",30,30,false,false);
         ImageView img = new ImageView(profile);
 
 

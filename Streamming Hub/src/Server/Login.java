@@ -1,7 +1,6 @@
 package Server;
 
-import Database.DatabaseConnection;
-import com.mysql.cj.log.Log;
+import Server.Database.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

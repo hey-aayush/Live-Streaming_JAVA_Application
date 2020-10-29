@@ -1,14 +1,11 @@
-package ControllerFiles;
+package Client.ControllerFiles;
 import Client.*;
-import Database.DatabaseConnection;
+import Server.Database.DatabaseConnection;
 import Message.*;
 import Server.MsgReply;
 import Server.NewMsgReply;
 import Server.SearchFriendReply;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
-import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.event.ActionEvent;

@@ -1,11 +1,8 @@
-package ControllerFiles;
+package Client.ControllerFiles;
 
 //All imports
 import Client.*;
-import Database.DatabaseConnection;
-import Server.Registration;
 import Server.TFReply;
-import com.mysql.cj.log.Log;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,9 +19,6 @@ import javafx.stage.StageStyle;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 public class LoginController {
     public BaseStageController baseStageController;
@@ -127,7 +121,7 @@ public class LoginController {
             //Need to close it use Transparent Background.
             primaryStage.close();
             /*Stage BaseStage = new Stage();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/searchPage.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../Client.FXMLFiles/searchPage.fxml"));
             Parent BaseWindow = loader.load();
             Scene scene = new Scene(BaseWindow, 700, 650);
 

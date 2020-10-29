@@ -1,7 +1,6 @@
 package Client;
 
-import ControllerFiles.LoginController;
-import ControllerFiles.RegistrationController;
+import Client.ControllerFiles.LoginController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -39,7 +38,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         //creating Login Window and Scene (undecorated)
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/login.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FXMLFiles/login.fxml"));
         //Loading the FXML file
         Parent root = loader.load();
         //Access the controller by calling getController() on the FXMLLoader instance.

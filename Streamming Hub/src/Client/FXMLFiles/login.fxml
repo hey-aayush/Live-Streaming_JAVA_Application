@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane alignment="center" hgap="10" prefHeight="507.0" prefWidth="524.0" vgap="10" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerFiles.LoginController">
+<GridPane alignment="center" hgap="10" prefHeight="507.0" prefWidth="524.0" vgap="10" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.ControllerFiles.LoginController">
     <columnConstraints>
         <ColumnConstraints />
     </columnConstraints>
@@ -20,7 +20,7 @@
                     <children>
                         <ImageView fitHeight="103.0" fitWidth="102.0" layoutX="49.0" layoutY="51.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../res/003-video-conference-3.png" />
+                                <Image url="@../../res/003-video-conference-3.png" />
                             </image>
                         </ImageView>
                   <Label layoutX="18.0" layoutY="170.0" text="StreamingHub" textFill="WHITE">
@@ -70,7 +70,7 @@
                         </Label>
                         <ImageView fitHeight="109.0" fitWidth="115.0" layoutX="94.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../res/001-profile.png" />
+                                <Image url="@../../res/001-profile.png" />
                             </image>
                         </ImageView>
                         <Button fx:id="cancelbutton" layoutX="285.0" layoutY="-1.0" mnemonicParsing="false" onAction="#cancelButtonAction" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: #fff;" text="X" textFill="#9535f4" textOverrun="CLIP">

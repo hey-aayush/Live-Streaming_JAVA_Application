@@ -1,7 +1,7 @@
 package User;
 
-import ControllerFiles.HomePageController;
-import Database.DatabaseConnection;
+import Client.ControllerFiles.HomePageController;
+import Server.Database.DatabaseConnection;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;

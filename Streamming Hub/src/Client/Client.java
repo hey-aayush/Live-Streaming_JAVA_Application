@@ -1,16 +1,13 @@
 package Client;
 
 import Application.*;
-import ControllerFiles.*;
+import Client.ControllerFiles.*;
 import Message.Message;
 import Server.*;
 import Server.Response.SearchChannelResponse;
 import Streamer.StreamingAddress;
 import Streamer.StreamingConstants;
-import com.sun.javafx.tk.AppletWindow;
-import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 
 
 import java.io.IOException;

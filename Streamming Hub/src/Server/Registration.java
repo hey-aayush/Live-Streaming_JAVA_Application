@@ -1,8 +1,7 @@
 package Server;
 
 import Client.RegisterData;
-import Database.DatabaseConnection;
-import javafx.scene.paint.Color;
+import Server.Database.DatabaseConnection;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

@@ -1,8 +1,8 @@
-package ControllerFiles;
+package Client.ControllerFiles;
 
 // all Imports
 import Client.*;
-import Database.DatabaseConnection;
+import Server.Database.DatabaseConnection;
 import Server.TFReply;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -16,11 +16,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-
 
 
 public class RegistrationController {
@@ -49,7 +45,7 @@ public class RegistrationController {
     public void closeButtonAction(Event event){
         Stage primaryStage = (Stage) closebutton.getScene().getWindow();
         try {
-            Parent loginWindow = FXMLLoader.load(getClass().getResource("../FXMLFiles/login.fxml"));
+            Parent loginWindow = FXMLLoader.load(getClass().getResource("../Client.FXMLFiles/login.fxml"));
             primaryStage.setTitle("Live Streaming");
             primaryStage.setScene(new Scene(loginWindow, 524, 529));
         }

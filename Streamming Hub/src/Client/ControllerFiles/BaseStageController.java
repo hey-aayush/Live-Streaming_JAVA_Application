@@ -1,19 +1,15 @@
-package ControllerFiles;
+package Client.ControllerFiles;
 
 import User.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import jdk.dynalink.beans.StaticClass;
 
 import java.io.*;
-import java.net.Socket;
 
 public class BaseStageController {
 

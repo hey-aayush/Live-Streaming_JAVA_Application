@@ -1,8 +1,7 @@
 package Server;
 
-import Database.DatabaseConnection;
+import Server.Database.DatabaseConnection;
 import Message.*;
-import com.sun.javafx.scene.layout.region.SliceSequenceConverter;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -10,9 +9,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 
 public class SendMessage {
 

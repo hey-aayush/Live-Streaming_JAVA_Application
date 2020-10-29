@@ -1,9 +1,8 @@
 package Server;
 
-import Database.DatabaseConnection;
+import Server.Database.DatabaseConnection;
 import Message.Message;
 import Message.MsgStatus;
-import com.mysql.cj.protocol.Resultset;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

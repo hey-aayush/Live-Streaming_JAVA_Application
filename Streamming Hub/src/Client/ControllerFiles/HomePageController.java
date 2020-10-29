@@ -1,6 +1,6 @@
-package ControllerFiles;
+package Client.ControllerFiles;
 
-import Database.DatabaseConnection;
+import Server.Database.DatabaseConnection;
 import User.User;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

@@ -1,11 +1,10 @@
 package Streamer;
 
-import ControllerFiles.StreammerSectionController;
+import Client.ControllerFiles.StreammerSectionController;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.WritableImage;
 
 import javax.sound.sampled.SourceDataLine;
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;

@@ -6,7 +6,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="555.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerFiles.ProfilePageController">
+<AnchorPane prefHeight="555.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.ControllerFiles.ProfilePageController">
     <children>
         <AnchorPane fx:id="profile" prefHeight="555.0" prefWidth="700.0" style="-fx-background-color: #fff;">
             <children>
@@ -14,7 +14,7 @@
                 <Circle fill="WHITE" layoutX="338.0" layoutY="82.0" radius="51.0" stroke="#9535f4" strokeType="INSIDE" strokeWidth="0.0" />
                 <ImageView fitHeight="80.0" fitWidth="87.0" layoutX="298.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../res/001-profile.png" />
+                        <Image url="@../../res/001-profile.png" />
                     </image>
                 </ImageView>
                 <Label layoutX="125.0" layoutY="211.0" text="First Name :" textFill="#9535f4">

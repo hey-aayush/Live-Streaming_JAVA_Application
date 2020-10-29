@@ -1,8 +1,7 @@
 package Server;
 
-import Database.DatabaseConnection;
+import Server.Database.DatabaseConnection;
 
-import java.awt.image.DataBufferShort;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

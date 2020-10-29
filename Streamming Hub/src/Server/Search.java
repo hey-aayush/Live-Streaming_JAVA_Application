@@ -1,12 +1,7 @@
 package Server;
 
-import Database.DatabaseConnection;
+import Server.Database.DatabaseConnection;
 import User.User;
-import javafx.beans.Observable;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableArray;
-import javafx.collections.ObservableList;
-import javafx.scene.chart.XYChart;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

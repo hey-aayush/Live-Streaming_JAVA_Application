@@ -1,7 +1,7 @@
 package Server;
 
 import Client.*;
-import Database.DatabaseConnection;
+import Server.Database.DatabaseConnection;
 import Message.Message;
 import Client.Query.SearchChannelQuery;
 import Server.Response.SearchChannelResponse;
