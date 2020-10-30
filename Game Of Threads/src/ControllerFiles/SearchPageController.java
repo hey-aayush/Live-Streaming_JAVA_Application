@@ -73,7 +73,7 @@ public class SearchPageController implements Initializable {
             button.setOnAction(e -> {
                 ChatPageController.friendList.add(label.getText().trim());
                 AddFriendData addFriendData = new AddFriendData();
-                addFriendData.setUserName("a");
+                addFriendData.setUserName("w");
                 addFriendData.setFriendName(label.getText().trim());
                 try {
                     SearchPageController.objectOutputStream.writeObject(addFriendData);

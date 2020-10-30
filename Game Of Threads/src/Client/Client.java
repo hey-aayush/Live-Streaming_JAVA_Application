@@ -46,7 +46,7 @@ public class Client implements Runnable{
           objectInputStream = new ObjectInputStream(socketClient.getInputStream());
           //Sending firstMessage to server
           Message firstMessage = new Message();
-          firstMessage.setSendername("a");
+          firstMessage.setSendername("w");
           firstMessage.setContent("first message");
           objectOutputStream.writeObject(firstMessage);
           Thread t= new Thread(new Client());

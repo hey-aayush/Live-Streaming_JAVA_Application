@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="524.0" prefWidth="596.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerFiles.RegistrationController">
+    <children>
+        <AnchorPane layoutX="12.0" layoutY="-34.0" prefHeight="85.0" prefWidth="600.0">
+            <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#9535f4" height="73.0" layoutX="-12.0" layoutY="34.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="616.0" />
+            <Circle fill="WHITE" layoutX="298.0" layoutY="103.0" radius="51.0" stroke="#9535f4" strokeType="INSIDE" strokeWidth="0.0" />
+            <ImageView fitHeight="80.0" fitWidth="87.0" layoutX="258.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../res/001-profile.png" />
+               </image>
+            </ImageView>
+            </children>
+        </AnchorPane>
+        <Label layoutX="99.0" layoutY="154.0" text="First Name" textFill="#9535f4">
+            <font>
+                <Font name="System Bold" size="17.0" />
+            </font>
+        </Label>
+        <Label layoutX="95.0" layoutY="201.0" prefHeight="26.0" prefWidth="94.0" text="Last Name" textFill="#9535f4">
+            <font>
+                <Font name="System Bold" size="17.0" />
+            </font>
+        </Label>
+        <Label layoutX="99.0" layoutY="250.0" prefHeight="26.0" prefWidth="87.0" text="Username" textFill="#9535f4">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+        <Label layoutX="39.0" layoutY="347.0" text="Confirm Password" textFill="#9535f4">
+            <font>
+                <Font name="System Bold" size="17.0" />
+            </font>
+        </Label>
+        <Label layoutX="102.0" layoutY="300.0" text="Password" textFill="#9535f4">
+            <font>
+                <Font name="System Bold" size="17.0" />
+            </font>
+        </Label>
+        <TextField fx:id="firstnametextfield" layoutX="197.0" layoutY="154.0" prefHeight="25.0" prefWidth="321.0" promptText="First Name" />
+        <TextField fx:id="lastnametextfield" layoutX="197.0" layoutY="202.0" prefHeight="25.0" prefWidth="321.0" promptText="Last Name" />
+        <TextField fx:id="usernametextfield" layoutX="197.0" layoutY="250.0" prefHeight="25.0" prefWidth="321.0" promptText="Username" />
+        <PasswordField fx:id="setpasswordfield" layoutX="197.0" layoutY="300.0" prefHeight="26.0" prefWidth="321.0" promptText="Password" />
+        <PasswordField fx:id="confirmpasswordfield" layoutX="197.0" layoutY="347.0" prefHeight="26.0" prefWidth="321.0" promptText="Confirm Password" />
+        <Button fx:id="registerbutton" layoutX="288.0" layoutY="421.0" mnemonicParsing="false" onAction="#registerbuttonAction" prefHeight="29.0" prefWidth="115.0" style="-fx-background-color: #9535f4;" text="Register" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font></Button>
+        <Label fx:id="confirmpasswordmessage" layoutX="197.0" layoutY="383.0" prefHeight="25.0" prefWidth="321.0" textFill="#db0d0d">
+            <font>
+                <Font name="Chilanka Regular" size="14.0" />
+            </font>
+        </Label>
+        <Label fx:id="registrationmessage" alignment="CENTER" contentDisplay="CENTER" layoutX="137.0" layoutY="120.0" prefHeight="0.0" prefWidth="343.0" textFill="#0cdd36">
+            <font>
+                <Font name="Chilanka Regular" size="14.0" />
+            </font>
+        </Label>
+        <Button fx:id="closebutton" layoutX="288.0" layoutY="470.0" mnemonicParsing="false" onAction="#closeButtonAction" prefHeight="26.0" prefWidth="115.0" style="-fx-background-color: #fff; -fx-border-color: #9535f4;" text="Login" textFill="#9535f4">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </Button>
+    </children>
+</AnchorPane>

@@ -16,10 +16,15 @@ public class SetSeen {
         System.out.println("method running");
         PreparedStatement statement = connectDB.prepareStatement(query);
         statement.setString(1,MsgStatus.SEEN.name());
-        statement.setString(2, userName);
-        statement.setString(3, friendName);
+        statement.setString(2, friendName);
+        statement.setString(3, userName);
         statement.setString(4, MsgStatus.UNSEEN.name());
-        System.out.println("seen set ho gaya");
+        /*statement.setString(5, friendName);
+        statement.setString(6, userName);
+        statement.setString(7, MsgStatus.UNSEEN.name());*/
+
+
         statement.executeUpdate();
+        System.out.println("seen set ho gaya");
     }
 }

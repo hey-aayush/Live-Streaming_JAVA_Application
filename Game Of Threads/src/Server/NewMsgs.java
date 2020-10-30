@@ -24,11 +24,12 @@ public class NewMsgs {
             ResultSet rs = st.executeQuery();
             while (rs.next()){
                 Message message = new Message();
-                message.setSendername(rs.getString("friendName"));
-                message.setReceiverName(rs.getString("userName"));
+                message.setSendername(rs.getString("userName"));
+                message.setReceiverName(rs.getString("friendName"));
                 message.setTimestamp(rs.getTimestamp("msgTimeStamp"));
                msgList.add(message);
             }
+            System.out.println("new msg query complete ho gayi");
             return msgList;
         }catch (Exception e){
             e.printStackTrace();

@@ -55,6 +55,6 @@ public class Message implements Serializable {
 
     @Override
     public String toString(){
-        return sendername + "\n" + receiverName  + "\n" + content + "\n";
+        return sendername + "\n" + receiverName  + "\n" + content + "\n" + getMsgStatus();
     }
 }

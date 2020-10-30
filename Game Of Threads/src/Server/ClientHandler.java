@@ -150,7 +150,9 @@ public class ClientHandler implements Runnable{
                             else if(object instanceof SetSeenData){
                                  SetSeenData setSeenData = (SetSeenData)object;
                                  SetSeen setSeen = new SetSeen();
+                                 System.out.println("calling method");
                                  setSeen.setSeenMsgs(setSeenData.getUserName(), setSeenData.getFriendName());
+                                 System.out.println("work done");
 
                             }
                             else if(object instanceof AddFriendData){
