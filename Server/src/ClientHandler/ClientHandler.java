@@ -20,8 +20,8 @@ import java.util.Vector;
 
 public class ClientHandler implements Runnable{
 
-    public static ObjectInputStream in=null;
-    public static ObjectOutputStream o=null;
+    public ObjectInputStream in=null;
+    public ObjectOutputStream o=null;
 
     DatabaseConnection connection = DatabaseConnection.getInstance();
     Connection con = connection.getConnection();
@@ -49,27 +49,15 @@ public class ClientHandler implements Runnable{
 
             Message firstMessage = (Message)in.readObject();
 
-            if(listOfClient.containsKey(firstMessage.getSendername())){
-                listOfClient.replace(firstMessage.getSendername(), o);
-            }
-            else
-            listOfClient.put(firstMessage.getSendername(), o);
 
             System.out.println(firstMessage.getContent());
-            System.out.println(listOfClient.get(firstMessage.getSendername()));
-            System.out.println("firstMsgSenderName" + firstMessage.getSendername());
-            //Object for assigning addresses
 
-
-            //Adding clients in clients vector
-            System.out.println(o);
             System.out.println("Connected ....");
 
             while (true){
+                System.out.println(in);
                 Object object = in.readObject();
                 System.out.println(object.getClass());
-                LoginData loginDat = (LoginData)object;
-                System.out.println(loginDat);
 
                 System.out.println(object);
 
@@ -94,8 +82,17 @@ public class ClientHandler implements Runnable{
                         LoginData loginData = (LoginData)object;
                         System.out.println("LoginData" + loginData);
                         Login login = new Login();
-                        System.out.println(listOfClient.get(loginData.getUserName())+"kkkkkkkkk" + listOfClient.get(loginData.getUserName()));
+
                         boolean reply = login.validateLogin(loginData.getUserName(), loginData.getPassword());
+                        if(reply){
+                            if(listOfClient.containsKey(loginData.getUserName())){
+                                listOfClient.replace(loginData.getUserName(), o);
+                            }
+                            else
+                                listOfClient.put(loginData.getUserName(), o);
+                        }
+                        System.out.println(listOfClient.get(loginData.getUserName())+"kkkkkkkkk" + listOfClient.get(loginData.getUserName()));
+                        System.out.println(listOfClient);
                         TFReply tfReply = new TFReply();
                         tfReply.setReply(reply);
                         tfReply.setObj(loginData);

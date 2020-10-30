@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 
 public class ChatPageController implements Initializable {
     static String whosionchat;
-    public String friend, user = LoginController.getInstance().myUserName;
+    public String friend, user = LoginController.myUserName;
 
     HashMap<String, String> hashMap = new HashMap<String, String>();
     //public static HashMap<String, Integer> frinedNewMsgs = new HashMap<String, Integer>();
@@ -141,10 +141,12 @@ public class ChatPageController implements Initializable {
         msg.setMsgStatus(MsgStatus.UNSEEN);
         objectOutputStream.writeObject(msg);
         objectOutputStream.flush();
+        System.out.println("message send");
         textArea.setText("");
         msgtxtArea.appendText(msg.getSendername() + "\n" + msg.getReceiverName() + "\n"+ msg.getContent() + "\n" + msg.getMsgStatus() +"\n");
         hashMap.replace(friend,hashMap.get(friend.trim()) + msg.getSendername() + "\n" + msg.getReceiverName() + "\n"+ msg.getContent() + "\n"
                 +msg.getMsgStatus() + "\n");
+
         //ifAction(friend);
 
     }
