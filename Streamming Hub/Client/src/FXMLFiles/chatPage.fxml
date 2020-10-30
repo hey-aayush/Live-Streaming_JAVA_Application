@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="575.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerFiles.ChatPageController">
+    <top>
+        <BorderPane prefHeight="106.0" prefWidth="755.0" BorderPane.alignment="CENTER">
+            <center>
+                <HBox prefHeight="68.0" prefWidth="602.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <TextField fx:id="search" prefHeight="45.0" prefWidth="261.0" />
+                        <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="88.0" text="search" />
+                    </children>
+                </HBox>
+            </center>
+            <left>
+                <ImageView fitHeight="43.0" fitWidth="73.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+            </left>
+            <right>
+                <Button mnemonicParsing="false" text="Button" BorderPane.alignment="CENTER" />
+            </right>
+            <top>
+                <Label prefHeight="17.0" prefWidth="791.0" style="-fx-background-color: #9535f4;" BorderPane.alignment="CENTER" />
+            </top>
+            <bottom>
+                <Label prefHeight="17.0" prefWidth="757.0" style="-fx-background-color: #9535f4;" BorderPane.alignment="CENTER" />
+            </bottom>
+        </BorderPane>
+    </top>
+    <left>
+        <VBox prefHeight="418.0" prefWidth="267.0" BorderPane.alignment="CENTER">
+            <children>
+                <ListView fx:id="friendListview" onMouseClicked="#openChats" prefHeight="430.0" prefWidth="273.0" />
+            </children>
+        </VBox>
+    </left>
+    <right>
+        <VBox prefHeight="444.0" prefWidth="562.0" BorderPane.alignment="CENTER">
+            <children>
+                <ScrollPane prefHeight="416.0" prefWidth="490.0">
+               <content>
+                  <TextArea fx:id="msgtxtArea" prefHeight="413.0" prefWidth="382.0" />
+               </content>
+                </ScrollPane>
+                <HBox prefHeight="99.0" prefWidth="490.0">
+                    <children>
+                        <Button mnemonicParsing="false" prefHeight="62.0" prefWidth="112.0" text="Chose file" />
+                        <TextArea fx:id="textArea" prefHeight="76.0" prefWidth="305.0" />
+                        <Button fx:id="SendBtn" mnemonicParsing="false" onAction="#sendMessage" prefHeight="61.0" prefWidth="84.0" text="SEND" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </right>
+</BorderPane>
