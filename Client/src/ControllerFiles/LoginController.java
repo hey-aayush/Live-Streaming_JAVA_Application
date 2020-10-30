@@ -1,9 +1,11 @@
 package ControllerFiles;
 
 //All imports
+import Application.AskProfileData;
 import ClientThread.Client;
 import Query.LoginData;
 import Response.TFReply;
+import User.User;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -25,7 +27,9 @@ public class LoginController {
 
     // Singleton
     public static LoginController singleInstance;
+
     public LoginController(){}
+
     public static LoginController getInstance(){
         if(singleInstance == null)
             singleInstance = new LoginController();
@@ -77,8 +81,6 @@ public class LoginController {
             objectOutputStream.writeObject(data);
             objectOutputStream.flush();
         }
-
-
     }
 
     public void loginbuttonAction(ActionEvent event) throws IOException {
@@ -92,6 +94,7 @@ public class LoginController {
     public void cancelButtonAction(ActionEvent event){
         Stage stage = (Stage) cancelbutton.getScene().getWindow();
         stage.close();
+        System.exit(0);
     }
 
     public void RegisterButtonAction(ActionEvent event){
@@ -130,7 +133,7 @@ public class LoginController {
         }
     }
 
-    public void enterloginscene(Stage primaryStage){
+    public void enterloginscene(Stage primaryStage,User user){
         try{
             //Need to close it use Transparent Background.
             primaryStage.close();
@@ -145,15 +148,16 @@ public class LoginController {
             Stage BaseStage = new Stage();
             BaseStage.initStyle(StageStyle.TRANSPARENT);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/baseStage.fxml"));
-            Parent BaseWindow = loader.
-                    load();
+            Parent BaseWindow = loader.load();
             Image appIcon = new Image("res/icon.png");
             BaseStage.getIcons().add(appIcon);
             BaseStage.setTitle("Live Stream");
             baseStageController  = (BaseStageController)loader.getController();
-            Scene Basescene = new Scene(BaseWindow, 700, 650);
+            baseStageController.setUser(user);
+            System.out.println(user.getUserName()+" : Logged In ");
+            Scene Basescene = new Scene(BaseWindow, 1000, 650);
             Basescene.setFill(Color.TRANSPARENT);
-            BaseStage.setTitle("Profile");
+            BaseStage.setTitle("Live-Stream");
 
             BaseWindow.setOnMousePressed(new EventHandler<MouseEvent>() {
                 @Override
@@ -178,15 +182,27 @@ public class LoginController {
 
     }
 
+    public void appendUser(User user){
+        enterloginscene((Stage) loginbutton.getScene().getWindow(),user);
+    }
+
     public void appendReply(TFReply tfReply) {
         if (tfReply.getReply()){
             loginmessagelabel.setTextFill(Color.GREEN);
             loginmessagelabel.setText("Login Successfull");
-            enterloginscene((Stage) loginbutton.getScene().getWindow());
+            try {
+                AskProfileData askProfileData = new AskProfileData(LoginController.myUserName);
+                askProfileData.profileInfo();
+                System.out.println("User Detail Query Sent.");
+            }catch (Exception exception){
+                exception.printStackTrace();
+            }
         }
         else{
             loginmessagelabel.setTextFill(Color.RED);
             loginmessagelabel.setText("Enter valid Credentials");
         }
     }
+
+
 }

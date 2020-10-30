@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 
 public class ChatPageController implements Initializable {
     static String whosionchat;
-    public String friend, user = LoginController.myUserName;
+    public String friend, user = LoginController.getInstance().myUserName;
 
     HashMap<String, String> hashMap = new HashMap<String, String>();
     //public static HashMap<String, Integer> frinedNewMsgs = new HashMap<String, Integer>();

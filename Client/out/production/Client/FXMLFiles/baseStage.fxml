@@ -1,50 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="700.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerFiles.BaseStageController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1000.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerFiles.BaseStageController">
     <children>
-        <BorderPane fx:id="BasePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="700.0" style="-fx-background-color: transparent;">
-            <bottom>
-                <AnchorPane fx:id="bottombar" prefHeight="107.0" prefWidth="700.0" style="-fx-background-color: #9535f4;" BorderPane.alignment="CENTER">
-                    <children>
-                        <ImageView fx:id="home_btn" fitHeight="51.0" fitWidth="50.0" layoutX="48.0" layoutY="13.0" onMousePressed="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../res/001-home.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fx:id="profile_btn" fitHeight="54.0" fitWidth="51.0" layoutX="386.0" layoutY="17.0" onMousePressed="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../res/001-profile.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fx:id="channels_btn" fitHeight="65.0" fitWidth="63.0" layoutX="271.0" layoutY="8.0" onMousePressed="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../res/001-live.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fx:id="settings_btn" fitHeight="58.0" fitWidth="58.0" layoutX="500.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../res/Settings.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fx:id="exit" fitHeight="48.0" fitWidth="45.0" layoutX="613.0" layoutY="17.0" onMousePressed="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../res/008-logout.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fx:id="chat_btn" fitHeight="45.0" fitWidth="42.0" layoutX="166.0" layoutY="22.0" onMousePressed="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../res/002-chat.png" />
-                            </image>
-                        </ImageView>
-                    </children>
-                </AnchorPane>
-            </bottom>
-            <top>
-                <AnchorPane fx:id="TabPane" prefHeight="574.0" prefWidth="700.0" BorderPane.alignment="CENTER" />
-            </top>
-        </BorderPane>
+          <AnchorPane fx:id="bottombar" layoutX="150.0" layoutY="579.0" prefHeight="54.0" prefWidth="700.0" style="-fx-background-color: #9535f4;">
+              <children>
+                  <ImageView fx:id="home_btn" fitHeight="51.0" fitWidth="50.0" layoutX="48.0" layoutY="13.0" onMousePressed="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
+                      <image>
+                          <Image url="@../res/001-home.png" />
+                      </image>
+                  </ImageView>
+                  <ImageView fx:id="profile_btn" fitHeight="54.0" fitWidth="51.0" layoutX="425.0" layoutY="17.0" onMousePressed="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
+                      <image>
+                          <Image url="@../res/001-profile.png" />
+                      </image>
+                  </ImageView>
+                  <ImageView fx:id="stream_btn" fitHeight="65.0" fitWidth="63.0" layoutX="340.0" layoutY="8.0" onMousePressed="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
+                      <image>
+                          <Image url="@../res/001-live.png" />
+                      </image>
+                  </ImageView>
+                  <ImageView fx:id="settings_btn" fitHeight="58.0" fitWidth="58.0" layoutX="522.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                      <image>
+                          <Image url="@../res/Settings.png" />
+                      </image>
+                  </ImageView>
+                  <ImageView fx:id="exit" fitHeight="48.0" fitWidth="45.0" layoutX="613.0" layoutY="17.0" onMousePressed="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
+                      <image>
+                          <Image url="@../res/008-logout.png" />
+                      </image>
+                  </ImageView>
+                  <ImageView fx:id="chat_btn" fitHeight="45.0" fitWidth="42.0" layoutX="166.0" layoutY="22.0" onMousePressed="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
+                      <image>
+                          <Image url="@../res/002-chat.png" />
+                      </image>
+                  </ImageView>
+            <ImageView fx:id="channel_btn" fitHeight="52.0" fitWidth="56.0" layoutX="256.0" layoutY="12.0" onMousePressed="#handleButtonAction" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../res/channel.png" />
+               </image>
+            </ImageView>
+              </children>
+          </AnchorPane>
+          <AnchorPane fx:id="TabPane" prefHeight="550.0" prefWidth="1000.0">
+         <children>
+            <VBox fx:id="sectionBox" alignment="TOP_CENTER" prefHeight="550.0" prefWidth="1000.0" />
+         </children></AnchorPane>
     </children>
 </AnchorPane>

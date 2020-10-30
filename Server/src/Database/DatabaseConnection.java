@@ -24,7 +24,7 @@ public class DatabaseConnection {
         //hide this and look for connection pooling...
         String databaseName = "gameofthreads";
         String databaseUser = "root";
-        String databasePassword = "sk@715037";
+        String databasePassword = "@Pragya2007";
         String url = "jdbc:mysql://localhost/"+databaseName;
 
 

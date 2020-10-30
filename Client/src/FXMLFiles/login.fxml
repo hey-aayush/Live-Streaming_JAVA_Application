@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.SepiaTone?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<GridPane alignment="center" hgap="10" prefHeight="507.0" prefWidth="524.0" vgap="10" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerFiles.LoginController">
+<?import javafx.scene.control.PasswordField?>
+<GridPane alignment="center" hgap="10" prefHeight="507.0" prefWidth="524.0" vgap="10" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerFiles.LoginController">
     <columnConstraints>
         <ColumnConstraints />
     </columnConstraints>
@@ -23,25 +31,25 @@
                                 <Image url="@../res/003-video-conference-3.png" />
                             </image>
                         </ImageView>
-                  <Label layoutX="18.0" layoutY="170.0" text="StreamingHub" textFill="WHITE">
+                  <Label layoutX="3.0" layoutY="170.0" text="StreamingHub" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>
                   </Label>
-                  <Label layoutX="89.0" layoutY="212.0" text="Livestream Here" textFill="WHITE" />
+                  <Label layoutX="79.0" layoutY="210.0" text="Livestream Here" textFill="WHITE" />
                     </children>
                 </AnchorPane>
             </left>
             <right>
                 <AnchorPane prefHeight="476.0" prefWidth="314.0" style="-fx-background-color: #fff;" BorderPane.alignment="CENTER">
                     <children>
-                        <Label layoutX="46.0" layoutY="233.0" text="UserName" textFill="#9535f4">
+                        <Label layoutX="23.0" layoutY="235.0" text="UserName" textFill="#9535f4">
                             <font>
                                 <Font name="System Bold" size="16.0" />
                             </font>
                         </Label>
                         <TextField fx:id="usernametextfield" layoutX="136.0" layoutY="232.0" prefHeight="26.0" prefWidth="135.0" promptText="Username" />
-                        <Label layoutX="43.0" layoutY="286.0" prefHeight="27.0" prefWidth="86.0" text="Password" textFill="#9535f4">
+                        <Label layoutX="19.0" layoutY="286.0" prefHeight="27.0" prefWidth="110.0" text="Password" textFill="#9535f4">
                             <font>
                                 <Font name="System Bold" size="16.0" />
                             </font>
@@ -73,7 +81,7 @@
                                 <Image url="@../res/001-profile.png" />
                             </image>
                         </ImageView>
-                        <Button fx:id="cancelbutton" layoutX="285.0" layoutY="-1.0" mnemonicParsing="false" onAction="#cancelButtonAction" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: #fff;" text="X" textFill="#9535f4" textOverrun="CLIP">
+                        <Button fx:id="cancelbutton" layoutX="272.0" layoutY="14.0" mnemonicParsing="false" onAction="#cancelButtonAction" prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: #fff; -fx-background-radius: 100; -fx-border-radius: 100; -fx-border-color: #9535f4;" text="X" textFill="#9535f4" textOverrun="CLIP">
                             <font>
                                 <Font name="Chilanka Regular" size="14.0" />
                             </font>

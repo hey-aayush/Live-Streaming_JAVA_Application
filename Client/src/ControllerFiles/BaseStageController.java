@@ -3,14 +3,18 @@ package ControllerFiles;
 import Application.AskProfileData;
 import ClientThread.Client;
 import Query.OnlineOfflineData;
+import ControllerFiles.*;
+import User.User;
 import User.UserStatus;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
@@ -19,18 +23,34 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class BaseStageController implements Initializable {
+
+
+
+    public static User user;
+
     public static BaseStageController singleInstance;
+
     public static BaseStageController getInstance(){
-        if(singleInstance == null)
+        if(singleInstance == null) {
             singleInstance = new BaseStageController();
-            return singleInstance;
+        }
+        return singleInstance;
 
     }
 
+    public void setUser(User user){
+        this.user = user;
+    }
+
+    public User getUser(User user){
+        return this.user ;
+    }
 
     public static SearchPageController searchPageController;
     public static ChatPageController chatPageController;
     public static ProfilePageController profilePageController;
+    public static StreammerSectionController streammerSectionController;
+    public static ChannelSectionController channelSectionController;
 
     public SearchPageController getSearchPageController() {
         return searchPageController;
@@ -43,11 +63,12 @@ public class BaseStageController implements Initializable {
     static BufferedReader reader;
 
     @FXML
-    private ImageView home_btn,profile_btn,chat_btn,channels_btn,settings_btn,exit;
+    private ImageView home_btn,profile_btn,chat_btn,channel_btn,stream_btn,settings_btn,exit;
+
+    @FXML
+    private VBox sectionBox;
     @FXML
     public AnchorPane TabPane;
-
-
 
 
     public void handleButtonAction(MouseEvent event) throws IOException {
@@ -61,6 +82,7 @@ public class BaseStageController implements Initializable {
 
             Stage BaseStage = (Stage) exit.getScene().getWindow();
             BaseStage.close();
+            System.exit(0);
             //ye thread ko close krao exit p..... Exit function m
             //chatThread.interrupt();
         }else if (event.getTarget()==home_btn) {
@@ -82,9 +104,13 @@ public class BaseStageController implements Initializable {
                 e.printStackTrace();
             }
         }else if (event.getTarget()==profile_btn) {
-                openProfile();
-                AskProfileData askProfileData = new AskProfileData(LoginController.myUserName);
-                askProfileData.profileInfo();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/profilePage.fxml"));
+            Pane profileView = (Pane) loader.load();
+            profilePageController = loader.getController();
+            profilePageController.setUser(user);
+            System.out.println(TabPane);
+            TabPane.getChildren().removeAll();
+            TabPane.getChildren().setAll(profileView);
 
         }else if (event.getTarget()==chat_btn) {
 
@@ -95,26 +121,60 @@ public class BaseStageController implements Initializable {
                 TabPane.getChildren().setAll(view);
 
 
-        }else if (event.getTarget()==settings_btn) {
+        }else if (event.getTarget()==channel_btn) {
+            try{
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/ChannelSection.fxml"));
+                Pane view = (Pane) loader.load();
+
+                channelSectionController = (ChannelSectionController)loader.getController();
+
+                System.out.println(channelSectionController);
+
+                TabPane.getChildren().removeAll();
+                sectionBox.getChildren().removeAll();
+                sectionBox.getChildren().setAll(view);
+                sectionBox.setAlignment(Pos.TOP_CENTER);
+                TabPane.getChildren().setAll(sectionBox);
+
+
+//                TabPane.getChildren().removeAll();
+//                TabPane.getChildren().setAll(view);
+
+            }catch (Exception E){
+                E.printStackTrace();
+            }
+            //ye thread ko close krao exit p..... Exit function m
+            //chatThread.interrupt();
+        }
+        else if (event.getTarget()==stream_btn) {
+            try{
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/StreammerSection.fxml"));
+                Pane view = (Pane) loader.load();
+
+                streammerSectionController = (StreammerSectionController)loader.getController();
+                streammerSectionController.setUser(user);
+                streammerSectionController.setBaseStageController(this);
+
+                TabPane.getChildren().removeAll();
+                sectionBox.getChildren().removeAll();
+                sectionBox.getChildren().setAll(view);
+                sectionBox.setAlignment(Pos.TOP_CENTER);
+                TabPane.getChildren().setAll(sectionBox);
+
+//                TabPane.getChildren().removeAll();
+//                TabPane.getChildren().setAll(view);
+            }catch (Exception E){
+                E.printStackTrace();
+            }
+        }
+
+        else if (event.getTarget()==settings_btn) {
             //settings button
         }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
-    public void openProfile(){
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/ProfilePage.fxml"));
-        try {
-            Pane profileView = (Pane) loader.load();
-            profilePageController = loader.getController();
-            System.out.println(TabPane);
-            TabPane.getChildren().removeAll();
-            TabPane.getChildren().setAll(profileView);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
     }
 }

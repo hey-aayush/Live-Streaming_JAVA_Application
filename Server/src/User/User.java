@@ -3,6 +3,7 @@ package User;
 import java.io.Serializable;
 
 public class User implements Serializable {
+    private static final long SerialVersionUID = 2001L;
 
     //Value of x,y relative to Scene required to drag window
     private double xOffset = 0;
@@ -14,6 +15,7 @@ public class User implements Serializable {
     private String email;
     private UserStatus userStatus;
     private Long lastActiveTime;
+    private int userId;
 
     public Long getLastActiveTime() {
         return lastActiveTime;
@@ -59,5 +61,26 @@ public class User implements Serializable {
 
     public void setUserStatus(UserStatus userStatus) {
         this.userStatus = userStatus;
+    }
+
+    public User(){}
+
+    public User(String userName,String firstName,String lastName,String email,UserStatus userStatus,Long lastActiveTime){
+
+        setFirstName(firstName);
+        setLastName(lastName);
+        setUserName(userName);
+        setEmail(email);
+        setLastActiveTime(lastActiveTime);
+        setUserStatus(userStatus);
+
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }
