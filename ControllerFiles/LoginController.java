@@ -4,8 +4,9 @@ package ControllerFiles;
 import Application.AskProfileData;
 import ClientThread.Client;
 import Query.LoginData;
+import Query.OnlineOfflineData;
 import Response.TFReply;
-import User.User;
+import User.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -191,6 +192,19 @@ public class LoginController {
             loginmessagelabel.setTextFill(Color.GREEN);
             loginmessagelabel.setText("Login Successfull");
             try {
+                OnlineOfflineData data = new OnlineOfflineData();
+                data.setUserName(LoginController.myUserName);
+                data.setUserStatus(UserStatus.ONLINE);
+                try {
+                    Client.objectOutputStream.writeObject(data);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    Client.objectOutputStream.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 AskProfileData askProfileData = new AskProfileData(LoginController.myUserName);
                 askProfileData.profileInfo();
                 System.out.println("User Detail Query Sent.");
@@ -202,7 +216,7 @@ public class LoginController {
             loginmessagelabel.setTextFill(Color.RED);
             loginmessagelabel.setText("Enter valid Credentials");
         }
-    }
 
+    }
 
 }

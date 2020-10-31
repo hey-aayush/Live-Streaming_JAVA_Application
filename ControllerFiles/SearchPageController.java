@@ -1,5 +1,6 @@
 package ControllerFiles;
 
+import Application.AskProfileData;
 import ClientThread.Client;
 import Query.AddFriendData;
 import Query.SearchData;
@@ -22,6 +23,8 @@ import java.util.ResourceBundle;
 
 public class SearchPageController implements Initializable {
 
+    private static User user;
+
     private static BaseStageController baseStageController;
 
 
@@ -33,6 +36,8 @@ public class SearchPageController implements Initializable {
     private ListView<User> searchList;
     @FXML
     private TextField searchField;
+    @FXML
+    private Label heyName,useremail,username;
 
     public static void setBaseStageController(BaseStageController baseStageController) {
         SearchPageController.baseStageController = baseStageController;
@@ -45,18 +50,31 @@ public class SearchPageController implements Initializable {
     ObservableList<User> observableList = FXCollections.observableArrayList();
 
 
-    public void onClicked(MouseEvent mouseEvent) {
-       System.out.println(searchList.getSelectionModel().getSelectedItem().getUserName().trim());
+    public void setUser(User user){
+        this.user = user;
+        heyName.setText("Hey , "+user.getFirstName());
+        username.setText(user.getUserName());
+        useremail.setText(user.getEmail());
+    }
+
+    public void onClicked(MouseEvent mouseEvent) throws IOException {
+
+        System.out.println(searchList.getSelectionModel().getSelectedItem().getUserName().trim());
+        String userName = searchList.getSelectionModel().getSelectedItem().getUserName().trim();
+        System.out.println();
+        baseStageController.openProfile();
+        AskProfileData askProfileData = new AskProfileData(userName);
+        askProfileData.profileInfo();
     }
 
     public void onSearch(ActionEvent event) throws IOException {
         String searchName = searchField.getText();
         System.out.println(searchName);
-       SearchData data = new SearchData();
-       data.setUserName(searchName);
-       objectOutputStream.writeObject(data);
-       objectOutputStream.flush();
-       System.out.println("qyery send");
+        SearchData data = new SearchData();
+        data.setUserName(searchName);
+        objectOutputStream.writeObject(data);
+        objectOutputStream.flush();
+        System.out.println("qyery send");
     }
 
     public void onSearchbtn(MouseEvent event) throws IOException {
@@ -94,7 +112,7 @@ public class SearchPageController implements Initializable {
             button.setOnAction(e -> {
                 ChatPageController.friendList.add(label.getText().trim());
                 AddFriendData addFriendData = new AddFriendData();
-                addFriendData.setUserName("w");
+                addFriendData.setUserName(LoginController.myUserName);
                 addFriendData.setFriendName(label.getText().trim());
                 try {
                     SearchPageController.objectOutputStream.writeObject(addFriendData);

@@ -70,7 +70,7 @@ public class StreammerSectionController implements Initializable {
         this.streamer = new Streamer();
         //Testing
         Channel channel = new Channel();
-        channel.setChannelID(1);
+        channel.setChannelId(1);
         this.streamer.setChannel(channel);
     }
 
@@ -202,7 +202,7 @@ public class StreammerSectionController implements Initializable {
 
     public void writeStreamRequest() throws IOException {
         if(streamingAddress==null) {
-            objectOutputStream.writeObject(new StreamRequest(streamer.getChannel().getChannelID(), StreamingConstants.REQUEST_STREAMING_ROOM));
+            objectOutputStream.writeObject(new StreamRequest(streamer.getChannel().getChannelId(), StreamingConstants.REQUEST_STREAMING_ROOM));
             objectOutputStream.flush();
             System.out.println("Room Requested");
         }

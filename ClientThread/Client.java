@@ -46,12 +46,6 @@ public class Client implements Runnable{
             System.out.println(socketClient+ "----");
             objectOutputStream = new ObjectOutputStream(socketClient.getOutputStream());
             objectInputStream = new ObjectInputStream(socketClient.getInputStream());
-            //Sending firstMessage to server
-            Message firstMessage = new Message();
-            System.out.println(LoginController.getInstance().myUserName);
-            firstMessage.setSendername(LoginController.myUserName);
-            firstMessage.setContent("first message");
-            objectOutputStream.writeObject(firstMessage);
             Thread t= new Thread(new Client());
             t.start();
 
@@ -155,21 +149,30 @@ public class Client implements Runnable{
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            Main.controller.appendUser((sfr.getUser()));
+                            if (sfr.getUser().getUserName().equals(LoginController.myUserName)){
+                                Main.controller.appendUser((sfr.getUser()));
+                            }
+                            else {
+                                try {
+                                    BaseStageController.profilePageController.setUser(sfr.getUser(), sfr.getServerCurrTime());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
                         }
                     });
-                }else if(ref instanceof SearchChannelResponse) {
+                }else if(ref instanceof SearchChannelResponse){
                     SearchChannelResponse searchChannelResponse = (SearchChannelResponse) ref;
                     List<OtherChannels> searchedChannelList = searchChannelResponse.getsearchChannelList();
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            BaseStageController.channelSectionController.append(searchedChannelList);
+                        }
+                    });
 
-                    for (OtherChannels otherChannel : searchedChannelList) {
-                        System.out.println("Added :" + otherChannel.getChannelName());
-                        BaseStageController.channelSectionController.SearchOtherChannelList.add(otherChannel);
-                        BaseStageController.channelSectionController.SearchChannelList.add(otherChannel.getChannelName());
-                    }
-                    BaseStageController.channelSectionController.updateList();
-
-                }// Allocating streaming address
+                }
+                // Allocating streaming address
                 else if(ref instanceof StreamingAddress){
 
                     StreamingAddress streamingAddress = (StreamingAddress)ref;

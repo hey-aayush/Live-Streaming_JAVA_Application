@@ -4,6 +4,7 @@ import Streamer.StreamingConstants;
 import java.io.Serializable;
 
 public class StreamRequest implements Serializable {
+    private static final long SerialVersionUID = 1069L;
 
     private StreamingConstants command;
     private int channelID;

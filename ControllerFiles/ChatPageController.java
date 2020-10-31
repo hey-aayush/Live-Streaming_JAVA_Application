@@ -15,57 +15,55 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.URL;
-import java.sql.Connection;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class ChatPageController implements Initializable {
+    //Variable for checking which frined chat session is currently open
     static String whosionchat;
-    public String friend, user = LoginController.getInstance().myUserName;
+    //Getting the name of selected friend our userName
+    public String friend, user = LoginController.myUserName;
 
+    //hashmap to store chats after opening first time and fetching from database
     HashMap<String, String> hashMap = new HashMap<String, String>();
-    //public static HashMap<String, Integer> frinedNewMsgs = new HashMap<String, Integer>();
 
+    //ObservableMap to store number of new Messages from a particular friend
     public static ObservableMap<String, Integer> frinedNewMsgs = FXCollections.observableHashMap();
 
+    //ObservableList of frined from who we have done chat
     public static ObservableList<String> friendList = FXCollections.observableArrayList();
 
     //ListView for friends
     @FXML
     private ListView<String> friendListview;
-
+    //TextArea for showing messages
     @FXML
     private TextArea msgtxtArea;
+
     @FXML
     private Button chosseBtn;
 
     @FXML
     private Button SendBtn;
-
+    //TextArea for writing messages
     @FXML
     private TextArea textArea;
-    @FXML
-    private TextField search;
 
     ObjectOutputStream objectOutputStream = Client.objectOutputStream;
 
+    //Method to append message received from Server
     public void appendMessage(Message message) throws IOException{
 
         //msgListView.getItems().add(message + "\r\n");
         String u = message.getSendername().trim();
-
-
+        /* If ther persone is on chat and that person message came then show it on
+            msgTextArea and add it in hashMap */
         if(whosionchat != null && whosionchat.equals(message.getSendername().trim())){
             msgtxtArea.appendText("\n" + message);
             hashMap.replace(u, hashMap.get(u) + message);
-            //ifAction(u);
-            //frinedNewMsgs.put(u, frinedNewMsgs.get(u) + 1 );
-            //friendListview.setItems(friendList);
-            // friendListview.setCellFactory(param -> new Cell());
             SetSeenData setSeenData = new SetSeenData();
             setSeenData.setUserName(user);
             setSeenData.setFriendName(whosionchat);
@@ -76,7 +74,8 @@ public class ChatPageController implements Initializable {
             System.out.println("phase1");
 
         }
-
+        /* If the person is not in friendList before then put the message in hashMap
+            and increase the number of new messages by 1*/
         else if(!hashMap.containsKey(u) && !friendList.contains(u)) {
             System.out.println("-----------");
             //loadMsg(u);
@@ -92,6 +91,10 @@ public class ChatPageController implements Initializable {
             friendListview.setCellFactory(param -> new Cell());
             //ifAction(u);
         }
+        //If peroson is available in friendList but its old chats are not
+        //loaded locally so firstly load its all old chats and put it
+        //into hashmap and also this new message and also increase the
+        //number of new Messages in frindNewMessages observableMap
         else if(!hashMap.containsKey(u) && friendList.contains(u)){
             System.out.println("new case:");
             loadMsg(u);
@@ -104,6 +107,8 @@ public class ChatPageController implements Initializable {
 
 
         }
+        /*If it is not available on currently chat but its old chat
+          are once loaded earlier*/
         else{
             System.out.println("phase3");
             hashMap.replace(u,hashMap.get(u)  + message);
@@ -131,7 +136,7 @@ public class ChatPageController implements Initializable {
             friendList.remove(move);
         friendList.add(0,friend);
     }
-
+    //Function for sending the message
     public void sendMessage(ActionEvent event) throws Exception{
 
         Message msg = new Message();
@@ -141,24 +146,21 @@ public class ChatPageController implements Initializable {
         msg.setMsgStatus(MsgStatus.UNSEEN);
         objectOutputStream.writeObject(msg);
         objectOutputStream.flush();
+        System.out.println("message send");
         textArea.setText("");
         msgtxtArea.appendText(msg.getSendername() + "\n" + msg.getReceiverName() + "\n"+ msg.getContent() + "\n" + msg.getMsgStatus() +"\n");
         hashMap.replace(friend,hashMap.get(friend.trim()) + msg.getSendername() + "\n" + msg.getReceiverName() + "\n"+ msg.getContent() + "\n"
                 +msg.getMsgStatus() + "\n");
+
         //ifAction(friend);
 
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) throws NullPointerException{
-        // friendList.clear();
-        search.setText(user);
         System.out.println("user: " + user);
         friendListview.getItems().clear();
-        //Remove karna hai isse
-        //friendListview.setItems(friendList);
         System.out.println("ye initalize wala hai");
-        // friendListview.setCellFactory(param -> new Cell());
         FriendData friendData = new FriendData();
         friendData.setUserName(user);
         try {
@@ -168,6 +170,7 @@ public class ChatPageController implements Initializable {
             e.printStackTrace();
         }
 
+        //On opening, requesting for the number of New messages
         NewMsgData newMsgData = new NewMsgData();
         newMsgData.setFriendName(user);
         newMsgData.setMsgStatus(MsgStatus.UNSEEN);

@@ -3,7 +3,7 @@ package ControllerFiles;
 import Application.AskProfileData;
 import ClientThread.Client;
 import Query.OnlineOfflineData;
-import User.Streamer;
+import ControllerFiles.*;
 import User.User;
 import User.UserStatus;
 import javafx.fxml.FXML;
@@ -28,9 +28,6 @@ public class BaseStageController implements Initializable {
 
     public static User user;
 
-    //Still not set
-    public static Streamer streamer;
-
     public static BaseStageController singleInstance;
 
     public static BaseStageController getInstance(){
@@ -38,11 +35,17 @@ public class BaseStageController implements Initializable {
             singleInstance = new BaseStageController();
         }
         return singleInstance;
+
     }
 
     public void setUser(User user){
         this.user = user;
-        //this.streamer = new Streamer();
+        System.out.println("IsChannel :"+user.getisChannel());
+        try {
+            switchTosearchPage();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     public User getUser(User user){
@@ -73,6 +76,21 @@ public class BaseStageController implements Initializable {
     @FXML
     public AnchorPane TabPane;
 
+    public void switchTosearchPage() throws Exception{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/searchPage.fxml"));
+        //Loading the FXML file
+        Pane view = (Pane) loader.load();
+        //Access the controller by calling getController() on the FXMLLoader instance.
+        searchPageController = (SearchPageController) loader.getController();
+        searchPageController.setBaseStageController(this);
+        searchPageController.setUser(user);
+        // HomePageController HomePageController = loader.getController();
+        //  HomePageController.setUser(user);
+
+        TabPane.getChildren().removeAll();
+        TabPane.getChildren().setAll(view);
+    }
+
 
     public void handleButtonAction(MouseEvent event) throws IOException {
         if (event.getTarget()==exit) {
@@ -96,9 +114,10 @@ public class BaseStageController implements Initializable {
                 //Access the controller by calling getController() on the FXMLLoader instance.
                 searchPageController = (SearchPageController) loader.getController();
                 searchPageController.setBaseStageController(this);
+                searchPageController.setUser(user);
 
-               // HomePageController HomePageController = loader.getController();
-              //  HomePageController.setUser(user);
+                // HomePageController HomePageController = loader.getController();
+                //  HomePageController.setUser(user);
 
                 TabPane.getChildren().removeAll();
                 TabPane.getChildren().setAll(view);
@@ -107,21 +126,24 @@ public class BaseStageController implements Initializable {
                 e.printStackTrace();
             }
         }else if (event.getTarget()==profile_btn) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/profilePage.fxml"));
+            // openProfile();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/ProfilePage.fxml"));
             Pane profileView = (Pane) loader.load();
             profilePageController = loader.getController();
-            profilePageController.setUser(user);
+            profilePageController.setUser(user,0);
             System.out.println(TabPane);
             TabPane.getChildren().removeAll();
             TabPane.getChildren().setAll(profileView);
+            //AskProfileData askProfileData = new AskProfileData(LoginController.myUserName);
+            //askProfileData.profileInfo();
 
         }else if (event.getTarget()==chat_btn) {
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/chatPage.fxml"));
-                Pane view = (Pane) loader.load();
-                chatPageController = (ChatPageController)loader.getController();
-                TabPane.getChildren().removeAll();
-                TabPane.getChildren().setAll(view);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/chatPage.fxml"));
+            Pane view = (Pane) loader.load();
+            chatPageController = (ChatPageController)loader.getController();
+            TabPane.getChildren().removeAll();
+            TabPane.getChildren().setAll(view);
 
 
         }else if (event.getTarget()==channel_btn) {
@@ -155,8 +177,6 @@ public class BaseStageController implements Initializable {
                 Pane view = (Pane) loader.load();
 
                 streammerSectionController = (StreammerSectionController)loader.getController();
-
-                //To be corrected!!
                 streammerSectionController.setUser(user);
                 streammerSectionController.setBaseStageController(this);
 
@@ -180,6 +200,20 @@ public class BaseStageController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    }
+
+    public void openProfile(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/ProfilePage.fxml"));
+        try {
+            Pane profileView = (Pane) loader.load();
+            profilePageController = loader.getController();
+            System.out.println(TabPane);
+            TabPane.getChildren().removeAll();
+            TabPane.getChildren().setAll(profileView);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }

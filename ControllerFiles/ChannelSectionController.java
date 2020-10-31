@@ -29,6 +29,7 @@ import javafx.scene.layout.*;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ChannelSectionController implements Initializable {
@@ -165,6 +166,15 @@ public class ChannelSectionController implements Initializable {
         new Thread(videoStreamReceivingThread).start();
 
         alreadyConnected = true;
+    }
+
+    public void append(List<OtherChannels> searchedChannelList){
+        SearchOtherChannelList.clear();
+        for(OtherChannels otherChannel : searchedChannelList){
+            System.out.println("Added :"+otherChannel.getChannelName());
+            BaseStageController.channelSectionController.SearchOtherChannelList.add(otherChannel);
+        }
+        BaseStageController.channelSectionController.updateList();
     }
 
     public void updateList(){
