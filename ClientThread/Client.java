@@ -7,6 +7,8 @@ import Query.LoginData;
 import Query.Message;
 import Query.RegisterData;
 import Response.*;
+import Streamer.StreamingAddress;
+import Streamer.StreamingConstants;
 import javafx.application.Platform;
 import Main.*;
 
@@ -156,16 +158,37 @@ public class Client implements Runnable{
                             Main.controller.appendUser((sfr.getUser()));
                         }
                     });
-                }else if(ref instanceof SearchChannelResponse){
+                }else if(ref instanceof SearchChannelResponse) {
                     SearchChannelResponse searchChannelResponse = (SearchChannelResponse) ref;
                     List<OtherChannels> searchedChannelList = searchChannelResponse.getsearchChannelList();
+
+                    for (OtherChannels otherChannel : searchedChannelList) {
+                        System.out.println("Added :" + otherChannel.getChannelName());
+                        BaseStageController.channelSectionController.SearchOtherChannelList.add(otherChannel);
+                        BaseStageController.channelSectionController.SearchChannelList.add(otherChannel.getChannelName());
+                    }
+                    BaseStageController.channelSectionController.updateList();
+
+                }// Allocating streaming address
+                else if(ref instanceof StreamingAddress){
+
+                    StreamingAddress streamingAddress = (StreamingAddress)ref;
+                    System.out.println("In client class: " + streamingAddress.getAddress() + ", " + streamingAddress.getVideoPort());
+                    System.out.println("streamingAddress use: " + streamingAddress.getAddressUse());
+                    System.out.println("Audio port client: " + streamingAddress.getAudioPort());
+
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            BaseStageController.channelSectionController.append(searchedChannelList);
+
+                            if(streamingAddress.getAddressUse()== StreamingConstants.FOR_STREAMING) {
+                                BaseStageController.streammerSectionController.setStreamingAddress(streamingAddress);
+                            }
+                            else{
+                                BaseStageController.channelSectionController.setStreamingAddress(streamingAddress);
+                            }
                         }
                     });
-
                 }
                 // Allocating streaming address
                              /*
