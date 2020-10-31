@@ -26,6 +26,7 @@ public class ProfileInfo {
             user.setFirstName(queryResult.getString("firstName"));
             user.setUserName(queryResult.getString("userName"));
             user.setisChannel(queryResult.getBoolean("IsStreammer"));
+            user.setEmail(queryResult.getString("Email"));
 
             if (queryResult.getBoolean("IsStreammer")){
 
@@ -39,7 +40,7 @@ public class ProfileInfo {
                     channel.setChannelName(streammerqueryResult.getString("channelName"));
                     channel.setChannelId(streammerqueryResult.getInt("ChannelId"));
                     channel.setNoSubscribers(streammerqueryResult.getInt("NoofSubcribers"));
-
+                    
                     user.setChannel(channel);
 
                     System.out.println(user.getChannel().getChannelName());
