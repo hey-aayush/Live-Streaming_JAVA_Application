@@ -1,8 +1,6 @@
 package Streamer;
 
 import Query.StreamRequest;
-
-import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -28,9 +26,10 @@ public class StreamingRoomManager {
        if(streamRequest.getCommand()==StreamingConstants.REQUEST_STREAMING_ROOM){
            return generateNewStreamingRoomAddress(streamRequest);
        }
-       else{
+       else if(streamRequest.getCommand() == StreamingConstants.REQUEST_JOIN_GROUP){
            return getRunningStreamingRoomAddress(streamRequest);
        }
+       return null;
     }
 
     private StreamingAddress getRunningStreamingRoomAddress(StreamRequest streamRequest) {
@@ -50,18 +49,25 @@ public class StreamingRoomManager {
     private StreamingAddress generateNewStreamingRoomAddress(StreamRequest streamRequest){
         int videoPort = getPort();
         int audioPort = getPort();
+
+        if(videoPort==0 || audioPort==0) {
+            return null;
+        }
+
         StreamingAddress streamingAddress = new StreamingAddress(address, videoPort, audioPort, StreamingConstants.FOR_STREAMING);
         activeRooms.put(streamRequest.getChannelID(), streamingAddress);
         return streamingAddress;
     }
 
     private int getPort(){
+
+        if(availablePorts.isEmpty()) {
+            return 0;
+        }
+
         int port = availablePorts.peek();
         availablePorts.remove();
         return port;
     }
 
-    private void printAll(){
-
-    }
 }
