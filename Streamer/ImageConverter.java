@@ -8,7 +8,6 @@ public class ImageConverter {
                                                 int targetType)
 	  {
 	    BufferedImage image;
-
 	    if (sourceImage.getType() == targetType) {
 			image = sourceImage;
 		}
