@@ -39,7 +39,7 @@ public class ChannelSectionController implements Initializable {
     private JFXButton Connectbtn,Disconnectbtn,ChannelSearchBtn;
 
     @FXML
-    private Button muteBtn,unmuteBtn;
+    private Button muteBtn,unmuteBtn,PauseBtn,ResumeBtn;
 
     @FXML
     private AnchorPane LiveFeed,SearchView;
@@ -149,6 +149,14 @@ public class ChannelSectionController implements Initializable {
     public void muteAction(ActionEvent event){
         //mute
         System.out.println("Muted");
+    }
+    public void pauseAction(ActionEvent event){
+        //mute
+        System.out.println("Paused !!");
+    }
+    public void resumeAction(ActionEvent event){
+        //mute
+        System.out.println("Resumed !!");
     }
     public void unmuteAction(ActionEvent event){
         //Unmute

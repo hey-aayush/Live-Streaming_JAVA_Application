@@ -10,7 +10,6 @@ public class Channel implements Serializable {
     private double rating;
     private int numberOfLiveStreams;
 
-
     public String getChannelName() {
         return channelName;
     }

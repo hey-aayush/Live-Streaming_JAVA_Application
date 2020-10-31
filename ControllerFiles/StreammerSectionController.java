@@ -33,6 +33,7 @@ import java.util.ResourceBundle;
 public class StreammerSectionController implements Initializable {
 
     static User user;
+
     static Streamer streammer;
 
     private StreamingAddress streamingAddress = null;

@@ -28,7 +28,9 @@ public class ProfilePageController implements Initializable {
     @FXML
     private TextField UserNameTextField,firstNameTextField,lastNameTextField,email;
     @FXML
-    private Button editButtonProfile,updateButtonProfile,add;
+    private Button editButtonProfile,updateButton,add;
+    @FXML
+    private Label channelName,subscribers,noOfLiveStream;
 //    @FXML
 //    private AnchorPane channelSection;
 //    @FXML
@@ -40,6 +42,12 @@ public class ProfilePageController implements Initializable {
         firstNameTextField.setText(user.getFirstName());
         lastNameTextField.setText(user.getLastName());
         UserNameTextField.setText(user.getUserName());
+        email.setText(user.getEmail());
+        if (user.getisChannel()){
+            Streamer streamer = (Streamer) user;
+            channelName.setText(streamer.getChannel().getChannelName());
+            subscribers.setText(""+streamer.getChannel().getNoSubscribers());
+        }
     }
     public void setEditButtonProfile(ActionEvent event) throws IOException {
         firstNameTextField.setEditable(true);
@@ -47,7 +55,7 @@ public class ProfilePageController implements Initializable {
         lastNameTextField.setEditable(true);
         lastNameTextField.setStyle("-fx-control-inner-background: white");
         editButtonProfile.setVisible(false);
-        updateButtonProfile.setVisible(true);
+        updateButton.setVisible(true);
     }
 
     @Override

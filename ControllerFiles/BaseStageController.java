@@ -105,7 +105,7 @@ public class BaseStageController implements Initializable {
                 e.printStackTrace();
             }
         }else if (event.getTarget()==profile_btn) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/profilePage.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/ProfilePage.fxml"));
             Pane profileView = (Pane) loader.load();
             profilePageController = loader.getController();
             profilePageController.setUser(user);
