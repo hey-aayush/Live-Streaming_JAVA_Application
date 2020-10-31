@@ -34,7 +34,7 @@ public class SearchChannelSQL implements Serializable {
             List<OtherChannels> otherChannelsList = new ArrayList<>();
             OtherChannels otherChannel;
             while (resultSet.next()){
-                otherChannel = new OtherChannels(resultSet.getInt("ChannelId"),resultSet.getString("ChannelName"),resultSet.getInt("NoofSubcribers"));
+                otherChannel = new OtherChannels(resultSet.getInt("ChannelId"),resultSet.getString("channelName"),resultSet.getInt("NoofSubcribers"));
                 otherChannelsList.add(otherChannel);
             }
 
@@ -52,7 +52,7 @@ public class SearchChannelSQL implements Serializable {
         DatabaseConnection connection  = DatabaseConnection.getInstance();
         Connection connectDB = connection.getConnection();
 
-        String searchQuery = "select * from channel_table where ChannelName like ?;";
+        String searchQuery = "select * from Channel_table where ChannelName like ?;";
 
         try {
             PreparedStatement statement = connectDB.prepareStatement(searchQuery);
