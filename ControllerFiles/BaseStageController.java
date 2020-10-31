@@ -1,9 +1,8 @@
 package ControllerFiles;
 
-import Application.AskProfileData;
 import ClientThread.Client;
 import Query.OnlineOfflineData;
-import ControllerFiles.*;
+import ControllerFiles.StreammerSectionController;
 import User.User;
 import User.UserStatus;
 import javafx.fxml.FXML;

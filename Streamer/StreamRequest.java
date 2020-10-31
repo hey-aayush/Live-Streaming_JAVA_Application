@@ -1,23 +1,24 @@
-package Streamer;
+package Query;
 
+import Streamer.StreamingConstants;
 import java.io.Serializable;
 
 public class StreamRequest implements Serializable {
 
     private StreamingConstants command;
-    String username;
+    private int channelID;
 
-    public StreamRequest(String username, StreamingConstants command) {
-        this.username = username;
+    public StreamRequest(int channelID, StreamingConstants command) {
+        this.channelID = channelID;
         this.command = command;
     }
 
-    public String getUsername() {
-        return username;
+    public int getChannelID() {
+        return channelID;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setChannelID(int channelID) {
+        this.channelID = channelID;
     }
 
     public StreamingConstants getCommand() {

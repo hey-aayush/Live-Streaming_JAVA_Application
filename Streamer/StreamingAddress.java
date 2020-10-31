@@ -1,18 +1,19 @@
 package Streamer;
 
 import java.io.Serializable;
-import java.net.InetAddress;
 
 public class StreamingAddress implements Serializable {
 
     String address;
-    private int port;
+    private int videoPort;
+    private int audioPort;
     private StreamingConstants addressUse;
 
-    public StreamingAddress(String address, int port, StreamingConstants addressUse) {
+    public StreamingAddress(String address, int videoPort, int audioPort, StreamingConstants addressUse) {
         this.address = address;
-        this.port = port;
+        this.videoPort = videoPort;
         this.addressUse = addressUse;
+        this.audioPort = audioPort;
     }
 
     public String getAddress() {
@@ -23,12 +24,20 @@ public class StreamingAddress implements Serializable {
         this.address = address;
     }
 
-    public int getPort() {
-        return port;
+    public int getVideoPort() {
+        return videoPort;
     }
 
-    public void setPort(int port) {
-        this.port = port;
+    public void setVideoPort(int videoPort) {
+        this.videoPort = videoPort;
+    }
+
+    public int getAudioPort() {
+        return audioPort;
+    }
+
+    public void setAudioPort(int audioPort) {
+        this.audioPort = audioPort;
     }
 
     public StreamingConstants getAddressUse() {
