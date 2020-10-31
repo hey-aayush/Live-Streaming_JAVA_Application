@@ -1,7 +1,5 @@
 package Query;
 
-
-
 import EnumConstants.QueryCode;
 
 import java.io.Serializable;

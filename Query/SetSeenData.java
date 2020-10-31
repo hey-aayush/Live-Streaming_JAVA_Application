@@ -1,8 +1,8 @@
 package Query;
 
-
 import EnumConstants.MsgStatus;
 import EnumConstants.QueryCode;
+
 
 import java.io.Serializable;
 

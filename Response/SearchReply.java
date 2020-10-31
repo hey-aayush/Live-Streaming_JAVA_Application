@@ -1,6 +1,6 @@
 package Response;
 
-import User.User;
+import User.*;
 
 import java.io.Serializable;
 import java.util.Vector;

@@ -23,6 +23,7 @@ public class SearchChannelQuery extends Query implements Serializable {
     public SearchChannelQuery(String searchedChannel) {
         this.setQueryChannel(searchedChannel);
     }
+
     @Override
     public QueryCode getQueryCode() {
         return QueryCode.SEARCH_CHANNEL_QUERY;

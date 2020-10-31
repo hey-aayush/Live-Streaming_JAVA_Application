@@ -1,6 +1,5 @@
 package Query;
 
-
 import EnumConstants.QueryCode;
 
 import java.io.Serializable;
@@ -30,4 +29,6 @@ public class AddFriendData extends Query implements Serializable {
     public QueryCode getQueryCode() {
         return QueryCode.ADD_FRIEND_DATA;
     }
+
+
 }

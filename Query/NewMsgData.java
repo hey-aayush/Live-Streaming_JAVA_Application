@@ -3,6 +3,7 @@ package Query;
 import EnumConstants.MsgStatus;
 import EnumConstants.QueryCode;
 
+
 import java.io.Serializable;
 
 public class NewMsgData extends Query implements Serializable {
@@ -30,4 +31,5 @@ public class NewMsgData extends Query implements Serializable {
     public QueryCode getQueryCode() {
         return QueryCode.NEW_MSG_DATA;
     }
+
 }

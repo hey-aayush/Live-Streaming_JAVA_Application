@@ -1,9 +1,9 @@
 package EnumConstants;
 
 public enum QueryCode {
-     ADD_FRIEND_DATA,
-     FRIEND_DATA,
-     LOGIN_DATA,
+    ADD_FRIEND_DATA,
+    FRIEND_DATA,
+    LOGIN_DATA,
     MSG_DATA,
     NEW_MSG_DATA,
     REGISTER_DATA,

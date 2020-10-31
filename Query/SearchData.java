@@ -1,6 +1,5 @@
 package Query;
 
-
 import EnumConstants.QueryCode;
 
 import java.io.Serializable;
@@ -16,9 +15,10 @@ public class SearchData extends Query implements Serializable {
     public void setUserName(String userName) {
         this.userName = userName;
     }
-
     @Override
     public QueryCode getQueryCode() {
         return QueryCode.SEARCH_DATA;
     }
+
+
 }

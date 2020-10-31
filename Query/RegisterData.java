@@ -1,6 +1,5 @@
 package Query;
 
-
 import EnumConstants.QueryCode;
 
 import java.io.Serializable;
@@ -44,11 +43,11 @@ private String Password;
     public void setPassword(String password) {
         Password = password;
     }
+
     @Override
     public QueryCode getQueryCode() {
         return QueryCode.REGISTER_DATA;
     }
-
 
 
 }

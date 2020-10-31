@@ -1,6 +1,5 @@
 package Query;
 
-
 import EnumConstants.QueryCode;
 
 import java.io.Serializable;
@@ -25,8 +24,10 @@ public class MsgData extends Query implements Serializable {
     public void setUserName(String userName) {
         this.userName = userName;
     }
+
     @Override
     public QueryCode getQueryCode() {
-        return QueryCode.LOGIN_DATA;
+        return QueryCode.MSG_DATA;
     }
+
 }
