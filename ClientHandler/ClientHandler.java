@@ -1,6 +1,5 @@
 package ClientHandler;
 
-import EnumConstants.QueryCode;
 import Query.*;
 import Database.DatabaseConnection;
 
@@ -9,7 +8,10 @@ import Response.*;
 
 
 import MySQLQuery.SetSeen;
-import User.*;
+import Query.StreamRequest;
+import Streamer.StreamingAddress;
+import Streamer.StreamingRoomManager;
+import User.User;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -38,6 +40,8 @@ public class ClientHandler implements Runnable{
 
     private Socket socket;
 
+    private StreamingRoomManager streamingRoomManager;
+
     public ClientHandler(Socket socket){
         this.socket = socket;
     }
@@ -45,6 +49,10 @@ public class ClientHandler implements Runnable{
 
     public void run(){
         try{
+            //Creating streaming room manager
+
+            this.streamingRoomManager = new StreamingRoomManager();
+
             in= new ObjectInputStream(socket.getInputStream());
             o = new ObjectOutputStream(socket.getOutputStream());
 
@@ -182,7 +190,7 @@ public class ClientHandler implements Runnable{
                         ProfileData data = (ProfileData)object;
                         System.out.println("Profile Data Recieved");
                         ProfileInfo profileInfo = new ProfileInfo();
-                        Streamer user = profileInfo.getProfileInfo(data.getUserName());
+                        User user = profileInfo.getProfileInfo(data.getUserName());
                         ProfileReply reply = new ProfileReply();
                         reply.setUser(user);
                         System.out.println(reply);
@@ -209,6 +217,44 @@ public class ClientHandler implements Runnable{
                         searchChannelResponse.setSearchChannelList(new SearchChannelSQL().setResponse(searchChannelQuery));
                         o.writeObject(searchChannelResponse);
                     }
+                else if(object instanceof StreamRequest){
+
+                    // Codes for requesting streaming group done.... Random initialization of port remains
+
+                    System.out.println("StreamRequest received!!");
+
+                    StreamRequest streamRequest = (StreamRequest)object;
+                    StreamingAddress streamingAddress = streamingRoomManager.getStreamingAddress(streamRequest);
+
+                    if(streamingAddress!=null) {
+                        System.out.println("In client handler, streaming use: " + streamingAddress.getAddressUse());
+                        System.out.println("Audio port: " + streamingAddress.getAudioPort());
+                        o.writeObject(streamingAddress);
+                        o.flush();
+                        o.reset();
+                    }
+                    else{
+                        System.out.println("Null streaming address!!");
+                    }
+
+//                    if(streamRequest.getCommand()== StreamingConstants.REQUEST_STREAMING_GROUP) {
+//                        StreamingAddress streamingAddress = streamingRoomManager.getStreamingAddress();
+//
+//                        System.out.println("Streaming address: "
+//                                + streamingAddress.getAddress() +  ", "
+//                                + streamingAddress.getAudioPort()+ ", "
+//                                + streamingAddress.getVideoPort());
+//
+//                        o.writeObject(streamingAddress);
+//                        o.flush();
+//                    }
+//                    else if(streamRequest.getCommand() == StreamingConstants.REQUEST_JOIN_GROUP){
+//                        StreamingAddress streamingAddress = streamingRoomManager.getStreamingAddress();
+//
+//                        o.writeObject(streamingAddress);
+//                        o.flush();
+//                    }
+                }
                     else {
                         System.out.println("Unknown Data recieved !");
                     }
