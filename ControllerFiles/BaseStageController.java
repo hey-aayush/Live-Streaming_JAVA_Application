@@ -1,8 +1,8 @@
 package ControllerFiles;
 
+import Application.AskProfileData;
 import ClientThread.Client;
 import Query.OnlineOfflineData;
-import ControllerFiles.StreammerSectionController;
 import User.Streamer;
 import User.User;
 import User.UserStatus;
@@ -107,7 +107,7 @@ public class BaseStageController implements Initializable {
                 e.printStackTrace();
             }
         }else if (event.getTarget()==profile_btn) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/ProfilePage.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/profilePage.fxml"));
             Pane profileView = (Pane) loader.load();
             profilePageController = loader.getController();
             profilePageController.setUser(user);

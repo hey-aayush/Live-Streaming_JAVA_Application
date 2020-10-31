@@ -10,7 +10,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-public class AudioSen implements Runnable {
+public class AudioStreamSendingThread implements Runnable {
 
     TargetDataLine targetDataLine;
     AudioFormat audioFormat;
@@ -19,9 +19,11 @@ public class AudioSen implements Runnable {
     byte tempBuffer[];
     StreamingAddress streamingAddress;
     InetAddress ip;
+    int port;
     boolean terminate;
+    boolean isMute;
 
-    public AudioSen(StreamingAddress streamingAddress) throws LineUnavailableException, UnknownHostException {
+    public AudioStreamSendingThread(StreamingAddress streamingAddress) throws LineUnavailableException, UnknownHostException {
         audioFormat = getAudioFormat();
         DataLine.Info dataLineInfo = new DataLine.Info(TargetDataLine.class, audioFormat);
 
@@ -32,10 +34,12 @@ public class AudioSen implements Runnable {
         encoder = new Encoder(new Dimension(640, 480));
         this.streamingAddress = streamingAddress;
         ip = InetAddress.getByName(streamingAddress.getAddress());
+        port = streamingAddress.getAudioPort();
         terminate = false;
+        isMute = false;
     }
 
-    public static AudioFormat getAudioFormat() {
+    private AudioFormat getAudioFormat() {
         float sampleRate = 8000.0F;
         int sampleInbits = 16;
         int channels = 1;
@@ -44,9 +48,17 @@ public class AudioSen implements Runnable {
         return new AudioFormat(sampleRate, sampleInbits, channels, signed, bigEndian);
     }
 
-    public void terminateAudioSen(){
+    public void terminateAudioStreamSendingThread(){
         System.out.println("Terminating audio sender!!");
         this.terminate = false;
+    }
+
+    public void muteAudio(){
+        isMute = true;
+    }
+
+    public void unMuteAudio(){
+        isMute = false;
     }
 
     @Override
@@ -80,7 +92,11 @@ public class AudioSen implements Runnable {
                         }
                     }
 
-                    DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, ip, 9278);
+                    if(isMute){
+                        sendData = null;
+                    }
+
+                    DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, ip, port);
                     clientSocket.send(sendPacket);
                 }
             }

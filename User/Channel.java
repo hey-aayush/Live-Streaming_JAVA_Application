@@ -1,14 +1,20 @@
 package User;
 
-import java.io.Serializable;
-
-public class Channel implements Serializable {
-    private int channelId;
+public class Channel {
+    private int channelID;
     private String channelName;
     private String content;
-    private int noSubscribers;
+    private String subscribers;
     private double rating;
     private int numberOfLiveStreams;
+
+    public int getChannelID() {
+        return channelID;
+    }
+
+    public void setChannelID(int channelID) {
+        this.channelID = channelID;
+    }
 
     public String getChannelName() {
         return channelName;
@@ -24,6 +30,14 @@ public class Channel implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getSubscribers() {
+        return subscribers;
+    }
+
+    public void setSubscribers(String subscribers) {
+        this.subscribers = subscribers;
     }
 
     public double getRating() {
@@ -43,19 +57,4 @@ public class Channel implements Serializable {
     }
 
 
-    public int getChannelId() {
-        return channelId;
-    }
-
-    public void setChannelId(int channelId) {
-        this.channelId = channelId;
-    }
-
-    public int getNoSubscribers() {
-        return noSubscribers;
-    }
-
-    public void setNoSubscribers(int noSubscribers) {
-        this.noSubscribers = noSubscribers;
-    }
 }

@@ -1,9 +1,8 @@
 package ControllerFiles;
 
-import ClientThread.CameraStreamThread;
+import Streamer.CameraStreamSendingThread;
 import ClientThread.Client;
-import ClientThread.ScreenStreamThread;
-import Query.LoginData;
+import Streamer.ScreenStreamSendingThread;
 import Query.StreamRequest;
 import Streamer.StreamingAddress;
 import Streamer.StreamingConstants;
@@ -26,7 +25,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import Streamer.AudioStreamSendingThread;
 
+import javax.sound.sampled.LineUnavailableException;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.URL;
@@ -56,9 +57,9 @@ public class StreammerSectionController implements Initializable {
 
     public static ObjectProperty<Image> imageProperty = new SimpleObjectProperty<Image>();
 
-    public static Thread streamThread;
-    public static CameraStreamThread cameraStreamThread;
-    public static ScreenStreamThread screenStreamThread;
+    public static CameraStreamSendingThread cameraStreamSendingThread;
+    public static ScreenStreamSendingThread screenStreamSendingThread;
+    public static AudioStreamSendingThread audioStreamSendingThread;
 
     enum StreamSource{
         WebCamera,ScreenShare;
@@ -69,11 +70,7 @@ public class StreammerSectionController implements Initializable {
         this.streamer = new Streamer();
         //Testing
         Channel channel = new Channel();
-<<<<<<< HEAD
-        channel.setChannelId(1);
-=======
         channel.setChannelID(1);
->>>>>>> 28f023f87cf88b9093f9b9961bec14b82fa4493f
         this.streamer.setChannel(channel);
     }
 
@@ -149,7 +146,7 @@ public class StreammerSectionController implements Initializable {
 
     }
 
-    public void StartStream(StreammerSectionController.SourceInfo sourceInfo) throws IOException {
+    public void StartStream(StreammerSectionController.SourceInfo sourceInfo) throws IOException, LineUnavailableException {
 
         if(streamingAddress==null){
             return;
@@ -161,17 +158,21 @@ public class StreammerSectionController implements Initializable {
             Webcam webcam = Webcam.getDefault();
             webcam.setViewSize(WebcamResolution.VGA.getSize());
 
-            cameraStreamThread = new CameraStreamThread(webcam, streamer, streamingAddress);
-            streamThread = new Thread(cameraStreamThread);
-            streamThread.start();
+            /* Video Sending Thread */
+            cameraStreamSendingThread = new CameraStreamSendingThread(webcam, streamer, streamingAddress);
+            new Thread(cameraStreamSendingThread).start();
+
         }else if (streamSource == StreamSource.ScreenShare){
-            screenStreamThread = new ScreenStreamThread(streamer);
-            streamThread = new Thread(screenStreamThread);
-            streamThread.start();
+            screenStreamSendingThread = new ScreenStreamSendingThread(streamer, streamingAddress);
+            new Thread(screenStreamSendingThread).start();
         }
+
+        /*Audio Sending Thread */
+        audioStreamSendingThread = new AudioStreamSendingThread(streamingAddress);
+        new Thread(audioStreamSendingThread).start();
     }
 
-    public void StartButtonAction(ActionEvent event) throws IOException {
+    public void StartButtonAction(ActionEvent event) throws IOException, LineUnavailableException {
         StartStream(StreamOptions.getSelectionModel().getSelectedItem());
         System.out.println(StreamOptions.getSelectionModel().getSelectedItem().srcName);
         StartButton.setDisable(true);
@@ -181,11 +182,14 @@ public class StreammerSectionController implements Initializable {
     }
 
     public void StopButtonAction(ActionEvent event){
+
         if (StreamOptions.getSelectionModel().getSelectedItem().getStreamSource()==StreamSource.WebCamera){
-            cameraStreamThread.terminateStream();
+            cameraStreamSendingThread.terminateCameraStreamSendingThread();
         }else if (StreamOptions.getSelectionModel().getSelectedItem().getStreamSource()==StreamSource.ScreenShare){
-            screenStreamThread.terminateStream();
+            screenStreamSendingThread.terminateScreenStreamSendingThread();
         }
+
+        audioStreamSendingThread.terminateAudioStreamSendingThread();
         StartButton.setDisableVisualFocus(true);
         StartButton.setDisable(false);
         StreamOptions.setDisable(false);
@@ -198,12 +202,7 @@ public class StreammerSectionController implements Initializable {
 
     public void writeStreamRequest() throws IOException {
         if(streamingAddress==null) {
-<<<<<<< HEAD
-            objectOutputStream.writeObject(new StreamRequest(streamer.getChannel().getChannelId(), StreamingConstants.REQUEST_STREAMING_ROOM));
-=======
             objectOutputStream.writeObject(new StreamRequest(streamer.getChannel().getChannelID(), StreamingConstants.REQUEST_STREAMING_ROOM));
->>>>>>> 28f023f87cf88b9093f9b9961bec14b82fa4493f
-            //objectOutputStream.writeObject(new LoginData());
             objectOutputStream.flush();
             System.out.println("Room Requested");
         }
@@ -224,12 +223,17 @@ public class StreammerSectionController implements Initializable {
 //        BaseStageController.TabPane.getChildren().setAll(view);
 //    }
 
+    /* For mute */
     public void muteAction(ActionEvent event){
-        //mute
+
+        audioStreamSendingThread.muteAudio();
         System.out.println("Muted");
     }
+
+    /* For unMute */
     public void unmuteAction(ActionEvent event){
-        //Unmute
+
+        audioStreamSendingThread.unMuteAudio();
         System.out.println("Unmuter");
     }
 }

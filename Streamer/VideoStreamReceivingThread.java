@@ -1,8 +1,4 @@
-package ClientThread;
-
-import Streamer.*;
-import com.github.sarxos.webcam.Webcam;
-import com.github.sarxos.webcam.WebcamResolution;
+package Streamer;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -10,18 +6,18 @@ import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.net.*;
 
-public class StreamReceivingThread implements Runnable{
+public class VideoStreamReceivingThread implements Runnable{
 
-    static Synchronizer synchronizer;
-    static AudioRec audioRec;
+    private Synchronizer synchronizer;
     private StreamingAddress streamingAddress;
     private boolean terminate;
     private MulticastSocket receivingSocket;
     private InetAddress ip;
     private int port;
 
-    public StreamReceivingThread(StreamingAddress streamingAddress) throws IOException {
+    public VideoStreamReceivingThread(Synchronizer synchronizer, StreamingAddress streamingAddress) throws IOException {
 
+        this.synchronizer = synchronizer;
         this.streamingAddress = streamingAddress;
         terminate = false;
         ip = InetAddress.getByName(streamingAddress.getAddress());
@@ -29,6 +25,11 @@ public class StreamReceivingThread implements Runnable{
         receivingSocket = new MulticastSocket(port);
         receivingSocket.joinGroup(new InetSocketAddress(streamingAddress.getAddress(), port), null);
 
+    }
+
+    public void terminateVideoStreamThread(){
+        terminate = true;
+        System.out.println("Terminating video receiver!");
     }
 
     @Override
@@ -42,17 +43,13 @@ public class StreamReceivingThread implements Runnable{
 
     private void viewStream() throws Exception {
 
-
-        synchronizer = new Synchronizer();
-        new Thread(synchronizer).start();
-        audioRec = new AudioRec(synchronizer, streamingAddress);
-        new Thread(audioRec).start();
-
         while(!terminate){
 
             byte[] buf = new byte[8000];
             DatagramPacket dp = new DatagramPacket(buf, 8000);
             receivingSocket.receive(dp);
+
+            VideoPacket videoPacket;
 
             buf = dp.getData();
             Object o = null;
@@ -62,7 +59,6 @@ public class StreamReceivingThread implements Runnable{
             try {
                 in = new ObjectInputStream(bis);
                 o = in.readObject();
-
             } finally {
                 try {
                     if (in != null) {
@@ -77,6 +73,7 @@ public class StreamReceivingThread implements Runnable{
             {
                 if(o instanceof VideoPacket)
                 {
+                    videoPacket = (VideoPacket)o;
                     //System.out.println("Video Packet received!!");
                     //System.out.println(((VideoPacket) o).getSeqNumber());
                 }
@@ -92,8 +89,7 @@ public class StreamReceivingThread implements Runnable{
                 continue;
             }
 
-            VideoPacket encodedImage = ((VideoPacket)o);
-            synchronizer.addVideoPacket(encodedImage);
+            synchronizer.addVideoPacket(videoPacket);
         }
     }
 }

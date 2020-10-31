@@ -1,21 +1,18 @@
 package Response;
 
-import User.*;
+import User.User;
 
 import java.io.Serializable;
 
 public class ProfileReply implements Serializable {
-
     private static final long SerialVersionUID = 2000L;
-    private Streamer user;
-
-
+    private User user;
 
     public User getUser() {
         return user;
     }
 
-    public void setUser(Streamer user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }

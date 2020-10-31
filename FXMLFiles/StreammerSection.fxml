@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="555.0" prefWidth="1000.0" style="-fx-background-color: #ccc;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Query.StreammerSectionController">
+<AnchorPane prefHeight="555.0" prefWidth="1000.0" style="-fx-background-color: #ccc;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerFiles.StreammerSectionController">
    <children>
       <JFXComboBox fx:id="StreamOptions" layoutX="407.0" layoutY="66.0" prefHeight="26.0" prefWidth="166.0" />
       <Label layoutX="180.0" layoutY="66.0" text="Select Stream Source">

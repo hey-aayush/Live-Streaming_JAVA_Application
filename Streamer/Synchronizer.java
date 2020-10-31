@@ -16,21 +16,22 @@ public class Synchronizer implements Runnable {
 
     private volatile Queue<VideoPacket> frameQueue;
     private volatile Queue<AudioPacket> audioQueue;
-    private Decoder decoder;
-    SourceDataLine sourceLine;
-    volatile long time;
-    boolean terminate = false;
-
-    //Don't know why
+    private final Decoder decoder;
+    private SourceDataLine sourceLine;
+    private long time;
+    private boolean terminate = false;
+    private boolean isMute;
+    private boolean isPause;
     private volatile WritableImage image;
 
     public Synchronizer(){
-
         decoder = new Decoder(new Dimension(640, 480));
         this.frameQueue = new LinkedList<>();
         this.audioQueue = new LinkedList<>();
         image = null;
         terminate = false;
+        isMute = false;
+        isPause = false;
     }
 
     public synchronized void addVideoPacket(VideoPacket videoPacket){
@@ -50,19 +51,39 @@ public class Synchronizer implements Runnable {
         System.out.println("Terminating synchronizer!");
     }
 
+
+    public void muteAudio(){
+        isMute = true;
+    }
+
+    public void unMuteAudio(){
+        isMute = false;
+    }
+
+    public void pauseStream(){
+        isPause = true;
+    }
+
+    public void unPauseStream(){
+        isPause = false;
+    }
+
     @Override
     public void run() {
-        try {
-            Thread.sleep(60);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(60);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
         System.out.println("Started atleast!!");
 
         while(!terminate) {
 
-            //System.out.println("Audio queue size: " + getAudioQueueSize());
+            if(isPause){
+                continue;
+            }
+
             if(getAudioQueueSize()>0){
 
                 AudioPacket audioPacket;
@@ -87,7 +108,9 @@ public class Synchronizer implements Runnable {
                 });
                 t.start();
 
-                sourceLine.write(audioData, 0, audioData.length);
+                if(!isMute){
+                    sourceLine.write(audioData, 0, audioData.length);
+                }
 
                 try {
                     t.join();

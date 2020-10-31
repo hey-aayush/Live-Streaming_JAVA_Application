@@ -5,7 +5,7 @@ import java.io.*;
 import java.net.*;
 
 //Audio Receiver End
-public class AudioRec implements Runnable {
+public class AudioStreamReceivingThread implements Runnable {
 
     private final int SIZE = 10500;
     private MulticastSocket audioReceivingSocket;
@@ -14,27 +14,45 @@ public class AudioRec implements Runnable {
     private SourceDataLine sourceLine;
     private Synchronizer synchronizer;
     private StreamingAddress streamingAddress;
-    boolean terminate;
+    private boolean terminate;
+    private int port;
 
-
-    public AudioRec(Synchronizer synchronizer, StreamingAddress streamingAddress) throws IOException {
+    public AudioStreamReceivingThread(Synchronizer synchronizer, StreamingAddress streamingAddress) throws IOException {
 
         receiveData = new byte[SIZE];
         this.synchronizer = synchronizer;
         this.streamingAddress = streamingAddress;
-        audioReceivingSocket = new MulticastSocket(9278);
-        audioReceivingSocket.joinGroup(new InetSocketAddress(streamingAddress.getAddress(), 9278), null);
-        terminate = false;
+        port = this.streamingAddress.getAudioPort();
+        audioReceivingSocket = new MulticastSocket(port);
 
+        //Joining multicast group
+        audioReceivingSocket.joinGroup(new InetSocketAddress(streamingAddress.getAddress(), port), null);
+
+        terminate = false;
     }
 
-    public void terminateAudioRec(){
+    /* Thread termination function */
+    public void terminateAudioStreamReceiver(){
         System.out.println("Terminating audio receiver!!");
         this.terminate = true;
     }
 
     @Override
     public void run() {
+
+        byte[] audioData = new byte[10500];
+        InputStream byteInputStream = new ByteArrayInputStream(audioData);
+        AudioFormat adFormat = getAudioFormat();
+        inputStream = new AudioInputStream(byteInputStream, adFormat, audioData.length / adFormat.getFrameSize());
+        DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class, adFormat);
+        try {
+            sourceLine = (SourceDataLine) AudioSystem.getLine(dataLineInfo);
+            sourceLine.open(adFormat);
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
+        sourceLine.start();
+        synchronizer.setSourceLine(sourceLine);
 
     while (!terminate) {
 
@@ -73,13 +91,12 @@ public class AudioRec implements Runnable {
                 AudioPacket audioPacket;
                 if(object!=null)
                 {
-                    if(object instanceof AudioPacket)
-                    {
+                    if(object instanceof AudioPacket) {
+
                         audioPacket = (AudioPacket)object;
                         System.out.println(audioPacket.getTimestamp());
                     }
-                    else
-                    {
+                    else {
                         continue;
                     }
                 }
@@ -89,25 +106,21 @@ public class AudioRec implements Runnable {
                     continue;
                 }
 
-                byte[] audioData = audioPacket.getData();
-
-                InputStream byteInputStream = new ByteArrayInputStream(audioData);
-                AudioFormat adFormat = AudioSen.getAudioFormat();
-                inputStream = new AudioInputStream(byteInputStream, adFormat, audioData.length / adFormat.getFrameSize());
-                DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class, adFormat);
-                sourceLine = (SourceDataLine) AudioSystem.getLine(dataLineInfo);
-                sourceLine.open(adFormat);
-                sourceLine.start();
-
-                synchronizer.setSourceLine(sourceLine);
-
-                if(audioPacket!=null)
                 synchronizer.addAudioPacket(audioPacket);
 
             } catch (Exception e) {
-                System.out.println(e);
+                e.printStackTrace();
             }
         }
+    }
+
+    private AudioFormat getAudioFormat() {
+        float sampleRate = 8000.0F;
+        int sampleInbits = 16;
+        int channels = 1;
+        boolean signed = true;
+        boolean bigEndian = true;
+        return new AudioFormat(sampleRate, sampleInbits, channels, signed, bigEndian);
     }
 
 }

@@ -2,15 +2,14 @@ package ControllerFiles;
 
 import Application.HomeUser;
 import Application.OtherChannels;
-import ClientThread.CameraStreamThread;
 import ClientThread.Client;
-import ClientThread.StreamReceivingThread;
+import Streamer.VideoStreamReceivingThread;
 import Query.SearchChannelQuery;
 import Query.StreamRequest;
+import Streamer.AudioStreamReceivingThread;
 import Streamer.StreamingAddress;
 import Streamer.StreamingConstants;
-import com.github.sarxos.webcam.Webcam;
-import com.github.sarxos.webcam.WebcamResolution;
+import Streamer.Synchronizer;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import javafx.beans.property.ObjectProperty;
@@ -38,8 +37,9 @@ public class ChannelSectionController implements Initializable {
     ObjectOutputStream objectOutputStream = Client.objectOutputStream;
     private StreamingAddress streamingAddress = null;
 
-    public static Thread streamThread;
-    public static StreamReceivingThread streamReceivingThread;
+    private VideoStreamReceivingThread videoStreamReceivingThread;
+    private AudioStreamReceivingThread audioStreamReceivingThread;
+    private Synchronizer synchronizer;
 
     public static ObservableList<OtherChannels> SearchOtherChannelList = FXCollections.observableArrayList();
     public static ObservableList<String> SearchChannelList = FXCollections.observableArrayList();
@@ -51,7 +51,7 @@ public class ChannelSectionController implements Initializable {
     private JFXButton Connectbtn,Disconnectbtn,ChannelSearchBtn;
 
     @FXML
-    private Button muteBtn,unmuteBtn,PauseBtn,ResumeBtn;
+    private Button muteBtn,unmuteBtn, PauseBtn, ResumeBtn;
 
     @FXML
     private AnchorPane LiveFeed,SearchView;
@@ -120,8 +120,6 @@ public class ChannelSectionController implements Initializable {
         LiveFeed.setVisible(true);
         SearchView.setVisible(false);
 
-        LiveFeed.setVisible(true);
-        SearchView.setVisible(false);
     }
 
     @Override
@@ -138,19 +136,33 @@ public class ChannelSectionController implements Initializable {
 
     public void DisconnectButtonAction(ActionEvent Event){
 
+        audioStreamReceivingThread.terminateAudioStreamReceiver();
+        videoStreamReceivingThread.terminateVideoStreamThread();
+        synchronizer.terminateSynchronizer();
+        imageProperty.set(null);
+        LiveFeed.setVisible(false);
+        SearchView.setVisible(true);
 
         alreadyConnected = false;
     }
+
+
     public void ConnectButtonAction(ActionEvent Event) throws IOException {
         if(alreadyConnected) return;
 
         streammingVideo.imageProperty().bind(imageProperty);
-//        Webcam webcam = Webcam.getDefault();
-//        webcam.setViewSize(WebcamResolution.VGA.getSize());
 
-        streamReceivingThread = new StreamReceivingThread(streamingAddress);
-        streamThread = new Thread(streamReceivingThread);
-        streamThread.start();
+        //Synchronizer for playing frames with sync
+        synchronizer = new Synchronizer();
+        new Thread(synchronizer).start();
+
+        //Thread for receiving audio stream
+        audioStreamReceivingThread = new AudioStreamReceivingThread(synchronizer, streamingAddress);
+        new Thread(audioStreamReceivingThread).start();
+
+        //Thread for receiving video stream
+        videoStreamReceivingThread = new VideoStreamReceivingThread(synchronizer, streamingAddress);
+        new Thread(videoStreamReceivingThread).start();
 
         alreadyConnected = true;
     }
@@ -179,6 +191,7 @@ public class ChannelSectionController implements Initializable {
 
     }
 
+    /* Join stream method */
     private void requestRoomForJoining(int currentChannelID) throws IOException {
         StreamRequest streamRequest = new StreamRequest(currentChannelID, StreamingConstants.REQUEST_JOIN_GROUP);
         objectOutputStream.writeObject(streamRequest);
@@ -186,21 +199,32 @@ public class ChannelSectionController implements Initializable {
         System.out.println("Joining request sent!");
     }
 
+    /*Method for mute*/
     public void muteAction(ActionEvent event){
-        //mute
+
+        synchronizer.muteAudio();
         System.out.println("Muted");
     }
+
+    /* Method for unmute */
+    public void unmuteAction(ActionEvent event){
+
+        synchronizer.unMuteAudio();
+        System.out.println("Unmuter");
+    }
+
+    /* Method for pause */
     public void pauseAction(ActionEvent event){
-        //mute
+
+        synchronizer.pauseStream();
         System.out.println("Paused !!");
     }
+
+    /* Method for resume */
     public void resumeAction(ActionEvent event){
-        //mute
+
+        synchronizer.unPauseStream();
         System.out.println("Resumed !!");
-    }
-    public void unmuteAction(ActionEvent event){
-        //Unmute
-        System.out.println("Unmuter");
     }
 
 }

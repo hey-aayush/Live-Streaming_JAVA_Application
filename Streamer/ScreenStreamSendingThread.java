@@ -1,38 +1,36 @@
-package ClientThread;
+package Streamer;
 
 import ControllerFiles.StreammerSectionController;
-import Streamer.*;
-import com.github.sarxos.webcam.Webcam;
-import com.github.sarxos.webcam.WebcamResolution;
-import javafx.scene.image.Image;
-import javax.sound.sampled.LineUnavailableException;
-import java.awt.image.BufferedImage;
-import java.io.*;
-import java.net.*;
 import User.Streamer;
+import com.github.sarxos.webcam.WebcamResolution;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.*;
 
-public class CameraStreamThread implements Runnable{
+public class ScreenStreamSendingThread implements Runnable{
 
     static BufferedImage grabbedImage;
-    static Webcam webcam;
     static boolean terminate =false;
+    static Robot screenshot;
+    static Rectangle  capture;
     static Streamer streamer;
-    private StreamingAddress streamingAddress;
-    private DatagramSocket sendingSocket;
     private int imageNumber;
+    private DatagramSocket sendingSocket;
+    private StreamingAddress streamingAddress;
     private Encoder encoder;
     private InetAddress ip;
     private int port;
-    private Image image;
-    static AudioSen audioSen;
 
+    public ScreenStreamSendingThread(Streamer streamer, StreamingAddress streamingAddress) throws SocketException, UnknownHostException {
 
-    public CameraStreamThread(Webcam webcam, Streamer streamer, StreamingAddress streamingAddress) throws IOException {
-        this.webcam = webcam;
-        this.webcam.open();
         this.terminate =false;
-        this.streamer = streamer;
+        this.streamer=streamer;
         this.streamingAddress = streamingAddress;
         imageNumber = 0;
         encoder = new Encoder(WebcamResolution.VGA.getSize());
@@ -40,59 +38,31 @@ public class CameraStreamThread implements Runnable{
         ip = InetAddress.getByName(streamingAddress.getAddress());
         port = streamingAddress.getVideoPort();
 
-        image = null;
+        try {
+            screenshot= new Robot();
+            capture = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void terminateStream(){
+    public void terminateScreenStreamSendingThread(){
         this.terminate=true;
-        audioSen.terminateAudioSen();
-//        audioRec.terminateAudioRec();
-//        synchronizer.terminateSynchronizer();
     }
 
     public void run(){
-
-        //System.out.println("Reached CameraStreamThread!");
-
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    previewVideo();
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
-
-        try {
-            audioSen = new AudioSen(streamingAddress);
-            new Thread(audioSen).start();
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-
-//        try {
-//            new Thread(new AudioSen(streamingAddress)).start();
-//        } catch (LineUnavailableException | UnknownHostException e) {
-//            e.printStackTrace();
-//        }
-
-        while((grabbedImage = webcam.getImage())!=null  & !terminate){
-
+        while((grabbedImage = screenshot.createScreenCapture(capture))!=null  & !terminate){
+            //final Image image = SwingFXUtils.toFXImage(grabbedImage, null);
+            //StreammerSectionController.imageProperty.set(mainimage);
 
             try {
                 sendVideoPackets(grabbedImage);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            grabbedImage.flush();
 
+            grabbedImage.flush();
         }
-        webcam.close();
-        StreammerSectionController.imageProperty.set(null);
         System.out.println("Stream Ended");
     }
 
@@ -137,9 +107,7 @@ public class CameraStreamThread implements Runnable{
         }
 
         Thread.sleep(5);
-
     }
 
 
 }
-
