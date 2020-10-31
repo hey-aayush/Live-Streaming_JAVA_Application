@@ -17,6 +17,8 @@ public class User implements Serializable {
     private Long lastActiveTime;
     private int userId;
 
+    private boolean IsChannel;
+
     public Long getLastActiveTime() {
         return lastActiveTime;
     }
@@ -65,7 +67,7 @@ public class User implements Serializable {
 
     public User(){}
 
-    public User(String userName,String firstName,String lastName,String email,UserStatus userStatus,Long lastActiveTime){
+    public User(String userName,String firstName,String lastName,String email,UserStatus userStatus,Long lastActiveTime,boolean Ischannel){
 
         setFirstName(firstName);
         setLastName(lastName);
@@ -73,7 +75,7 @@ public class User implements Serializable {
         setEmail(email);
         setLastActiveTime(lastActiveTime);
         setUserStatus(userStatus);
-
+        setisChannel(Ischannel);
     }
 
     public int getUserId() {
@@ -82,5 +84,13 @@ public class User implements Serializable {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public boolean getisChannel() {
+        return IsChannel;
+    }
+
+    public void setisChannel(boolean channel) {
+        IsChannel = channel;
     }
 }

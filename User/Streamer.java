@@ -1,6 +1,8 @@
 package User;
 
-public class Streamer extends User{
+import java.io.Serializable;
+
+public class Streamer extends User implements Serializable {
     private Channel channel;
 
     public Channel getChannel() {

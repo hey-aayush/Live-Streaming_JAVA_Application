@@ -159,13 +159,12 @@ public class Client implements Runnable{
                 }else if(ref instanceof SearchChannelResponse){
                     SearchChannelResponse searchChannelResponse = (SearchChannelResponse) ref;
                     List<OtherChannels> searchedChannelList = searchChannelResponse.getsearchChannelList();
-
-                    for(OtherChannels otherChannel : searchedChannelList){
-                        System.out.println("Added :"+otherChannel.getChannelName());
-                        BaseStageController.channelSectionController.SearchOtherChannelList.add(otherChannel);
-                        BaseStageController.channelSectionController.SearchChannelList.add(otherChannel.getChannelName());
-                    }
-                    BaseStageController.channelSectionController.updateList();
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            BaseStageController.channelSectionController.append(searchedChannelList);
+                        }
+                    });
 
                 }
                 // Allocating streaming address
