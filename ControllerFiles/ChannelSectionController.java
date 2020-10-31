@@ -2,8 +2,15 @@ package ControllerFiles;
 
 import Application.HomeUser;
 import Application.OtherChannels;
+import ClientThread.CameraStreamThread;
 import ClientThread.Client;
+import ClientThread.StreamReceivingThread;
 import Query.SearchChannelQuery;
+import Query.StreamRequest;
+import Streamer.StreamingAddress;
+import Streamer.StreamingConstants;
+import com.github.sarxos.webcam.Webcam;
+import com.github.sarxos.webcam.WebcamResolution;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import javafx.beans.property.ObjectProperty;
@@ -21,13 +28,18 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class ChannelSectionController implements Initializable {
 
     private static HomeUser homeUser;
+    ObjectOutputStream objectOutputStream = Client.objectOutputStream;
+    private StreamingAddress streamingAddress = null;
+
+    public static Thread streamThread;
+    public static StreamReceivingThread streamReceivingThread;
 
     public static ObservableList<OtherChannels> SearchOtherChannelList = FXCollections.observableArrayList();
     public static ObservableList<String> SearchChannelList = FXCollections.observableArrayList();
@@ -69,7 +81,11 @@ public class ChannelSectionController implements Initializable {
             hBox.setHgrow(pane, Priority.ALWAYS);
             joinbtn.setOnAction(e->{
                 System.out.println(getItem().getChannelId());
-                BaseStageController.channelSectionController.viewChannel();
+                try {
+                    BaseStageController.channelSectionController.viewChannel(getItem().getChannelId());
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             });
             subbtn.setOnAction(e->{
                 System.out.println("Subcribe Channel");
@@ -85,12 +101,25 @@ public class ChannelSectionController implements Initializable {
                 channelDescription.setText("Name :"+otherChannels.getChannelName()+" NoSub: "+otherChannels.getNoSubscribers()+" ");
                 //Add Status Fields in OtherChannel
                 img.setImage(profile);
+                hBox.setAlignment(Pos.CENTER);
                 setGraphic(hBox);
             }
         }
     }
 
-    public void viewChannel(){
+    public void setStreamingAddress(StreamingAddress streamingAddress){
+        this.streamingAddress = streamingAddress;
+
+        System.out.println("In ChannelSectionController: ");
+        System.out.println(streamingAddress.getAddress() + ", " + streamingAddress.getVideoPort() + ", " + streamingAddress.getAudioPort());
+    }
+
+    public void viewChannel(int currentChannelID) throws IOException {
+
+        requestRoomForJoining(currentChannelID);
+        LiveFeed.setVisible(true);
+        SearchView.setVisible(false);
+
         LiveFeed.setVisible(true);
         SearchView.setVisible(false);
     }
@@ -101,24 +130,29 @@ public class ChannelSectionController implements Initializable {
         SearchView.setVisible(true);
     }
 
-    public void append(List<OtherChannels> searchedChannelList){
-        SearchOtherChannelList.clear();
-        for(OtherChannels otherChannel : searchedChannelList){
-            System.out.println("Added :"+otherChannel.getChannelName());
-            BaseStageController.channelSectionController.SearchOtherChannelList.add(otherChannel);
-        }
-        BaseStageController.channelSectionController.updateList();
-    }
-
     public void setHomeUser(HomeUser homeUser){
         this.homeUser=homeUser;
     }
 
+    boolean alreadyConnected = false;
+
     public void DisconnectButtonAction(ActionEvent Event){
 
-    }
-    public void ConnectButtonAction(ActionEvent Event){
 
+        alreadyConnected = false;
+    }
+    public void ConnectButtonAction(ActionEvent Event) throws IOException {
+        if(alreadyConnected) return;
+
+        streammingVideo.imageProperty().bind(imageProperty);
+//        Webcam webcam = Webcam.getDefault();
+//        webcam.setViewSize(WebcamResolution.VGA.getSize());
+
+        streamReceivingThread = new StreamReceivingThread(streamingAddress);
+        streamThread = new Thread(streamReceivingThread);
+        streamThread.start();
+
+        alreadyConnected = true;
     }
 
     public void updateList(){
@@ -138,12 +172,18 @@ public class ChannelSectionController implements Initializable {
         }
     }
 
-    public void onClicked(MouseEvent event){
+    public void onClicked(MouseEvent event) throws IOException {
         //geting Channel Id
-        System.out.println(SearchOtherChannelList.get(SearchListView.getSelectionModel().getSelectedIndex()).getChannelId());
-        LiveFeed.setVisible(true);
-        SearchView.setVisible(false);
+        int currentChannelID = SearchOtherChannelList.get(SearchListView.getSelectionModel().getSelectedIndex()).getChannelId();
+        System.out.println("onClicked: " +  currentChannelID);
 
+    }
+
+    private void requestRoomForJoining(int currentChannelID) throws IOException {
+        StreamRequest streamRequest = new StreamRequest(currentChannelID, StreamingConstants.REQUEST_JOIN_GROUP);
+        objectOutputStream.writeObject(streamRequest);
+        objectOutputStream.flush();
+        System.out.println("Joining request sent!");
     }
 
     public void muteAction(ActionEvent event){

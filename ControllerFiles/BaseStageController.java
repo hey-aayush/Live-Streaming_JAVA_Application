@@ -3,6 +3,7 @@ package ControllerFiles;
 import ClientThread.Client;
 import Query.OnlineOfflineData;
 import ControllerFiles.StreammerSectionController;
+import User.Streamer;
 import User.User;
 import User.UserStatus;
 import javafx.fxml.FXML;
@@ -27,6 +28,9 @@ public class BaseStageController implements Initializable {
 
     public static User user;
 
+    //Still not set
+    public static Streamer streamer;
+
     public static BaseStageController singleInstance;
 
     public static BaseStageController getInstance(){
@@ -34,12 +38,11 @@ public class BaseStageController implements Initializable {
             singleInstance = new BaseStageController();
         }
         return singleInstance;
-
     }
 
     public void setUser(User user){
         this.user = user;
-        System.out.println("IsChannel :"+user.getisChannel());
+        //this.streamer = new Streamer();
     }
 
     public User getUser(User user){
@@ -152,6 +155,8 @@ public class BaseStageController implements Initializable {
                 Pane view = (Pane) loader.load();
 
                 streammerSectionController = (StreammerSectionController)loader.getController();
+
+                //To be corrected!!
                 streammerSectionController.setUser(user);
                 streammerSectionController.setBaseStageController(this);
 

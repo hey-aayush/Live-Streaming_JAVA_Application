@@ -1,5 +1,6 @@
 package Streamer;
 
+import ControllerFiles.ChannelSectionController;
 import ControllerFiles.StreammerSectionController;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.WritableImage;
@@ -17,11 +18,11 @@ public class Synchronizer implements Runnable {
     private volatile Queue<AudioPacket> audioQueue;
     private Decoder decoder;
     SourceDataLine sourceLine;
-    long time;
+    volatile long time;
     boolean terminate = false;
 
     //Don't know why
-    private WritableImage image;
+    private volatile WritableImage image;
 
     public Synchronizer(){
 
@@ -61,6 +62,7 @@ public class Synchronizer implements Runnable {
 
         while(!terminate) {
 
+            //System.out.println("Audio queue size: " + getAudioQueueSize());
             if(getAudioQueueSize()>0){
 
                 AudioPacket audioPacket;
@@ -98,6 +100,7 @@ public class Synchronizer implements Runnable {
 
      public synchronized void framePlayer() {
 
+         System.out.println("Framequeue Size: " + frameQueue.size());
              while (frameQueue.size()>0 && frameQueue.peek().getTimestamp() <= time) {
 
                  try {
@@ -109,9 +112,12 @@ public class Synchronizer implements Runnable {
                              image = SwingFXUtils.toFXImage(bufferedImage, null);
 
                              if(image!=null)
-                                 StreammerSectionController.imageProperty.set(image);
+                                 ChannelSectionController.imageProperty.set(image);
+                             else{
+                                 System.out.println("Null image (Synchronizer)");
+                             }
                          }
-                         Thread.sleep(50);
+                         Thread.sleep(40);
                      }
 
                      frameQueue.remove();
