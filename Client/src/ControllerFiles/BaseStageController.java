@@ -40,6 +40,7 @@ public class BaseStageController implements Initializable {
 
     public void setUser(User user){
         this.user = user;
+        System.out.println("IsChannel :"+user.getisChannel());
     }
 
     public User getUser(User user){

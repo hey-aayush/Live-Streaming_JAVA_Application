@@ -22,6 +22,7 @@ import javafx.scene.layout.*;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ChannelSectionController implements Initializable {
@@ -84,7 +85,6 @@ public class ChannelSectionController implements Initializable {
                 channelDescription.setText("Name :"+otherChannels.getChannelName()+" NoSub: "+otherChannels.getNoSubscribers()+" ");
                 //Add Status Fields in OtherChannel
                 img.setImage(profile);
-                hBox.setAlignment(Pos.CENTER);
                 setGraphic(hBox);
             }
         }
@@ -99,6 +99,15 @@ public class ChannelSectionController implements Initializable {
     public void initialize(URL arg0, ResourceBundle arg1) {
         LiveFeed.setVisible(false);
         SearchView.setVisible(true);
+    }
+
+    public void append(List<OtherChannels> searchedChannelList){
+        SearchOtherChannelList.clear();
+        for(OtherChannels otherChannel : searchedChannelList){
+            System.out.println("Added :"+otherChannel.getChannelName());
+            BaseStageController.channelSectionController.SearchOtherChannelList.add(otherChannel);
+        }
+        BaseStageController.channelSectionController.updateList();
     }
 
     public void setHomeUser(HomeUser homeUser){

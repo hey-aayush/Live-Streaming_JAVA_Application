@@ -9,7 +9,7 @@ import Response.*;
 
 
 import MySQLQuery.SetSeen;
-import User.User;
+import User.*;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -182,7 +182,7 @@ public class ClientHandler implements Runnable{
                         ProfileData data = (ProfileData)object;
                         System.out.println("Profile Data Recieved");
                         ProfileInfo profileInfo = new ProfileInfo();
-                        User user = profileInfo.getProfileInfo(data.getUserName());
+                        Streamer user = profileInfo.getProfileInfo(data.getUserName());
                         ProfileReply reply = new ProfileReply();
                         reply.setUser(user);
                         System.out.println(reply);

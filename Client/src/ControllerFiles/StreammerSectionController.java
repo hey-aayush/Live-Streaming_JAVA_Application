@@ -3,10 +3,11 @@ package ControllerFiles;
 import ClientThread.CameraStreamThread;
 import ClientThread.Client;
 import ClientThread.ScreenStreamThread;
+import Query.LoginData;
 import Streamer.StreamRequest;
 import Streamer.StreamingAddress;
 import Streamer.StreamingConstants;
-import User.User;
+import User.*;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamResolution;
 import com.jfoenix.controls.JFXButton;
@@ -32,6 +33,8 @@ import java.util.ResourceBundle;
 public class StreammerSectionController implements Initializable {
 
     static User user;
+    static Streamer streammer;
+
     private StreamingAddress streamingAddress = null;
 
     private BaseStageController baseStageController;
@@ -61,8 +64,15 @@ public class StreammerSectionController implements Initializable {
         WebCamera,ScreenShare;
     }
 
-    public void setUser(User user){
+    public void setUser(User user) {
         this.user=user;
+
+        if (user.getisChannel()){
+            streammer = (Streamer) user;
+        }
+
+        System.out.println(streammer.getChannel().getChannelName());
+
     }
 
     public void setBaseStageController(BaseStageController baseStageController){
@@ -190,6 +200,11 @@ public class StreammerSectionController implements Initializable {
     public void requestRoomAction(ActionEvent event){
         //Resquest For Room
         System.out.println("Room Requested");
+        try {
+            objectOutputStream.writeObject(new LoginData());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 //    public void changeToProfile(User user) {
