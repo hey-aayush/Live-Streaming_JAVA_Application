@@ -59,7 +59,7 @@ public class ProfilePageController implements Initializable {
 //    @FXML
 //    private Label channelName,userStatus, content, subscribers, rating, noOfLiveStreams;
 
-
+    // For showing the profile information in GUI
     public void setUser(User user, long serverTime) throws IOException {
         this.user = user;
         firstNameTextField.setText(user.getFirstName());
@@ -68,16 +68,21 @@ public class ProfilePageController implements Initializable {
         if (user.getUserStatus().equals(UserStatus.ONLINE)){
             userStatusLabel.setText(user.getUserStatus().toString());
         }else {
-
+            // For calcualting the time difrence between our system and server system
             long timeDiff = new Date().getTime() - serverTime;
             System.out.println(new Date().getTime() + "   " + serverTime);
             System.out.println("timediff" + timeDiff);
+            // Adding the time difference in lastActiveTime
             long lastActiveTime = user.getLastActiveTime() + timeDiff;
             System.out.println(lastActiveTime);
+            //Finding the diffrence of current time when any other user see it and when that other user become offline
             lastActiveTime = new Date().getTime() - lastActiveTime;
             System.out.println(lastActiveTime);
+            //convrting the lastActiveTime (MILLISECONDS) into MINUTES
             long minutes = TimeUnit.MINUTES.convert(lastActiveTime,TimeUnit.MILLISECONDS);
+            //Converting minutes into hour and minutes
             userStatusLabel.setText("ACTIVE " + minutes/60 + "hr" + minutes%60 + "minutes ago");
+            //Changing the color as according
             circle.setFill(Color.YELLOW);
         }
 

@@ -61,6 +61,7 @@
                   <Font size="19.0" />
                </font>
             </Label>
+            <Button fx:id="createChannelBtn" layoutX="442.0" layoutY="313.0" mnemonicParsing="false" onAction="#onCreateChannelBt" style="-fx-background-color: Blue;" text="Create Channel" textFill="WHITE" />
          </children>
       </AnchorPane>
    </children>

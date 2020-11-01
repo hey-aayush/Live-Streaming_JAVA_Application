@@ -254,6 +254,15 @@ public class ClientHandler implements Runnable{
                         DeleteRoomRequest request = (DeleteRoomRequest) object;
                         streamingRoomManager.removeActiveRoom(request);
                     }
+                    else if(object instanceof CreateChannelQuery){
+
+                        System.out.println("Create Channel Request Recieved");
+
+                        CreateChannelQuery request = (CreateChannelQuery) object;
+                        CreateChannelSQL createChannelSQL = new CreateChannelSQL();
+                        createChannelSQL.createChannel(request.getUser());
+                        System.out.println("Created Channel");
+                    }
                     else {
                         System.out.println("Unknown Data recieved !");
                     }

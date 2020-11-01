@@ -1,5 +1,6 @@
 package ControllerFiles;
 
+import Query.CreateChannelQuery;
 import Query.DeleteRoomRequest;
 import Streamer.CameraStreamSendingThread;
 import ClientThread.Client;
@@ -54,7 +55,8 @@ public class StreammerSectionController implements Initializable {
     private JFXButton StopButton,StartButton,respuestRoombtn;
 
     @FXML
-    private Button muteBtn,unmuteBtn;
+    private Button muteBtn,unmuteBtn,createChannelBtn;
+
     @FXML
     private AnchorPane streammerSection,noStreammerSection;
 
@@ -81,6 +83,7 @@ public class StreammerSectionController implements Initializable {
 
         }else{
             noStreammerSection.setVisible(true);
+            createChannelBtn.setVisible(true);
             streammerSection.setVisible(false);
         }
     }
@@ -223,6 +226,13 @@ public class StreammerSectionController implements Initializable {
             objectOutputStream.flush();
             System.out.println("Room Requested");
         }
+    }
+
+    public void onCreateChannelBt(ActionEvent event) throws IOException{
+        CreateChannelQuery createChannelQuery = new CreateChannelQuery();
+        createChannelQuery.setUser(user);
+        objectOutputStream.writeObject(createChannelQuery);
+        System.out.println("Please Login again....");
     }
 
     /* For mute */

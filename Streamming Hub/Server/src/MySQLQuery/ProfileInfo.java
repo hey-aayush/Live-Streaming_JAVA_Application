@@ -18,6 +18,7 @@ public class ProfileInfo {
         Streamer user = new Streamer();
         String query = "select * from user where userName = ?";
         try {
+            //Query for getting the profile information of any user
             PreparedStatement statement = connectDB.prepareStatement(query);
             statement.setString(1, userName);
             ResultSet queryResult = statement.executeQuery();
@@ -36,7 +37,7 @@ public class ProfileInfo {
             statement.close();
 
             if (user.getisChannel()){
-
+                //If user have channel then doing query from channel table
                 String streammerquery = "select * from Channel_table where userId = ?";
                 try{
                     PreparedStatement streammerstatement = connectDB.prepareStatement(streammerquery);
@@ -58,7 +59,7 @@ public class ProfileInfo {
                 }
 
             }
-
+            //Query for finding the subscribed channel list
             String channelquery = "select Channel_table.ChannelId,Channel_table.ChannelName,Channel_table.Curr_status,Channel_table.NoofSubcribers from Subscription_table join Channel_table on Subscription_table.ChannelId=Channel_table.ChannelId where Subscription_table.userId=?;";
             try{
                 List<Channel> subscribedchannelList = new ArrayList<Channel>();
