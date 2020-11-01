@@ -2,6 +2,12 @@
 
 Above this is a java application which enables a user to join or creates Live video Streams.
 
+### How to run the project
+
+Firstly run the Server.java form Server project and then run the Main.java from Main package of Client project.
+
+Then register the user and then login with userName and password and then enjoy the application
+
 ###  Features implemented (Expected):
 
 #### For Users :
@@ -15,6 +21,8 @@ c) Gets Status(Active now or not) and Last Seen
 d) Live Chat with Viewers of Streams
 
 e) Subscribe/Unsubscribe Channels
+
+f) User can also do perosnal chat with any other user
 
 
 #### For Streamer(Also a  User):
@@ -32,6 +40,20 @@ a) Webcam-capture : Taking images from web-cam
 b) Javafx : Building Graphical User Interface.
 
 c) Xuggler : for Encoding and Decoding.
+
+d) JFoenix : for materialize gui
+
+#### Feature of chat
+
+1. Show the number of new messages came
+
+2. Fetching the old chats only a single time from database
+
+3. Can add a new friend into chats easily 
+
+#### Last seen feature
+
+1. Showing the last active time according to your system clock
 
 ## File Structure
 
