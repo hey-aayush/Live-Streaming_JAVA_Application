@@ -4,7 +4,9 @@ Above this is a java application which enables a user to join or creates Live vi
 
 ### How to run the project
 
-Firstly run the Server.java form Server project and then run the Main.java from Main package of Client project.
+Create Database (Dummy DataBase Provided)
+
+Then, run the Server.java form Server project and then run the Main.java from Main package of Client project.
 
 Then register the user and then login with userName and password and then enjoy the application
 
@@ -65,6 +67,9 @@ Here's how Packages and Class are Designed.
 ![File Preview](https://user-images.githubusercontent.com/65902756/97612395-62550b80-1a3d-11eb-9e9b-eb3473bcd569.png)
 
 ## Login Section
+
+Takes Input from Users and verifies from DataBase 
+
 ![Login Section](https://user-images.githubusercontent.com/65902756/97795811-0d79e680-1c31-11eb-8b7e-70c65e6975e9.png)
 
 ## Registration Section
@@ -77,6 +82,16 @@ Here's how Packages and Class are Designed.
 ![chat3](https://user-images.githubusercontent.com/65902756/97795835-47e38380-1c31-11eb-81f5-1a03d02e955d.png)
 
 ## Streammer
+
+
+
+## Profile Section
+
+Can view Own as well as Others Profile and can alos check Online or Last Active.
+
+![WhatsApp Image 2020-11-01 at 11 50 17](https://user-images.githubusercontent.com/65902756/97796480-8f214280-1c38-11eb-9fcd-9f619bd9d824.jpeg)![WhatsApp Image 2020-11-01 at 11 49 19](https://user-images.githubusercontent.com/65902756/97796482-90eb0600-1c38-11eb-9353-5e6564453fea.jpeg)
+
+## HomePage
 
 ![Streammer Section](https://user-images.githubusercontent.com/65902756/97795853-81b48a00-1c31-11eb-9b9c-834ea06993c8.jpeg)
 
@@ -94,6 +109,7 @@ Here's how Packages and Class are Designed.
 5. Can stream using webcam and can also share screen.
 
 ## Channel: 
+
 
 ### Features: 
 
