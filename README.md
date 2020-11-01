@@ -117,6 +117,7 @@ search and join
 
 5. Can stream using webcam and can also share screen.
 
+6. Can subscribe/unsubscribe any channel.
 
 ### Features: 
 
