@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="575.0" prefWidth="1000.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.ControllerFiles.HomePageController">
+    <children>
+        <AnchorPane fx:id="homePage" layoutX="150.0" prefHeight="555.0" prefWidth="700.0" style="-fx-background-color: #fff; -fx-border-color: #9535f4;">
+            <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#9535f4" height="575.0" layoutY="1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="268.0" />
+                <ImageView fitHeight="66.0" fitWidth="80.0" layoutX="70.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../res/HomeIcon.png" />
+                    </image>
+                </ImageView>
+                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="52.0" layoutY="62.0" prefHeight="30.0" prefWidth="102.0" text="HomePage">
+                    <font>
+                        <Font size="17.0" />
+                    </font>
+                </Label>
+                <ImageView fx:id="search_btn" fitHeight="35.0" fitWidth="31.0" layoutX="225.0" layoutY="117.0" onMousePressed="#searchBtnAction" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../res/Search.png" />
+                    </image>
+                </ImageView>
+                <TextField fx:id="searchBar" alignment="CENTER" layoutX="14.0" layoutY="115.0" prefHeight="35.0" prefWidth="191.0" promptText="Search Others.." style="-fx-background-color: white; -fx-border-color: #9535f4;">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </TextField>
+                <TableView fx:id="searchTable" layoutX="269.0" layoutY="92.0" prefHeight="291.0" prefWidth="378.0" style="-fx-background-color: transparent;">
+                    <columns>
+                        <TableColumn fx:id="firstNameCol" prefWidth="110.0" text="FirstName" />
+                        <TableColumn fx:id="lastNameCol" prefWidth="133.0" text="Last Name" />
+                        <TableColumn fx:id="userNameCol" prefWidth="134.0" text="User Name" />
+                    </columns>
+                </TableView>
+            <ListView layoutX="14.0" layoutY="161.0" prefHeight="368.0" prefWidth="242.0" />
+            
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>
