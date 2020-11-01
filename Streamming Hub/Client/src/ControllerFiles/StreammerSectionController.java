@@ -1,11 +1,14 @@
 package ControllerFiles;
 
-import ClientThread.CameraStreamThread;
+import Query.DeleteRoomRequest;
+import Streamer.CameraStreamSendingThread;
 import ClientThread.Client;
-import ClientThread.ScreenStreamThread;
-import Streamer.StreamRequest;
+import Streamer.ScreenStreamSendingThread;
+import Query.StreamRequest;
 import Streamer.StreamingAddress;
 import Streamer.StreamingConstants;
+import User.Channel;
+import User.Streamer;
 import User.User;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamResolution;
@@ -23,7 +26,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import Streamer.AudioStreamSendingThread;
+import javafx.scene.layout.AnchorPane;
 
+import javax.sound.sampled.LineUnavailableException;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.URL;
@@ -32,8 +38,8 @@ import java.util.ResourceBundle;
 public class StreammerSectionController implements Initializable {
 
     static User user;
+    static Streamer streamer;
     private StreamingAddress streamingAddress = null;
-
     private BaseStageController baseStageController;
 
     ObjectOutputStream objectOutputStream = Client.objectOutputStream;
@@ -49,20 +55,34 @@ public class StreammerSectionController implements Initializable {
 
     @FXML
     private Button muteBtn,unmuteBtn;
+    @FXML
+    private AnchorPane streammerSection,noStreammerSection;
 
 
     public static ObjectProperty<Image> imageProperty = new SimpleObjectProperty<Image>();
 
-    public static Thread streamThread;
-    public static CameraStreamThread cameraStreamThread;
-    public static ScreenStreamThread screenStreamThread;
+    public static CameraStreamSendingThread cameraStreamSendingThread;
+    public static ScreenStreamSendingThread screenStreamSendingThread;
+    public static AudioStreamSendingThread audioStreamSendingThread;
 
     enum StreamSource{
         WebCamera,ScreenShare;
     }
 
     public void setUser(User user){
+
         this.user=user;
+        //Testing
+        if (user.getisChannel()){
+            this.streamer=(Streamer) user;
+            Channel channel = new Channel();
+            channel.setChannelId(streamer.getUserId());
+            this.streamer.setChannel(channel);
+
+        }else{
+            noStreammerSection.setVisible(true);
+            streammerSection.setVisible(false);
+        }
     }
 
     public void setBaseStageController(BaseStageController baseStageController){
@@ -70,13 +90,9 @@ public class StreammerSectionController implements Initializable {
     }
 
     public void setStreamingAddress(StreamingAddress streamingAddress){
-
-        System.out.println("In StreamerController: " + streamingAddress.getAddress() + ", " + streamingAddress.getPort());
-       // if(streamingAddress==null) {
-            this.streamingAddress = streamingAddress;
-            System.out.println("In inner StreamerController: " + this.streamingAddress.getAddress() + ", " + this.streamingAddress.getPort());
-
-        //}
+        this.streamingAddress = streamingAddress;
+        System.out.println("Received streaming address!! In StreamerSectionController: ");
+        System.out.println(streamingAddress.getAddress() + " " +  streamingAddress.getVideoPort() + " " + streamingAddress.getAudioPort());
     }
 
     private class SourceInfo{
@@ -125,6 +141,9 @@ public class StreammerSectionController implements Initializable {
         StreamOptions.setItems(options);
         StreamOptions.setPromptText("Select Source");
 
+        streammerSection.setVisible(true);
+        noStreammerSection.setVisible(false);
+
         StopButton.setDisable(true);
         StartButton.setDisable(true);
 
@@ -141,13 +160,10 @@ public class StreammerSectionController implements Initializable {
 
     }
 
-    public void StartStream(StreammerSectionController.SourceInfo sourceInfo) throws IOException {
+    public void StartStream(StreammerSectionController.SourceInfo sourceInfo) throws IOException, LineUnavailableException {
 
-        if(streamingAddress==null)
-        {
-           objectOutputStream.writeObject(new StreamRequest(user.getUserName(), StreamingConstants.REQUEST_STREAMING_GROUP));
-           objectOutputStream.flush();
-           return;
+        if(streamingAddress==null){
+            return;
         }
 
         StreamSource streamSource = sourceInfo.getStreamSource();
@@ -156,63 +172,70 @@ public class StreammerSectionController implements Initializable {
             Webcam webcam = Webcam.getDefault();
             webcam.setViewSize(WebcamResolution.VGA.getSize());
 
-            cameraStreamThread = new CameraStreamThread(webcam,user, streamingAddress);
-            streamThread = new Thread(cameraStreamThread);
-            streamThread.start();
+            /* Video Sending Thread */
+            cameraStreamSendingThread = new CameraStreamSendingThread(webcam, streamer, streamingAddress);
+            new Thread(cameraStreamSendingThread).start();
+
         }else if (streamSource == StreamSource.ScreenShare){
-            screenStreamThread = new ScreenStreamThread(user);
-            streamThread = new Thread(screenStreamThread);
-            streamThread.start();
+            screenStreamSendingThread = new ScreenStreamSendingThread(streamer, streamingAddress);
+            new Thread(screenStreamSendingThread).start();
         }
+
+        /*Audio Sending Thread */
+        audioStreamSendingThread = new AudioStreamSendingThread(streamingAddress);
+        new Thread(audioStreamSendingThread).start();
     }
 
-    public void StartButtonAction(ActionEvent event) throws IOException {
+    public void StartButtonAction(ActionEvent event) throws IOException, LineUnavailableException {
         StartStream(StreamOptions.getSelectionModel().getSelectedItem());
         System.out.println(StreamOptions.getSelectionModel().getSelectedItem().srcName);
-        //StartButton.setDisable(true);
+        StartButton.setDisable(true);
         StreamOptions.setDisable(true);
         StopButton.setDisable(false);
         StopButton.setDisableVisualFocus(true);
     }
 
-    public void StopButtonAction(ActionEvent event){
+    public void StopButtonAction(ActionEvent event) throws IOException {
+
         if (StreamOptions.getSelectionModel().getSelectedItem().getStreamSource()==StreamSource.WebCamera){
-            cameraStreamThread.terminateStream();
+            cameraStreamSendingThread.terminateCameraStreamSendingThread();
         }else if (StreamOptions.getSelectionModel().getSelectedItem().getStreamSource()==StreamSource.ScreenShare){
-            screenStreamThread.terminateStream();
+            screenStreamSendingThread.terminateScreenStreamSendingThread();
         }
+
+        audioStreamSendingThread.terminateAudioStreamSendingThread();
+        DeleteRoomRequest deleteRoomRequest = new DeleteRoomRequest(streamer.getChannel().getChannelId(), streamingAddress);
+        objectOutputStream.writeObject(deleteRoomRequest);
+        streamingAddress = null;
         StartButton.setDisableVisualFocus(true);
         StartButton.setDisable(false);
         StreamOptions.setDisable(false);
         StopButton.setDisable(true);
     }
 
-    public void requestRoomAction(ActionEvent event){
-        //Resquest For Room
-        System.out.println("Room Requested");
+    public void requestRoomAction(ActionEvent event) throws IOException {
+        writeStreamRequest();
     }
 
-//    public void changeToProfile(User user) {
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("../Client.FXMLFiles/ProfilePage.fxml"));
-//        Pane view = null;
-//        try {
-//            view = (Pane) loader.load();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        ProfilePageController profilePageController = loader.getController();
-//        profilePageController.setUser(user);
-//
-//        BaseStageController.TabPane.getChildren().removeAll();
-//        BaseStageController.TabPane.getChildren().setAll(view);
-//    }
+    public void writeStreamRequest() throws IOException {
+        if(streamingAddress==null) {
+            objectOutputStream.writeObject(new StreamRequest(streamer.getChannel().getChannelId(), StreamingConstants.REQUEST_STREAMING_ROOM));
+            objectOutputStream.flush();
+            System.out.println("Room Requested");
+        }
+    }
 
+    /* For mute */
     public void muteAction(ActionEvent event){
-        //mute
+
+        audioStreamSendingThread.muteAudio();
         System.out.println("Muted");
     }
+
+    /* For unMute */
     public void unmuteAction(ActionEvent event){
-        //Unmute
+
+        audioStreamSendingThread.unMuteAudio();
         System.out.println("Unmuter");
     }
 }

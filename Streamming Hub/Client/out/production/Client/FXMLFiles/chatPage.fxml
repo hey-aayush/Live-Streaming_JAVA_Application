@@ -1,57 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="575.0" prefWidth="660.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerFiles.ChatPageController">
-    <top>
-        <BorderPane prefHeight="106.0" prefWidth="755.0" BorderPane.alignment="CENTER">
-            <center>
-                <HBox prefHeight="68.0" prefWidth="602.0" BorderPane.alignment="CENTER">
-                    <children>
-                        <TextField fx:id="search" prefHeight="45.0" prefWidth="261.0" />
-                        <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="88.0" text="search" />
-                    </children>
-                </HBox>
-            </center>
-            <left>
-                <ImageView fitHeight="43.0" fitWidth="73.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
-            </left>
-            <right>
-                <Button mnemonicParsing="false" text="Button" BorderPane.alignment="CENTER" />
-            </right>
-            <top>
-                <Label prefHeight="17.0" prefWidth="791.0" style="-fx-background-color: #9535f4;" BorderPane.alignment="CENTER" />
-            </top>
-            <bottom>
-                <Label prefHeight="17.0" prefWidth="757.0" style="-fx-background-color: #9535f4;" BorderPane.alignment="CENTER" />
-            </bottom>
-        </BorderPane>
-    </top>
-    <left>
-        <VBox prefHeight="418.0" prefWidth="267.0" BorderPane.alignment="CENTER">
-            <children>
-                <ListView fx:id="friendListview" onMouseClicked="#openChats" prefHeight="430.0" prefWidth="273.0" />
-            </children>
-        </VBox>
-    </left>
-    <right>
-        <VBox prefHeight="444.0" prefWidth="562.0" BorderPane.alignment="CENTER">
-            <children>
-                <ScrollPane prefHeight="416.0" prefWidth="490.0">
-               <content>
-                  <TextArea fx:id="msgtxtArea" prefHeight="413.0" prefWidth="382.0" />
-               </content>
-                </ScrollPane>
-                <HBox prefHeight="99.0" prefWidth="490.0">
-                    <children>
-                        <Button mnemonicParsing="false" prefHeight="62.0" prefWidth="112.0" text="Chose file" />
-                        <TextArea fx:id="textArea" prefHeight="76.0" prefWidth="305.0" />
-                        <Button fx:id="SendBtn" mnemonicParsing="false" onAction="#sendMessage" prefHeight="61.0" prefWidth="84.0" text="SEND" />
-                    </children>
-                </HBox>
-            </children>
-        </VBox>
-    </right>
-</BorderPane>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="555.0" prefWidth="1000.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerFiles.ChatPageController">
+   <children>
+      <BorderPane layoutX="150.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="555.0" prefWidth="700.0" style="-fx-background-color: #fff;">
+         <top>
+            <BorderPane prefHeight="106.0" prefWidth="755.0" style="-fx-background-color: #9535f4;" BorderPane.alignment="CENTER">
+               <left>
+                  <ImageView fitHeight="43.0" fitWidth="73.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+               </left>
+               <top>
+                  <Label prefHeight="17.0" prefWidth="791.0" style="-fx-background-color: #9535f4;" BorderPane.alignment="CENTER" />
+               </top>
+               <bottom>
+                  <Label prefHeight="17.0" prefWidth="757.0" style="-fx-background-color: #9535f4;" BorderPane.alignment="CENTER" />
+               </bottom>
+               <right>
+                  <ImageView fitHeight="74.0" fitWidth="117.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                     <image>
+                        <Image url="@../res/icons8-messages-50.png" />
+                     </image>
+                  </ImageView>
+               </right>
+               <center>
+                  <Label text="Chat Section" textFill="WHITE" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Label>
+               </center>
+            </BorderPane>
+         </top>
+         <left>
+            <VBox prefHeight="418.0" prefWidth="267.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ListView fx:id="friendListview" onMouseClicked="#openChats" prefHeight="430.0" prefWidth="273.0" />
+               </children>
+            </VBox>
+         </left>
+         <right>
+            <VBox prefHeight="444.0" prefWidth="562.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ScrollPane prefHeight="381.0" prefWidth="399.0">
+                     <content>
+                        <TextArea fx:id="msgtxtArea" prefHeight="371.0" prefWidth="431.0" />
+                     </content>
+                  </ScrollPane>
+                  <HBox prefHeight="61.0" prefWidth="449.0">
+                     <children>
+                        <TextArea fx:id="textArea" prefHeight="43.0" prefWidth="305.0" />
+                        <Button fx:id="SendBtn" mnemonicParsing="false" onAction="#sendMessage" prefHeight="47.0" prefWidth="106.0" style="-fx-background-color: #9535f4; -fx-background-radius: 100;" text="SEND" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </right>
+      </BorderPane>
+   </children>
+</AnchorPane>

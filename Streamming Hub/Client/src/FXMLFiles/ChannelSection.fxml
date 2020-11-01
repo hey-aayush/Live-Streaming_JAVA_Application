@@ -21,8 +21,8 @@
                   <Font name="System Bold" size="19.0" />
                </font>
             </Label>
-            <JFXButton fx:id="Disconnectbtn" layoutX="462.0" layoutY="509.0" onAction="#DisconnectButtonAction" style="-fx-background-color: #a60c0c; -fx-background-radius: 100px;" text="Disconnect" textFill="WHITE" />
-            <JFXButton fx:id="Connectbtn" layoutX="214.0" layoutY="509.0" onAction="#ConnectButtonAction" style="-fx-background-color: green; -fx-background-radius: 100px;" text="Connect" textFill="WHITE" />
+            <JFXButton fx:id="Disconnectbtn" layoutX="541.0" layoutY="509.0" onAction="#DisconnectButtonAction" style="-fx-background-color: #a60c0c; -fx-background-radius: 100px;" text="Disconnect" textFill="WHITE" />
+            <JFXButton fx:id="Connectbtn" layoutX="154.0" layoutY="509.0" onAction="#ConnectButtonAction" style="-fx-background-color: green; -fx-background-radius: 100px;" text="Connect" textFill="WHITE" />
             <ImageView fitHeight="47.0" fitWidth="59.0" layoutX="180.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../res/icons8-youtube-live-48.png" />
@@ -45,8 +45,8 @@
                   <TextField fx:id="channelSearchField" alignment="CENTER" layoutX="100.0" layoutY="23.0" prefHeight="28.0" prefWidth="338.0" promptText="Searh Other Channel" />
                </children>
             </AnchorPane>
-            <Button fx:id="muteBtn" alignment="CENTER" layoutX="313.0" layoutY="509.0" mnemonicParsing="false" onAction="#muteAction" style="-fx-background-color: lightblue;" text="Mute" textAlignment="CENTER" />
-            <Button fx:id="unmuteBtn" alignment="CENTER" layoutX="374.0" layoutY="509.0" mnemonicParsing="false" onAction="#unmuteAction" style="-fx-background-color: lightblue;" text="Unmute" textAlignment="CENTER" />
+            <Button fx:id="muteBtn" alignment="CENTER" layoutX="392.0" layoutY="509.0" mnemonicParsing="false" onAction="#muteAction" style="-fx-background-color: lightblue;" text="Mute" textAlignment="CENTER" />
+            <Button fx:id="unmuteBtn" alignment="CENTER" layoutX="453.0" layoutY="509.0" mnemonicParsing="false" onAction="#unmuteAction" style="-fx-background-color: lightblue;" text="Unmute" textAlignment="CENTER" />
             <TextArea layoutX="685.0" layoutY="97.0" prefHeight="379.0" prefWidth="273.0" />
             <TextField layoutX="685.0" layoutY="487.0" prefHeight="35.0" prefWidth="208.0" />
             <Button layoutX="905.0" layoutY="487.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="59.0" style="-fx-background-color: green; -fx-background-radius: 100;" text="Send" textFill="WHITE" />
@@ -56,6 +56,8 @@
                </font>
             </Label>
             <Circle fill="#22dd2e" layoutX="744.0" layoutY="70.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+            <Button fx:id="PauseBtn" alignment="CENTER" layoutX="250.0" layoutY="509.0" mnemonicParsing="false" onAction="#pauseAction" style="-fx-background-color: blue;" text="Pause" textAlignment="CENTER" textFill="WHITE" />
+            <Button fx:id="ResumeBtn" alignment="CENTER" layoutX="315.0" layoutY="509.0" mnemonicParsing="false" onAction="#resumeAction" style="-fx-background-color: blue;" text="Resume" textAlignment="CENTER" textFill="WHITE" />
          </children>
       </AnchorPane>
    </children>

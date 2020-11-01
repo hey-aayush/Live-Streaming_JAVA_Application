@@ -14,41 +14,54 @@
 
 <AnchorPane prefHeight="555.0" prefWidth="1000.0" style="-fx-background-color: #ccc;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ControllerFiles.StreammerSectionController">
    <children>
-      <JFXComboBox fx:id="StreamOptions" layoutX="407.0" layoutY="66.0" prefHeight="26.0" prefWidth="166.0" />
-      <Label layoutX="180.0" layoutY="66.0" text="Select Stream Source">
-         <font>
-            <Font name="Chilanka Regular" size="17.0" />
-         </font>
-      </Label>
-      <Label layoutX="241.0" layoutY="14.0" text="Streamming Section" textAlignment="CENTER">
-         <font>
-            <Font name="System Bold" size="19.0" />
-         </font>
-      </Label>
-      <JFXButton fx:id="StopButton" layoutX="498.0" layoutY="510.0" onAction="#StopButtonAction" style="-fx-background-color: #a60c0c; -fx-background-radius: 100px;" text="Stop Stream" textFill="WHITE" />
-      <JFXButton fx:id="StartButton" layoutX="177.0" layoutY="509.0" onAction="#StartButtonAction" style="-fx-background-color: green; -fx-background-radius: 100px;" text="Start Stream" textFill="WHITE" />
-      <ImageView fitHeight="47.0" fitWidth="59.0" layoutX="180.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../res/icons8-youtube-live-48.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="275.0" layoutY="203.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../res/icons8-youtube-live-50.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="VideoFeed" fitHeight="379.0" fitWidth="585.0" layoutX="58.0" layoutY="106.0" pickOnBounds="true" />
-      <Button fx:id="muteBtn" alignment="CENTER" layoutX="310.0" layoutY="510.0" mnemonicParsing="false" onAction="#muteAction" style="-fx-background-color: lightblue;" text="Mute" textAlignment="CENTER" />
-      <Button fx:id="unmuteBtn" alignment="CENTER" layoutX="389.0" layoutY="509.0" mnemonicParsing="false" onAction="#unmuteAction" style="-fx-background-color: lightblue;" text="Unmute" textAlignment="CENTER" />
-      <JFXButton fx:id="respuestRoombtn" layoutX="58.0" layoutY="510.0" onAction="#requestRoomAction" style="-fx-background-color: green; -fx-background-radius: 100px;" text="Get Room" textFill="WHITE" />
-      <TextArea layoutX="681.0" layoutY="100.0" prefHeight="379.0" prefWidth="273.0" />
-      <TextField layoutX="681.0" layoutY="487.0" prefHeight="35.0" prefWidth="208.0" />
-      <Button layoutX="897.0" layoutY="487.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="59.0" style="-fx-background-color: green; -fx-background-radius: 100;" text="Send" textFill="WHITE" />
-      <Label contentDisplay="CENTER" layoutX="767.0" layoutY="53.0" prefHeight="26.0" prefWidth="160.0" text="Chat Play .." textAlignment="CENTER">
-         <font>
-            <Font name="Chilanka Regular" size="19.0" />
-         </font>
-      </Label>
-      <Circle fill="#22dd2e" layoutX="744.0" layoutY="66.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+      <AnchorPane fx:id="streammerSection" prefHeight="547.0" prefWidth="1002.0">
+         <children>
+            <ImageView fx:id="VideoFeed" fitHeight="379.0" fitWidth="585.0" layoutX="77.0" layoutY="98.0" pickOnBounds="true" />
+            <JFXComboBox fx:id="StreamOptions" layoutX="369.0" layoutY="65.0" prefHeight="26.0" prefWidth="166.0" />
+            <Label layoutX="184.0" layoutY="66.0" text="Select Stream Source">
+               <font>
+                  <Font name="Chilanka Regular" size="17.0" />
+               </font>
+            </Label>
+            <JFXButton fx:id="StopButton" layoutX="485.0" layoutY="507.0" onAction="#StopButtonAction" style="-fx-background-color: #a60c0c; -fx-background-radius: 100px;" text="Stop Stream" textFill="WHITE" />
+            <JFXButton fx:id="StartButton" layoutX="184.0" layoutY="507.0" onAction="#StartButtonAction" style="-fx-background-color: green; -fx-background-radius: 100px;" text="Start Stream" textFill="WHITE" />
+            <Button fx:id="muteBtn" alignment="CENTER" layoutX="309.0" layoutY="507.0" mnemonicParsing="false" onAction="#muteAction" style="-fx-background-color: lightblue;" text="Mute" textAlignment="CENTER" />
+            <Button fx:id="unmuteBtn" alignment="CENTER" layoutX="382.0" layoutY="507.0" mnemonicParsing="false" onAction="#unmuteAction" style="-fx-background-color: lightblue;" text="Unmute" textAlignment="CENTER" />
+            <JFXButton fx:id="respuestRoombtn" layoutX="81.0" layoutY="507.0" onAction="#requestRoomAction" style="-fx-background-color: green; -fx-background-radius: 100px;" text="Get Room" textFill="WHITE" />
+            <TextArea layoutX="681.0" layoutY="78.0" prefHeight="379.0" prefWidth="273.0" />
+            <TextField layoutX="681.0" layoutY="477.0" prefHeight="35.0" prefWidth="208.0" />
+            <Button layoutX="895.0" layoutY="477.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="59.0" style="-fx-background-color: green; -fx-background-radius: 100;" text="Send" textFill="WHITE" />
+            <Label contentDisplay="CENTER" layoutX="731.0" layoutY="46.0" prefHeight="26.0" prefWidth="160.0" text="Chat Play .." textAlignment="CENTER">
+               <font>
+                  <Font name="Chilanka Regular" size="19.0" />
+               </font>
+            </Label>
+            <Circle fill="#22dd2e" layoutX="717.0" layoutY="60.0" radius="7.0" stroke="BLACK" strokeType="INSIDE" />
+            <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="290.0" layoutY="199.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../res/icons8-youtube-live-50.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="414.0" layoutY="20.0" text="Streamming Section" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="19.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="47.0" fitWidth="59.0" layoutX="310.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../res/icons8-youtube-live-48.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="noStreammerSection" prefHeight="555.0" prefWidth="1002.0" visible="false">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="240.0" layoutY="150.0" prefHeight="64.0" prefWidth="467.0" text="Oops ! Channel not created..." textAlignment="CENTER">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

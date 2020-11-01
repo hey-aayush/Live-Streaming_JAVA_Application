@@ -9,6 +9,7 @@ import java.sql.SQLException;
 
 public class SearchMsgs {
 
+    // This function will give old chats of any user with his friend
     public String getMsgs(String user, String friend) throws SQLException {
         DatabaseConnection connection = DatabaseConnection.getInstance();
         Connection connectDB = connection.getConnection();

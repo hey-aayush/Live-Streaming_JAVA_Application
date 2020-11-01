@@ -2,6 +2,12 @@ package Streamer;
 
 import java.io.Serializable;
 
+/**
+ * Class responsible for carrying audio data and related information
+ * 1. Timestamp
+ * 2. Audio data bytes
+ */
+
 public class AudioPacket implements Serializable {
 
     private long timestamp;

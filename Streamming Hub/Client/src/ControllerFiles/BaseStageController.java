@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class BaseStageController implements Initializable {
@@ -40,6 +41,12 @@ public class BaseStageController implements Initializable {
 
     public void setUser(User user){
         this.user = user;
+        System.out.println("IsChannel :"+user.getisChannel());
+        try {
+            switchTosearchPage();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     public User getUser(User user){
@@ -70,6 +77,21 @@ public class BaseStageController implements Initializable {
     @FXML
     public AnchorPane TabPane;
 
+    public void switchTosearchPage() throws Exception{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/searchPage.fxml"));
+        //Loading the FXML file
+        Pane view = (Pane) loader.load();
+        //Access the controller by calling getController() on the FXMLLoader instance.
+        searchPageController = (SearchPageController) loader.getController();
+        searchPageController.setBaseStageController(this);
+        searchPageController.setUser(user);
+        // HomePageController HomePageController = loader.getController();
+        //  HomePageController.setUser(user);
+
+        TabPane.getChildren().removeAll();
+        TabPane.getChildren().setAll(view);
+    }
+
 
     public void handleButtonAction(MouseEvent event) throws IOException {
         if (event.getTarget()==exit) {
@@ -93,9 +115,10 @@ public class BaseStageController implements Initializable {
                 //Access the controller by calling getController() on the FXMLLoader instance.
                 searchPageController = (SearchPageController) loader.getController();
                 searchPageController.setBaseStageController(this);
+                searchPageController.setUser(user);
 
-               // HomePageController HomePageController = loader.getController();
-              //  HomePageController.setUser(user);
+                // HomePageController HomePageController = loader.getController();
+                //  HomePageController.setUser(user);
 
                 TabPane.getChildren().removeAll();
                 TabPane.getChildren().setAll(view);
@@ -104,21 +127,25 @@ public class BaseStageController implements Initializable {
                 e.printStackTrace();
             }
         }else if (event.getTarget()==profile_btn) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/profilePage.fxml"));
+            // openProfile();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/ProfilePage.fxml"));
             Pane profileView = (Pane) loader.load();
             profilePageController = loader.getController();
-            profilePageController.setUser(user);
+            profilePageController.setUser(user,0);
+            profilePageController.setHomeUser(user);
             System.out.println(TabPane);
             TabPane.getChildren().removeAll();
             TabPane.getChildren().setAll(profileView);
+            //AskProfileData askProfileData = new AskProfileData(LoginController.myUserName);
+            //askProfileData.profileInfo();
 
         }else if (event.getTarget()==chat_btn) {
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/chatPage.fxml"));
-                Pane view = (Pane) loader.load();
-                chatPageController = (ChatPageController)loader.getController();
-                TabPane.getChildren().removeAll();
-                TabPane.getChildren().setAll(view);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/chatPage.fxml"));
+            Pane view = (Pane) loader.load();
+            chatPageController = (ChatPageController)loader.getController();
+            TabPane.getChildren().removeAll();
+            TabPane.getChildren().setAll(view);
 
 
         }else if (event.getTarget()==channel_btn) {
@@ -175,6 +202,21 @@ public class BaseStageController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    }
+
+    public void openProfile(User homeuser){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/ProfilePage.fxml"));
+        try {
+            Pane profileView = (Pane) loader.load();
+            profilePageController = loader.getController();
+            profilePageController.setHomeUser(homeuser);
+            System.out.println(TabPane);
+            TabPane.getChildren().removeAll();
+            TabPane.getChildren().setAll(profileView);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }
