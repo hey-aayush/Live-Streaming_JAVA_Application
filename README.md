@@ -87,7 +87,7 @@ Search Users And can see his Subscribe Channel List
 ![chat3](https://user-images.githubusercontent.com/65902756/97795835-47e38380-1c31-11eb-81f5-1a03d02e955d.png)
 
 ## Streammer
-![WhatsApp Image 2020-11-01 at 12 03 22](https://user-images.githubusercontent.com/65902756/97796652-a6f9c600-1c3a-11eb-9180-7425e3d1e5e9.jpeg)
+![WhatsApp Image 2020-11-01 at 12 06 39](https://user-images.githubusercontent.com/65902756/97796659-c4c72b00-1c3a-11eb-8145-6a6a9082fce8.jpeg)
 
 
 ## Profile Section
@@ -97,6 +97,8 @@ Can view Own as well as Others Profile and can alos check Online or Last Active.
 ![WhatsApp Image 2020-11-01 at 11 50 17](https://user-images.githubusercontent.com/65902756/97796480-8f214280-1c38-11eb-9fcd-9f619bd9d824.jpeg)![WhatsApp Image 2020-11-01 at 11 49 19](https://user-images.githubusercontent.com/65902756/97796482-90eb0600-1c38-11eb-9353-5e6564453fea.jpeg)
 
 ## Channel Section :
+search and join
+![WhatsApp Image 2020-11-01 at 12 03 22](https://user-images.githubusercontent.com/65902756/97796652-a6f9c600-1c3a-11eb-9180-7425e3d1e5e9.jpeg)
 
 ![Streammer Section](https://user-images.githubusercontent.com/65902756/97795853-81b48a00-1c31-11eb-9b9c-834ea06993c8.jpeg)
 
