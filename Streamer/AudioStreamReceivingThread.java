@@ -4,7 +4,11 @@ import javax.sound.sampled.*;
 import java.io.*;
 import java.net.*;
 
-//Audio Receiver End
+/**
+ * Audio Thread for receiving stream audio
+ *
+ */
+
 public class AudioStreamReceivingThread implements Runnable {
 
     private final int SIZE = 10500;

@@ -4,19 +4,21 @@ import com.xuggle.ferry.IBuffer;
 import com.xuggle.xuggler.*;
 import com.xuggle.xuggler.video.ConverterFactory;
 import com.xuggle.xuggler.video.IConverter;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 
+/**
+ * Class for decoding stream
+ */
+
 public class Decoder {
 
-    protected final IStreamCoder iStreamCoder = IStreamCoder.make(IStreamCoder.Direction.DECODING, ICodec.ID.CODEC_ID_H264);
-    protected final ConverterFactory.Type type = ConverterFactory.findRegisteredConverter(ConverterFactory.XUGGLER_BGR_24);
-    protected final Dimension dimension;
+    private final IStreamCoder iStreamCoder = IStreamCoder.make(IStreamCoder.Direction.DECODING, ICodec.ID.CODEC_ID_H264);
+    private final ConverterFactory.Type type = ConverterFactory.findRegisteredConverter(ConverterFactory.XUGGLER_BGR_24);
+    private final Dimension dimension;
 
     public Decoder(Dimension dimension) {
-
         super();
         this.dimension = dimension;
         initialize();

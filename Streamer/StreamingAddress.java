@@ -2,6 +2,13 @@ package Streamer;
 
 import java.io.Serializable;
 
+/**
+ * Streaming Address
+ * 1. Contains video and audio port
+ * 2. Contains multicast ip address
+ * 3. Address use
+ */
+
 public class StreamingAddress implements Serializable {
 
     String address;

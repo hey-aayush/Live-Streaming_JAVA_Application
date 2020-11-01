@@ -1,22 +1,26 @@
 package Streamer;
 
 import ControllerFiles.StreammerSectionController;
-import Streamer.*;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamResolution;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
-import javax.sound.sampled.LineUnavailableException;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
 import User.Streamer;
 
+/**
+ * Thread for sending camera stream
+ */
+
 public class CameraStreamSendingThread implements Runnable{
 
-    static BufferedImage grabbedImage;
-    static Webcam webcam;
-    static boolean terminate =false;
-    static Streamer streamer;
+    private BufferedImage grabbedImage;
+    private Webcam webcam;
+    private boolean terminate =false;
+    private Streamer streamer;
     private StreamingAddress streamingAddress;
     private DatagramSocket sendingSocket;
     private int imageNumber;
@@ -24,6 +28,8 @@ public class CameraStreamSendingThread implements Runnable{
     private InetAddress ip;
     private int port;
     private Image image;
+    private MulticastSocket receivingSocket;
+    private Decoder decoder;
 
 
     public CameraStreamSendingThread(Webcam webcam, Streamer streamer, StreamingAddress streamingAddress) throws IOException {
@@ -37,8 +43,10 @@ public class CameraStreamSendingThread implements Runnable{
         sendingSocket = new DatagramSocket();
         ip = InetAddress.getByName(streamingAddress.getAddress());
         port = streamingAddress.getVideoPort();
-
+        receivingSocket = new MulticastSocket(port);
+        receivingSocket.joinGroup(new InetSocketAddress(streamingAddress.getAddress(), port), null);
         image = null;
+        decoder = new Decoder(new Dimension(640, 480));
     }
 
     public void terminateCameraStreamSendingThread(){
@@ -48,6 +56,9 @@ public class CameraStreamSendingThread implements Runnable{
     public void run(){
 
         while((grabbedImage = webcam.getImage())!=null  & !terminate){
+
+            image = SwingFXUtils.toFXImage(grabbedImage, null);
+            StreammerSectionController.imageProperty.set(image);
 
             try {
                 sendVideoPackets(grabbedImage);
@@ -62,12 +73,17 @@ public class CameraStreamSendingThread implements Runnable{
         System.out.println("Stream Ended");
     }
 
+    /*Sending video packets method*/
+
     private void sendVideoPackets(BufferedImage bufferedImage) throws Exception {
         imageNumber++;
 
+        //Encoding video packets
         VideoPacket videoPacket = encoder.encode(bufferedImage, imageNumber, System.currentTimeMillis());
+        videoPacket.setEncoded(true);
         byte[] sendData = null;
 
+        //Conversion
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         ObjectOutputStream out;
@@ -93,10 +109,8 @@ public class CameraStreamSendingThread implements Runnable{
         }
 
         if(sendData!=null) {
-
             DatagramPacket senddp = new DatagramPacket(sendData, sendData.length, ip, port);
             sendingSocket.send(senddp);
-
         }
         else {
             System.out.println("Can't Video Packet Sent!!");

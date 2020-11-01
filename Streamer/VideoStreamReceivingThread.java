@@ -45,8 +45,8 @@ public class VideoStreamReceivingThread implements Runnable{
 
         while(!terminate){
 
-            byte[] buf = new byte[8000];
-            DatagramPacket dp = new DatagramPacket(buf, 8000);
+            byte[] buf = new byte[50000];
+            DatagramPacket dp = new DatagramPacket(buf, 50000);
             receivingSocket.receive(dp);
 
             VideoPacket videoPacket;

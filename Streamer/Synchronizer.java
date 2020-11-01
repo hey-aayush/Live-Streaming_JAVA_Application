@@ -1,15 +1,20 @@
 package Streamer;
 
 import ControllerFiles.ChannelSectionController;
-import ControllerFiles.StreammerSectionController;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.WritableImage;
-
+import javax.imageio.ImageIO;
 import javax.sound.sampled.SourceDataLine;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.util.LinkedList;
 import java.util.Queue;
+
+/**
+ * Class for synchronizing and playing audio and video
+ * Maintains a video and audio queue
+ */
 
 public class Synchronizer implements Runnable {
 
@@ -51,6 +56,7 @@ public class Synchronizer implements Runnable {
         System.out.println("Terminating synchronizer!");
     }
 
+    /* Basic buttons function*/
 
     public void muteAudio(){
         isMute = true;
@@ -70,11 +76,6 @@ public class Synchronizer implements Runnable {
 
     @Override
     public void run() {
-//        try {
-//            Thread.sleep(60);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
 
         System.out.println("Started atleast!!");
 
@@ -83,6 +84,8 @@ public class Synchronizer implements Runnable {
             if(isPause){
                 continue;
             }
+
+            // When we receive an audio packet
 
             if(getAudioQueueSize()>0){
 
@@ -108,6 +111,8 @@ public class Synchronizer implements Runnable {
                 });
                 t.start();
 
+                // If player is on mute, audio data is not written on source line
+
                 if(!isMute){
                     sourceLine.write(audioData, 0, audioData.length);
                 }
@@ -121,25 +126,34 @@ public class Synchronizer implements Runnable {
         }
     }
 
+    /* Method for playing frames */
+
      public synchronized void framePlayer() {
 
          System.out.println("Framequeue Size: " + frameQueue.size());
              while (frameQueue.size()>0 && frameQueue.peek().getTimestamp() <= time) {
 
                  try {
-                     BufferedImage bufferedImage = decoder.decode(frameQueue.peek());
+                     BufferedImage bufferedImage;
+                     if(frameQueue.peek().isEncoded()) {
+                            bufferedImage = decoder.decode(frameQueue.peek());
+                     }
+                     else{
+                         byte data[] = frameQueue.peek().getData();
+                         ByteArrayInputStream bais = new ByteArrayInputStream(data);
+                         bufferedImage = ImageIO.read(bais);
+                     }
 
                      if(bufferedImage!=null) {
-                         //New lines for javafx
-                         if(bufferedImage!=null) {
                              image = SwingFXUtils.toFXImage(bufferedImage, null);
+
+                             // If image is not null video stream is updated
 
                              if(image!=null)
                                  ChannelSectionController.imageProperty.set(image);
-                             else{
+                             else {
                                  System.out.println("Null image (Synchronizer)");
                              }
-                         }
                          Thread.sleep(40);
                      }
 
@@ -150,6 +164,8 @@ public class Synchronizer implements Runnable {
 
              }
     }
+
+    /* Getting current size of queue */
 
     private int getAudioQueueSize(){
         return audioQueue.size();

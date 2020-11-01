@@ -74,9 +74,7 @@ public class Client implements Runnable{
                                 lc.getController().appendReply(tfReply);
                             }
                         });
-                    }
-                    else
-                    if(tfReply.getObj() instanceof LoginData){
+                    }else if(tfReply.getObj() instanceof LoginData){
                         Main main = new Main();
                         Platform.runLater(new Runnable() {
                             @Override
@@ -87,8 +85,7 @@ public class Client implements Runnable{
                     }
 
                 }
-                else
-                if(ref instanceof SearchReply){
+                else if(ref instanceof SearchReply){
                     System.out.println("SearchReply aa gaya");
                     SearchReply searchReply = (SearchReply)ref;
                     BaseStageController bs = new BaseStageController();

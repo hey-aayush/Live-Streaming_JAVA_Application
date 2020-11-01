@@ -140,11 +140,13 @@ public class ChannelSectionController implements Initializable {
         audioStreamReceivingThread.terminateAudioStreamReceiver();
         videoStreamReceivingThread.terminateVideoStreamThread();
         synchronizer.terminateSynchronizer();
+        streamingAddress = null;
         imageProperty.set(null);
         LiveFeed.setVisible(false);
         SearchView.setVisible(true);
 
         alreadyConnected = false;
+
     }
 
 

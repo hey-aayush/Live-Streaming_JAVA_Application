@@ -1,5 +1,7 @@
 package ControllerFiles;
 
+import Query.CreateChannelQuery;
+import Query.DeleteRoomRequest;
 import Streamer.CameraStreamSendingThread;
 import ClientThread.Client;
 import Streamer.ScreenStreamSendingThread;
@@ -26,6 +28,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import Streamer.AudioStreamSendingThread;
+import javafx.scene.layout.AnchorPane;
 
 import javax.sound.sampled.LineUnavailableException;
 import java.io.IOException;
@@ -52,7 +55,10 @@ public class StreammerSectionController implements Initializable {
     private JFXButton StopButton,StartButton,respuestRoombtn;
 
     @FXML
-    private Button muteBtn,unmuteBtn;
+    private Button muteBtn,unmuteBtn,createChannelBtn;
+
+    @FXML
+    private AnchorPane streammerSection,noStreammerSection;
 
 
     public static ObjectProperty<Image> imageProperty = new SimpleObjectProperty<Image>();
@@ -67,11 +73,19 @@ public class StreammerSectionController implements Initializable {
 
     public void setUser(User user){
 
-        this.streamer = new Streamer();
+        this.user=user;
         //Testing
-        Channel channel = new Channel();
-        channel.setChannelId(1);
-        this.streamer.setChannel(channel);
+        if (user.getisChannel()){
+            this.streamer=(Streamer) user;
+            Channel channel = new Channel();
+            channel.setChannelId(streamer.getUserId());
+            this.streamer.setChannel(channel);
+
+        }else{
+            noStreammerSection.setVisible(true);
+            createChannelBtn.setVisible(true);
+            streammerSection.setVisible(false);
+        }
     }
 
     public void setBaseStageController(BaseStageController baseStageController){
@@ -130,6 +144,9 @@ public class StreammerSectionController implements Initializable {
         StreamOptions.setItems(options);
         StreamOptions.setPromptText("Select Source");
 
+        streammerSection.setVisible(true);
+        noStreammerSection.setVisible(false);
+
         StopButton.setDisable(true);
         StartButton.setDisable(true);
 
@@ -181,7 +198,7 @@ public class StreammerSectionController implements Initializable {
         StopButton.setDisableVisualFocus(true);
     }
 
-    public void StopButtonAction(ActionEvent event){
+    public void StopButtonAction(ActionEvent event) throws IOException {
 
         if (StreamOptions.getSelectionModel().getSelectedItem().getStreamSource()==StreamSource.WebCamera){
             cameraStreamSendingThread.terminateCameraStreamSendingThread();
@@ -190,6 +207,9 @@ public class StreammerSectionController implements Initializable {
         }
 
         audioStreamSendingThread.terminateAudioStreamSendingThread();
+        DeleteRoomRequest deleteRoomRequest = new DeleteRoomRequest(streamer.getChannel().getChannelId(), streamingAddress);
+        objectOutputStream.writeObject(deleteRoomRequest);
+        streamingAddress = null;
         StartButton.setDisableVisualFocus(true);
         StartButton.setDisable(false);
         StreamOptions.setDisable(false);
@@ -208,20 +228,12 @@ public class StreammerSectionController implements Initializable {
         }
     }
 
-//    public void changeToProfile(User user) {
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("../Client.FXMLFiles/ProfilePage.fxml"));
-//        Pane view = null;
-//        try {
-//            view = (Pane) loader.load();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        ProfilePageController profilePageController = loader.getController();
-//        profilePageController.setUser(user);
-//
-//        BaseStageController.TabPane.getChildren().removeAll();
-//        BaseStageController.TabPane.getChildren().setAll(view);
-//    }
+    public void onCreateChannelBt(ActionEvent event) throws IOException{
+        CreateChannelQuery createChannelQuery = new CreateChannelQuery();
+        createChannelQuery.setUser(user);
+        objectOutputStream.writeObject(createChannelQuery);
+        System.out.println("Please Login again....");
+    }
 
     /* For mute */
     public void muteAction(ActionEvent event){

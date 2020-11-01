@@ -57,6 +57,8 @@ public class LoginController {
     private double xOffset = 0;
     private double yOffset = 0;
 
+    public Stage loginStage;
+
     //All elements
     @FXML
     private Button loginbutton,cancelbutton;
@@ -64,12 +66,12 @@ public class LoginController {
     @FXML
     private Label loginmessagelabel;
 
-
     @FXML
     private TextField usernametextfield;
 
     @FXML
     private PasswordField userpasswordfield;
+
 
     //Function to verify credentials.
     public void validdateLogin() throws IOException {
@@ -85,6 +87,7 @@ public class LoginController {
     }
 
     public void loginbuttonAction(ActionEvent event) throws IOException {
+        loginStage = (Stage) loginbutton.getScene().getWindow();
         if(usernametextfield.getText().isBlank()|| userpasswordfield.getText().isBlank()){
             loginmessagelabel.setText("Enter valid Credentials");
         }else{
@@ -99,6 +102,7 @@ public class LoginController {
     }
 
     public void RegisterButtonAction(ActionEvent event){
+        loginStage = (Stage) cancelbutton.getScene().getWindow();
         Stage primaryStage = (Stage) cancelbutton.getScene().getWindow();
         createAccountForm(primaryStage);
     }
@@ -184,7 +188,9 @@ public class LoginController {
     }
 
     public void appendUser(User user){
-        enterloginscene((Stage) loginbutton.getScene().getWindow(),user);
+        System.out.println(loginbutton.getScene().getWindow());
+        enterloginscene(loginStage, user);
+        //enterloginscene((Stage) loginbutton.getScene().getWindow(),user);
     }
 
     public void appendReply(TFReply tfReply) {
@@ -216,7 +222,7 @@ public class LoginController {
             loginmessagelabel.setTextFill(Color.RED);
             loginmessagelabel.setText("Enter valid Credentials");
         }
-
     }
+
 
 }

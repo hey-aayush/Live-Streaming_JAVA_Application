@@ -44,7 +44,7 @@
                         <Font name="Chilanka Regular" size="25.0" />
                      </font>
                   </Label>
-                  <ListView layoutX="68.0" layoutY="179.0" prefHeight="267.0" prefWidth="266.0" />
+                  <ListView fx:id="subscribedChannnelListView" layoutX="68.0" layoutY="179.0" prefHeight="267.0" prefWidth="266.0" />
                   <Label alignment="CENTER" contentDisplay="CENTER" layoutX="61.0" layoutY="135.0" prefHeight="30.0" prefWidth="196.0" text="Subscribed Channels :" textAlignment="CENTER">
                      <font>
                         <Font name="System Bold" size="15.0" />

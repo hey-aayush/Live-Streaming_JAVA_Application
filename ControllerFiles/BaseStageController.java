@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class BaseStageController implements Initializable {
@@ -130,7 +131,9 @@ public class BaseStageController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/ProfilePage.fxml"));
             Pane profileView = (Pane) loader.load();
             profilePageController = loader.getController();
+            profilePageController.setHomeUser(user);
             profilePageController.setUser(user,0);
+
             System.out.println(TabPane);
             TabPane.getChildren().removeAll();
             TabPane.getChildren().setAll(profileView);
@@ -203,11 +206,12 @@ public class BaseStageController implements Initializable {
 
     }
 
-    public void openProfile(){
+    public void openProfile(User homeuser){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/ProfilePage.fxml"));
         try {
             Pane profileView = (Pane) loader.load();
             profilePageController = loader.getController();
+            profilePageController.setHomeUser(homeuser);
             System.out.println(TabPane);
             TabPane.getChildren().removeAll();
             TabPane.getChildren().setAll(profileView);

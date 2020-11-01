@@ -1,11 +1,8 @@
 package Streamer;
 
-import ControllerFiles.StreammerSectionController;
 import User.Streamer;
 import com.github.sarxos.webcam.WebcamResolution;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
-
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -41,9 +38,25 @@ public class ScreenStreamSendingThread implements Runnable{
         try {
             screenshot= new Robot();
             capture = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+
         } catch (AWTException e) {
             e.printStackTrace();
         }
+    }
+
+    private static BufferedImage resizeImage(BufferedImage originalImage) {
+
+        int type = originalImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB
+                : originalImage.getType();
+
+        int IMG_WIDTH = 700;
+        int IMG_HEIGHT = 400;
+        BufferedImage resizedImage = new BufferedImage(IMG_WIDTH, IMG_HEIGHT,
+                type);
+        Graphics2D g = resizedImage.createGraphics();
+        g.drawImage(originalImage, 0, 0, IMG_WIDTH, IMG_HEIGHT, null);
+        g.dispose();
+        return resizedImage;
     }
 
     public void terminateScreenStreamSendingThread(){
@@ -52,10 +65,10 @@ public class ScreenStreamSendingThread implements Runnable{
 
     public void run(){
         while((grabbedImage = screenshot.createScreenCapture(capture))!=null  & !terminate){
-            //final Image image = SwingFXUtils.toFXImage(grabbedImage, null);
-            //StreammerSectionController.imageProperty.set(mainimage);
+
 
             try {
+
                 sendVideoPackets(grabbedImage);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -69,7 +82,13 @@ public class ScreenStreamSendingThread implements Runnable{
     private void sendVideoPackets(BufferedImage bufferedImage) throws Exception {
         imageNumber++;
 
-        VideoPacket videoPacket = encoder.encode(bufferedImage, imageNumber, System.currentTimeMillis());
+        BufferedImage image = resizeImage(bufferedImage);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(image, "jpg", baos);
+        byte[] imageData = baos.toByteArray();
+
+        VideoPacket videoPacket = new VideoPacket(imageData, imageNumber, System.currentTimeMillis());
+
         byte[] sendData = null;
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -97,10 +116,8 @@ public class ScreenStreamSendingThread implements Runnable{
         }
 
         if(sendData!=null) {
-
             DatagramPacket senddp = new DatagramPacket(sendData, sendData.length, ip, port);
             sendingSocket.send(senddp);
-
         }
         else {
             System.out.println("Can't Video Packet Sent!!");

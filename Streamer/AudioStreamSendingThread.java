@@ -10,18 +10,22 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * Thread for receiving audio stream
+ */
+
 public class AudioStreamSendingThread implements Runnable {
 
-    TargetDataLine targetDataLine;
-    AudioFormat audioFormat;
-    final int SIZE = 10000;
-    Encoder encoder;
-    byte tempBuffer[];
-    StreamingAddress streamingAddress;
-    InetAddress ip;
-    int port;
-    boolean terminate;
-    boolean isMute;
+    private TargetDataLine targetDataLine;
+    private AudioFormat audioFormat;
+    private final int SIZE = 10000;
+    private Encoder encoder;
+    private byte tempBuffer[];
+    private StreamingAddress streamingAddress;
+    private InetAddress ip;
+    private int port;
+    private boolean terminate;
+    private boolean isMute;
 
     public AudioStreamSendingThread(StreamingAddress streamingAddress) throws LineUnavailableException, UnknownHostException {
         audioFormat = getAudioFormat();
