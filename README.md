@@ -33,6 +33,10 @@ b)Live Stream via web cam & Mic as well as Share Screen.
 
 c)Chat with other users/subscribers
 
+#### Database used ::
+
+MYSQL
+
 #### External Libraries Used ::
 
 a) Webcam-capture : Taking images from web-cam
