@@ -4,6 +4,7 @@ import Application.AskProfileData;
 import ClientThread.Client;
 import Query.AddFriendData;
 import Query.SearchData;
+import Query.SubscribeTo;
 import Response.SearchReply;
 import User.*;
 import javafx.collections.FXCollections;
@@ -28,8 +29,6 @@ public class SearchPageController implements Initializable {
     private static User user;
 
     private static BaseStageController baseStageController;
-
-
 
     static ObjectInputStream objectInputStream = Client.objectInputStream;
     static ObjectOutputStream objectOutputStream = Client.objectOutputStream;
@@ -84,8 +83,10 @@ public class SearchPageController implements Initializable {
         data.setUserName(searchName);
         objectOutputStream.writeObject(data);
         objectOutputStream.flush();
-        System.out.println("qyery send");
+        System.out.println("query send");
     }
+
+
     //For searching the user by clicking on search button
     public void onSearchbtn(MouseEvent event) throws IOException {
         String searchName = searchField.getText();

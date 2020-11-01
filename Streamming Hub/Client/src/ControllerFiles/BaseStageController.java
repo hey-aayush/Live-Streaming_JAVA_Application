@@ -131,8 +131,9 @@ public class BaseStageController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../FXMLFiles/ProfilePage.fxml"));
             Pane profileView = (Pane) loader.load();
             profilePageController = loader.getController();
-            profilePageController.setUser(user,0);
             profilePageController.setHomeUser(user);
+            profilePageController.setUser(user,0);
+
             System.out.println(TabPane);
             TabPane.getChildren().removeAll();
             TabPane.getChildren().setAll(profileView);

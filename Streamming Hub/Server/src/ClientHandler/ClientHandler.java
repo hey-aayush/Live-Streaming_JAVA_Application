@@ -262,7 +262,25 @@ public class ClientHandler implements Runnable{
                         CreateChannelSQL createChannelSQL = new CreateChannelSQL();
                         createChannelSQL.createChannel(request.getUser());
                         System.out.println("Created Channel");
-                    }
+                    }else if(object instanceof SubscribeTo){
+
+                    System.out.println("Channel Subscribe Request Recieved");
+                    SubscribeTo request = (SubscribeTo) object;
+
+                    SubscribeToChannelSQL subscribeToChannelSQL = new SubscribeToChannelSQL();
+                    subscribeToChannelSQL.subscribechannel(request.getUser(), request.getChannel());
+
+                    System.out.println("Subscribed Channel");
+                }else if(object instanceof UnsubscribeTo){
+
+                    System.out.println("Channel UnSubscribe Request Recieved");
+                    UnsubscribeTo request = (UnsubscribeTo) object;
+
+                    UnsubscribeToChannelSQL unsubscribeToChannelSQL = new UnsubscribeToChannelSQL();
+                    unsubscribeToChannelSQL.unsubscribechannel(request.getUser(), request.getChannel());
+
+                    System.out.println("Subscribed Channel");
+                }
                     else {
                         System.out.println("Unknown Data recieved !");
                     }
