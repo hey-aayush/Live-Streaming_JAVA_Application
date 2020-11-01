@@ -79,3 +79,26 @@ Here's how Packages and Class are Designed.
 ## Streammer
 
 ![Streammer Section](https://user-images.githubusercontent.com/65902756/97795853-81b48a00-1c31-11eb-9b9c-834ea06993c8.jpeg)
+
+###Features:
+
+1. Create channel.
+
+2. Can stream for all users.
+
+3. Can mute/unmute himself.
+
+4. Audio and Video synchronization using timestamp.
+
+5. Can stream using webcam and can also share screen.
+
+## Channel: 
+
+### Features: 
+
+1. Can see any streamer's stream.
+
+2. Can pause the stream. The stream will continue from the point it was stopped.
+
+3. Can mute / unmute the stream.
+
