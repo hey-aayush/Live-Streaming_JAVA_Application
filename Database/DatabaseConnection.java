@@ -2,9 +2,6 @@ package Database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-//watch DAO concepts
-//set methods for each function smaje.....
-
 public class DatabaseConnection {
 
     public static DatabaseConnection singleInstance = null;
@@ -21,8 +18,7 @@ public class DatabaseConnection {
 
     public Connection getConnection() {
 
-        //hide this and look for connection pooling...
-        String databaseName = "Softa";
+        String databaseName = "Softablize";
         String databaseUser = "root";
         String databasePassword = "@Pragya2007";
         String url = "jdbc:mysql://localhost/"+databaseName;

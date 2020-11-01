@@ -1,5 +1,6 @@
 package Streamer;
 
+import Query.DeleteRoomRequest;
 import Query.StreamRequest;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -57,6 +58,15 @@ public class StreamingRoomManager {
         StreamingAddress streamingAddress = new StreamingAddress(address, videoPort, audioPort, StreamingConstants.FOR_STREAMING);
         activeRooms.put(streamRequest.getChannelID(), streamingAddress);
         return streamingAddress;
+    }
+
+    public void removeActiveRoom(DeleteRoomRequest request){
+
+        if(activeRooms.containsKey(request.getChannelID())){
+            activeRooms.remove(request.getChannelID());
+            availablePorts.add(request.getStreamingAddress().getVideoPort());
+            availablePorts.add(request.getStreamingAddress().getAudioPort());
+        }
     }
 
     private int getPort(){

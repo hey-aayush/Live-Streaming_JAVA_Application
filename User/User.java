@@ -1,6 +1,7 @@
 package User;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class User implements Serializable {
     private static final long SerialVersionUID = 2001L;
@@ -18,6 +19,8 @@ public class User implements Serializable {
     private int userId;
 
     private boolean IsChannel;
+
+    private List<Channel> subcribedChannel;
 
     public Long getLastActiveTime() {
         return lastActiveTime;
@@ -92,5 +95,13 @@ public class User implements Serializable {
 
     public void setisChannel(boolean channel) {
         IsChannel = channel;
+    }
+
+    public List<Channel> getSubcribedChannel() {
+        return subcribedChannel;
+    }
+
+    public void setSubcribedChannel(List<Channel> subcribedChannel) {
+        this.subcribedChannel = subcribedChannel;
     }
 }

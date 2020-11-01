@@ -13,9 +13,14 @@ import java.util.Vector;
 
 public class NewMsgs {
     public Vector<Message> giveNewMsgs(String friendName) throws SQLException {
+        //For getting the connection of MYSQL database
         DatabaseConnection connection = DatabaseConnection.getInstance();
         Connection connectDB = connection.getConnection();
+
+        //This list will store the new messages came from his all friends
         Vector<Message> msgList = new Vector<Message>();
+
+        // Line 24 - 37 Query from database for finding the new Messages
         String query = "select * from messages where friendName = ? AND msgStatus = ?";
         try{
             PreparedStatement st = connectDB.prepareStatement(query);
@@ -27,8 +32,9 @@ public class NewMsgs {
                 message.setSendername(rs.getString("userName"));
                 message.setReceiverName(rs.getString("friendName"));
                 message.setTimestamp(rs.getTimestamp("msgTimeStamp"));
-               msgList.add(message);
+                msgList.add(message);
             }
+            st.close();
             System.out.println("new msg query complete ho gayi");
             return msgList;
         }catch (Exception e){

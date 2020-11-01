@@ -18,13 +18,16 @@ import java.sql.SQLException;
 public class SendMessage {
 
     public void sendMsg(Message msg, Socket socket, ObjectInputStream in, ObjectOutputStream o) throws IOException, ClassNotFoundException, SQLException {
+        //For connecting with MYSQL database
         DatabaseConnection connection = DatabaseConnection.getInstance();
         Connection connectDB = connection.getConnection();
+        //Checking if Client is connected or not with server
         if(socket.isConnected()){
             System.out.println("Message Received: "+msg.getSendername() + msg.getReceiverName() + msg.getContent());
             String userName = msg.getSendername();
             String friendName = msg.getReceiverName();
-            //Broadcasting messages
+
+            //Line 30 - 38 for checking friend is online or not
             UserStatus friendStatus = UserStatus.ONLINE;
             String query = "select userStatus from user where userName = ?";
             PreparedStatement statement = connectDB.prepareStatement(query);
@@ -34,10 +37,8 @@ public class SendMessage {
                 friendStatus = UserStatus.valueOf(rs.getString("userStatus"));
             }
 
-
-
-
             try{
+                // If friend is ONLINE then send the message through socket
                 if(friendStatus.equals(UserStatus.ONLINE)){
                     System.out.println("working");
                     System.out.println(ClientHandler.listOfClient);
@@ -53,7 +54,7 @@ public class SendMessage {
                     System.out.println("send to client");
                 }
 
-
+                //Putiing the message in messages table of database
                 String insertQuery = "INSERT INTO messages(userName, friendName, msgContent, msgStatus ) " +
                         "VALUES(?, ?, ?, ?)";
                 PreparedStatement st2 = connectDB.prepareStatement(insertQuery);
