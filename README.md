@@ -75,6 +75,11 @@ Takes Input from Users and verifies from DataBase
 ## Registration Section
 ![register](https://user-images.githubusercontent.com/65902756/97795871-a1e44900-1c31-11eb-8242-fdadf444da96.png)
 
+## HomePage 
+Search Users And can see his Subscribe Channel List
+
+![WhatsApp Image 2020-11-01 at 11 53 21 (1)](https://user-images.githubusercontent.com/65902756/97796628-49fe1000-1c3a-11eb-811a-3cda8b17ccf5.jpeg)
+
 ## Chat Preview 
 
 ![chat1](https://user-images.githubusercontent.com/65902756/97795840-4ade7400-1c31-11eb-9566-37df4d749b34.png)
@@ -82,7 +87,7 @@ Takes Input from Users and verifies from DataBase
 ![chat3](https://user-images.githubusercontent.com/65902756/97795835-47e38380-1c31-11eb-81f5-1a03d02e955d.png)
 
 ## Streammer
-
+![WhatsApp Image 2020-11-01 at 12 03 22](https://user-images.githubusercontent.com/65902756/97796652-a6f9c600-1c3a-11eb-9180-7425e3d1e5e9.jpeg)
 
 
 ## Profile Section
@@ -91,9 +96,11 @@ Can view Own as well as Others Profile and can alos check Online or Last Active.
 
 ![WhatsApp Image 2020-11-01 at 11 50 17](https://user-images.githubusercontent.com/65902756/97796480-8f214280-1c38-11eb-9fcd-9f619bd9d824.jpeg)![WhatsApp Image 2020-11-01 at 11 49 19](https://user-images.githubusercontent.com/65902756/97796482-90eb0600-1c38-11eb-9353-5e6564453fea.jpeg)
 
-## HomePage
+## Channel Section :
 
 ![Streammer Section](https://user-images.githubusercontent.com/65902756/97795853-81b48a00-1c31-11eb-9b9c-834ea06993c8.jpeg)
+
+
 
 
 ### Features: 
@@ -107,8 +114,6 @@ Can view Own as well as Others Profile and can alos check Online or Last Active.
 4. Audio and Video synchronization using timestamp.
 
 5. Can stream using webcam and can also share screen.
-
-## Channel: 
 
 
 ### Features: 
