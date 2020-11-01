@@ -38,3 +38,18 @@ c) Xuggler : for Encoding and Decoding.
 Here's how Packages and Class are Designed.
 ![File Preview](https://user-images.githubusercontent.com/65902756/97612395-62550b80-1a3d-11eb-9e9b-eb3473bcd569.png)
 
+## Login Section
+![Login Section](https://user-images.githubusercontent.com/65902756/97795811-0d79e680-1c31-11eb-8b7e-70c65e6975e9.png)
+
+## Registration Section
+![register](https://user-images.githubusercontent.com/65902756/97795871-a1e44900-1c31-11eb-8242-fdadf444da96.png)
+
+## Chat Preview 
+
+![chat1](https://user-images.githubusercontent.com/65902756/97795840-4ade7400-1c31-11eb-9566-37df4d749b34.png)
+![chat2](https://user-images.githubusercontent.com/65902756/97795839-4a45dd80-1c31-11eb-8ea7-b004d7bfe7d6.png)
+![chat3](https://user-images.githubusercontent.com/65902756/97795835-47e38380-1c31-11eb-81f5-1a03d02e955d.png)
+
+## Streammer
+
+![Streammer Section](https://user-images.githubusercontent.com/65902756/97795853-81b48a00-1c31-11eb-9b9c-834ea06993c8.jpeg)
