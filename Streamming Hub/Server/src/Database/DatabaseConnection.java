@@ -18,9 +18,9 @@ public class DatabaseConnection {
 
     public Connection getConnection() {
 
-        String databaseName = "Softablize";
-        String databaseUser = "root";
-        String databasePassword = "@Pragya2007";
+        String databaseName = [DatabaseName];
+        String databaseUser =[User];
+        String databasePassword = [Password];
         String url = "jdbc:mysql://localhost/"+databaseName;
 
 
